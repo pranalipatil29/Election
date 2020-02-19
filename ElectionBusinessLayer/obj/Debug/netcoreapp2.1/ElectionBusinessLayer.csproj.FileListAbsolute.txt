@@ -1,0 +1,16 @@
+C:\Users\User\source\repos\ElectionApplication\ElectionBusinessLayer\bin\Debug\netcoreapp2.1\ElectionBusinessLayer.deps.json
+C:\Users\User\source\repos\ElectionApplication\ElectionBusinessLayer\bin\Debug\netcoreapp2.1\ElectionBusinessLayer.runtimeconfig.json
+C:\Users\User\source\repos\ElectionApplication\ElectionBusinessLayer\bin\Debug\netcoreapp2.1\ElectionBusinessLayer.runtimeconfig.dev.json
+C:\Users\User\source\repos\ElectionApplication\ElectionBusinessLayer\bin\Debug\netcoreapp2.1\ElectionBusinessLayer.dll
+C:\Users\User\source\repos\ElectionApplication\ElectionBusinessLayer\bin\Debug\netcoreapp2.1\ElectionBusinessLayer.pdb
+C:\Users\User\source\repos\ElectionApplication\ElectionBusinessLayer\bin\Debug\netcoreapp2.1\ElectionCommonLayer.dll
+C:\Users\User\source\repos\ElectionApplication\ElectionBusinessLayer\bin\Debug\netcoreapp2.1\ElectionRepositoryLayer.dll
+C:\Users\User\source\repos\ElectionApplication\ElectionBusinessLayer\bin\Debug\netcoreapp2.1\ElectionCommonLayer.pdb
+C:\Users\User\source\repos\ElectionApplication\ElectionBusinessLayer\bin\Debug\netcoreapp2.1\ElectionRepositoryLayer.pdb
+C:\Users\User\source\repos\ElectionApplication\ElectionBusinessLayer\obj\Debug\netcoreapp2.1\ElectionBusinessLayer.csprojAssemblyReference.cache
+C:\Users\User\source\repos\ElectionApplication\ElectionBusinessLayer\obj\Debug\netcoreapp2.1\ElectionBusinessLayer.csproj.CoreCompileInputs.cache
+C:\Users\User\source\repos\ElectionApplication\ElectionBusinessLayer\obj\Debug\netcoreapp2.1\ElectionBusinessLayer.AssemblyInfoInputs.cache
+C:\Users\User\source\repos\ElectionApplication\ElectionBusinessLayer\obj\Debug\netcoreapp2.1\ElectionBusinessLayer.AssemblyInfo.cs
+C:\Users\User\source\repos\ElectionApplication\ElectionBusinessLayer\obj\Debug\netcoreapp2.1\ElectionBusinessLayer.csproj.CopyComplete
+C:\Users\User\source\repos\ElectionApplication\ElectionBusinessLayer\obj\Debug\netcoreapp2.1\ElectionBusinessLayer.dll
+C:\Users\User\source\repos\ElectionApplication\ElectionBusinessLayer\obj\Debug\netcoreapp2.1\ElectionBusinessLayer.pdb

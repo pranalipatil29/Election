@@ -1,0 +1,14 @@
+C:\Users\User\source\repos\ElectionApplication\ElectionRepositoryLayer\bin\Debug\netcoreapp2.1\ElectionRepositoryLayer.deps.json
+C:\Users\User\source\repos\ElectionApplication\ElectionRepositoryLayer\bin\Debug\netcoreapp2.1\ElectionRepositoryLayer.runtimeconfig.json
+C:\Users\User\source\repos\ElectionApplication\ElectionRepositoryLayer\bin\Debug\netcoreapp2.1\ElectionRepositoryLayer.runtimeconfig.dev.json
+C:\Users\User\source\repos\ElectionApplication\ElectionRepositoryLayer\bin\Debug\netcoreapp2.1\ElectionRepositoryLayer.dll
+C:\Users\User\source\repos\ElectionApplication\ElectionRepositoryLayer\bin\Debug\netcoreapp2.1\ElectionRepositoryLayer.pdb
+C:\Users\User\source\repos\ElectionApplication\ElectionRepositoryLayer\bin\Debug\netcoreapp2.1\ElectionCommonLayer.dll
+C:\Users\User\source\repos\ElectionApplication\ElectionRepositoryLayer\bin\Debug\netcoreapp2.1\ElectionCommonLayer.pdb
+C:\Users\User\source\repos\ElectionApplication\ElectionRepositoryLayer\obj\Debug\netcoreapp2.1\ElectionRepositoryLayer.csprojAssemblyReference.cache
+C:\Users\User\source\repos\ElectionApplication\ElectionRepositoryLayer\obj\Debug\netcoreapp2.1\ElectionRepositoryLayer.csproj.CoreCompileInputs.cache
+C:\Users\User\source\repos\ElectionApplication\ElectionRepositoryLayer\obj\Debug\netcoreapp2.1\ElectionRepositoryLayer.AssemblyInfoInputs.cache
+C:\Users\User\source\repos\ElectionApplication\ElectionRepositoryLayer\obj\Debug\netcoreapp2.1\ElectionRepositoryLayer.AssemblyInfo.cs
+C:\Users\User\source\repos\ElectionApplication\ElectionRepositoryLayer\obj\Debug\netcoreapp2.1\ElectionRepositoryLayer.csproj.CopyComplete
+C:\Users\User\source\repos\ElectionApplication\ElectionRepositoryLayer\obj\Debug\netcoreapp2.1\ElectionRepositoryLayer.dll
+C:\Users\User\source\repos\ElectionApplication\ElectionRepositoryLayer\obj\Debug\netcoreapp2.1\ElectionRepositoryLayer.pdb
