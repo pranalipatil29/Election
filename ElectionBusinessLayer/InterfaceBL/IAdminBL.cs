@@ -64,5 +64,11 @@ namespace ElectionBusinessLayer.InterfaceBL
         /// <param name="partyRequest">The party request.</param>
         /// <returns> returns true or false depending upon operation result</returns>
         Task<bool> AddParty(PartyRequest partyRequest);
+
+        /// <summary>
+        /// Displays the party records.
+        /// </summary>
+        /// <returns>returns party records or null value</returns>
+        IList<PartyResponse> DisplayPartyRecords();
     }
 }

@@ -24,6 +24,14 @@ namespace ElectionCommonLayer.Model.Party
     public class PartyResponse
     {
         /// <summary>
+        /// Gets or sets the party identifier.
+        /// </summary>
+        /// <value>
+        /// The party identifier.
+        /// </value>
+        public int PartyID { get; set; }
+
+        /// <summary>
         /// Gets or sets the name of the party.
         /// </summary>
         /// <value>

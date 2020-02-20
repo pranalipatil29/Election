@@ -198,5 +198,24 @@ namespace ElectionBusinessLayer.ServiceBL
                 throw new Exception(exception.Message);
             }
         }
+
+        /// <summary>
+        /// Displays the party records.
+        /// </summary>
+        /// <returns>
+        /// returns party records or null value
+        /// </returns>
+        /// <exception cref="Exception"></exception>
+        public IList<PartyResponse> DisplayPartyRecords()
+        {
+            try
+            {
+              return this.adminRL.DisplayPartyRecords();
+            }
+            catch(Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
     }
 }

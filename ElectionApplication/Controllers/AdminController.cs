@@ -160,5 +160,34 @@ namespace ElectionApplication.Controllers
                 return this.BadRequest(new { success = false, message = exception.Message });
             }
         }
+
+        [Authorize]
+        [HttpGet]
+        [Route("Parties")]
+        public async Task<IActionResult> GetPartiesInfo()
+        {
+            try
+            {
+                // get the admin Email ID
+                var adminID = HttpContext.User.Claims.First(s => s.Type == "EmailID").Value;
+
+                // get the operation result
+                var records = this.adminBL.DisplayPartyRecords();
+
+                // check wheather records variable contains any record or not
+                if (records.Count > 0)
+                {
+                    return this.Ok(new { success = true, records });
+                }
+                else
+                {
+                    return this.BadRequest(new { success = false, message = "Records not found" });
+                }
+            }
+            catch(Exception exception)
+            {
+                return this.BadRequest(new { success = false, message = exception.Message });
+            }
+        }
     }
 }

@@ -28,6 +28,7 @@ namespace ElectionRepositoryLayer.ServiceRL
     using System;
     using System.Collections.Generic;
     using System.IdentityModel.Tokens.Jwt;
+    using System.Linq;
     using System.Security.Claims;
     using System.Text;
     using System.Threading.Tasks;
@@ -277,6 +278,53 @@ namespace ElectionRepositoryLayer.ServiceRL
                 await this.authenticationContext.SaveChangesAsync();
 
                 return true;
+            }
+            catch(Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
+
+        /// <summary>
+        /// Displays the party records.
+        /// </summary>
+        /// <returns>
+        /// returns party records or null value
+        /// </returns>
+        /// <exception cref="Exception"></exception>
+        public IList<PartyResponse> DisplayPartyRecords()
+        {
+            try
+            {
+                // get the record from Parties table
+                var data = this.authenticationContext.Parties.Select(s => s);
+                
+                // create variable to store list of Partie info
+                var list = new List<PartyResponse>();
+
+                // check wheather the data contains any null value or not
+                if (data != null)
+                {
+                    // iterates the loop for each record
+                    foreach(var record in data)
+                    {
+                        var party = new PartyResponse()
+                        {
+                            PartyID = record.PartyID,
+                            PartyName = record.PartyName,
+                            RegisterBy = record.RegisterBy
+                        };
+
+                        // add the record in list
+                        list.Add(party);
+                    }
+
+                    return list;
+                }
+                else
+                {
+                    return null;
+                }
             }
             catch(Exception exception)
             {
