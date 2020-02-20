@@ -8,10 +8,12 @@ using ElectionBusinessLayer.ServiceBL;
 using ElectionCommonLayer.Model;
 using ElectionRepositoryLayer.Context;
 using ElectionRepositoryLayer.InterfaceRL;
+using ElectionRepositoryLayer.ServiceRL;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -36,7 +38,7 @@ namespace ElectionApplication
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<IAdminBL, AdminBL>();
-            services.AddTransient<IAdminRL, IAdminRL>();
+            services.AddTransient<IAdminRL, AdminRL>();
 
             services.Configure<ApplicationSetting>(this.Configuration.GetSection("ApplicationSetting"));
 
@@ -44,6 +46,7 @@ namespace ElectionApplication
             Options.UseSqlServer(this.Configuration.GetConnectionString("IdentityConnection")));
 
             services.AddDefaultIdentity<ApplicationModel>().AddEntityFrameworkStores <AuthenticationContext>();
+
 
             var key = Encoding.UTF8.GetBytes(this.Configuration["ApplicationSetting:JWTSecret"].ToString());
 

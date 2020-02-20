@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="CloudinaryDotNet" Version="1.9.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ElectionCommonLayer\ElectionCommonLayer.csproj" />
     <ProjectReference Include="..\ElectionRepositoryLayer\ElectionRepositoryLayer.csproj" />
   </ItemGroup>
