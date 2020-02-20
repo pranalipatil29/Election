@@ -45,5 +45,13 @@ namespace ElectionRepositoryLayer.InterfaceRL
         /// <param name="emailID">The email identifier.</param>
         /// <returns> return true or false indicating operation result</returns>
         Task<bool> DeleteParty(int partyID, string emailID);
+
+        /// <summary>
+        /// Deletes the bulk.
+        /// </summary>
+        /// <param name="bulkRequest">The bulk request.</param>
+        /// <param name="adminID">The admin identifier.</param>
+        /// <returns> return true or false indicating operation result </returns>
+        Task<bool> DeleteBulk(BulkRequest bulkRequest, string adminID);
     }
 }

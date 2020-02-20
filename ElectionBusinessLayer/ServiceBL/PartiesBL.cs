@@ -120,5 +120,37 @@ namespace ElectionBusinessLayer.ServiceBL
                 throw new Exception(exception.Message);
             }
         }
+
+        /// <summary>
+        /// Deletes the bulk.
+        /// </summary>
+        /// <param name="bulkRequest">The bulk request.</param>
+        /// <param name="adminID">The admin identifier.</param>
+        /// <returns>
+        /// return true or false indicating operation result
+        /// </returns>
+        /// <exception cref="Exception">
+        /// Party ID's are required
+        /// or
+        /// </exception>
+        public async Task<bool> DeleteBulk(BulkRequest bulkRequest, string adminID)
+        {
+            try
+            {
+                // check wheather admin provide any null value or not
+                if (bulkRequest != null)
+                {
+                    return await this.partiesRL.DeleteBulk(bulkRequest, adminID);
+                }
+                else
+                {
+                    throw new Exception("Party ID's are required");
+                }
+            }
+            catch(Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
     }
 }

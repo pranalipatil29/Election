@@ -157,19 +157,38 @@ namespace ElectionRepositoryLayer.ServiceRL
             }
         }
 
+        /// <summary>
+        /// Deletes the party.
+        /// </summary>
+        /// <param name="partyID">The party identifier.</param>
+        /// <param name="emailID">The email identifier.</param>
+        /// <returns>
+        /// return true or false indicating operation result
+        /// </returns>
+        /// <exception cref="Exception">
+        /// UnAuthorized Account
+        /// or
+        /// </exception>
         public async Task<bool> DeleteParty(int partyID, string emailID)
         {
             try
             {
+                // get the admin data
                 var adminData = this.userManager.Users.Where(s => s.Email == emailID && s.UserType == "Admin").FirstOrDefault();
 
+                // check wheather admin record is found or not
                 if (adminData != null)
                 {
+                    // get the parties data
                     var record = this.authenticationContext.Parties.Where(s => s.PartyID == partyID).FirstOrDefault();
 
+                    // check wheather any record for party found or not
                     if (record != null)
                     {
+                        // remove the record from Parties table
                         this.authenticationContext.Parties.Remove(record);
+
+                        // save the changes into database
                         await this.authenticationContext.SaveChangesAsync();
 
                         return true;
@@ -185,6 +204,49 @@ namespace ElectionRepositoryLayer.ServiceRL
                 }
             }
             catch (Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
+
+        /// <summary>
+        /// Deletes the bulk.
+        /// </summary>
+        /// <param name="bulkRequest">The bulk request.</param>
+        /// <param name="adminID">The admin identifier.</param>
+        /// <returns>
+        /// return true or false indicating operation result
+        /// </returns>
+        /// <exception cref="Exception"></exception>
+        public async Task<bool> DeleteBulk(BulkRequest bulkRequest, string adminID)
+        {
+            try
+            {
+                // flag variable is used to indicate operation result
+                bool flag = false;
+
+                // iterates the loop for each record
+                foreach(var record in bulkRequest.partyID)
+                {
+                    // get the delete operation result
+                    var result = await this.DeleteParty(record, adminID);
+
+                    // check wheather operation is successfull or not
+                    if (result)
+                    {
+                        flag = true;
+                    }
+                    else
+
+                    {
+                        flag = false;
+                    }
+                }
+
+                // return the operation result
+                return flag;
+            }
+            catch(Exception exception)
             {
                 throw new Exception(exception.Message);
             }

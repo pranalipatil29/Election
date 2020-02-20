@@ -52,15 +52,17 @@ namespace ElectionApplication.Controllers
         /// <param name="partyRequest">The party request.</param>
         /// <returns> returns the result indicating operation result</returns>
         [HttpPost]
-        [Route("Party")]
         public async Task<IActionResult> AddParty(PartyRequest partyRequest)
         {
             try
             {
+                // get the admin Email ID
                 var emailID = HttpContext.User.Claims.First(s => s.Type == "EmailID").Value;
 
+                // get the operation result
                 var result = await this.partiesBL.AddParty(emailID, partyRequest);
 
+                // check wheather result indicates true value or not
                 if (result)
                 {
                     return this.Ok(new { success = true, message = "Party Record Added" });
@@ -81,7 +83,6 @@ namespace ElectionApplication.Controllers
         /// </summary>
         /// <returns>returns the result indicating operation result</returns>
         [HttpGet]
-        [Route("Parties")]
         public async Task<IActionResult> GetPartiesInfo()
         {
             try
@@ -114,15 +115,17 @@ namespace ElectionApplication.Controllers
         /// <param name="partyID">The party identifier.</param>
         /// <returns>returns the result indicating operation result</returns>
         [HttpDelete]
-        [Route("Party")]
         public async Task<IActionResult> DeleteParty(int partyID)
         {
             try
             {
+                // get the admin ID
                 var adminID = HttpContext.User.Claims.First(s => s.Type == "EmailID").Value;
 
+                // get the operation result
                 var result = await this.partiesBL.DeleteParty(partyID, adminID);
 
+                // check wheather result indicates true value or not
                 if (result)
                 {
                     return this.Ok(new { success = true, message = "Record Deleted" });
@@ -133,6 +136,39 @@ namespace ElectionApplication.Controllers
                 }
             }
             catch (Exception exception)
+            {
+                return this.BadRequest(new { success = false, message = exception.Message });
+            }
+        }
+
+        /// <summary>
+        /// Deletes the parties.
+        /// </summary>
+        /// <param name="bulkRequest">The bulk request.</param>
+        /// <returns></returns>
+        [HttpDelete]
+        [Route("BulkParties")]
+        public async Task<IActionResult> DeleteParties(BulkRequest bulkRequest)
+        {
+            try
+            {
+                // get the admin ID
+                var adminID = HttpContext.User.Claims.First(s => s.Type == "EmailID").Value;
+
+                // get the operation result
+                var result = await this.partiesBL.DeleteBulk(bulkRequest, adminID);
+
+                // check wheather result indicates true value or not
+                if (result)
+                {
+                    return this.Ok(new { success = true, message = "Parties Delete" });
+                }
+                else
+                {
+                    return this.BadRequest(new { success = false, message = "Party Record Not Found" });
+                }
+            }
+            catch(Exception exception)
             {
                 return this.BadRequest(new { success = false, message = exception.Message });
             }
