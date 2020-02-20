@@ -57,20 +57,5 @@ namespace ElectionBusinessLayer.InterfaceBL
         /// <param name="file">The file.</param>
         /// <returns> returns admin details or null value</returns>
         Task<AccountResponse> ChangeProfilePicture(string emailID, IFormFile file);
-
-        /// <summary>
-        /// Adds the party.
-        /// </summary>
-        /// <param name="emailID">The email identifier.</param>
-        /// <param name="partyRequest">The party request.</param>
-        /// <returns>returns true or false depending upon operation result</returns>
-        Task<bool> AddParty(string emailID, PartyRequest partyRequest);
-
-        /// <summary>
-        /// Displays the party records.
-        /// </summary>
-        /// <param name="emailID">The email identifier.</param>
-        /// <returns>returns true or false depending upon operation result</returns>
-        IList<PartyResponse> DisplayPartyRecords(string emailID);
     }
 }
