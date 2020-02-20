@@ -1,45 +1,42 @@
 ﻿// ******************************************************************************
-//  <copyright file="LogInModel.cs" company="Bridgelabz">
+//  <copyright file="PartyRequest.cs" company="Bridgelabz">
 //    Copyright © 2019 Company
 //
-//     Execution:  LogInModel.cs
+//     Execution:  PartyRequest.cs
 //  
-//     Purpose:  Defining properties for login functionality
+//     Purpose:  defining properties required to give party information
 //     @author  Pranali Patil
 //     @version 1.0
 //     @since   20-02-2020
 //  </copyright>
 //  <creator name="Pranali Patil"/>
 // ******************************************************************************
-namespace ElectionCommonLayer.Model.Admin.Request
+namespace ElectionCommonLayer.Model.Party
 {
     // Including the requried assemblies in to the program
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
     using System.Text;
 
     /// <summary>
-    /// defines properties for login functionality
+    /// defining properties required to give party information
     /// </summary>
-    public class LogInModel
+    public class PartyResponse
     {
         /// <summary>
-        /// Gets or sets the email identifier.
+        /// Gets or sets the name of the party.
         /// </summary>
         /// <value>
-        /// The email identifier.
+        /// The name of the party.
         /// </value>
-        [Required]
-        public string EmailID { get; set; }
+        public string PartyName { get; set; }
 
         /// <summary>
-        /// Gets or sets the password.
+        /// Gets or sets the register by.
         /// </summary>
         /// <value>
-        /// The password.
+        /// The register by.
         /// </value>
-        [Required]
-        public string Password { get; set; }
+        public string RegisterBy { get; set; }
     }
 }

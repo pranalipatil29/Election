@@ -20,6 +20,7 @@ namespace ElectionApplication.Controllers
     using System.Threading.Tasks;
     using ElectionBusinessLayer.InterfaceBL;
     using ElectionCommonLayer.Model.Admin.Request;
+    using ElectionCommonLayer.Model.Party;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
@@ -129,6 +130,32 @@ namespace ElectionApplication.Controllers
                 }
             }
             catch (Exception exception)
+            {
+                return this.BadRequest(new { success = false, message = exception.Message });
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
+        [Route("Party")]
+        public async Task<IActionResult> AddParty(PartyRequest partyRequest)
+        {
+            try
+            {
+                var emailID = HttpContext.User.Claims.First(s => s.Type == "EmailID").Value;
+
+                var result = await this.adminBL.AddParty(partyRequest);
+
+                if (result)
+                {
+                    return this.Ok(new { success = true, message = "Party Record Added" });
+                }
+                else
+                {
+                    return this.BadRequest(new { success = false, message = "Failed to Register Party" });
+                }
+            }
+            catch(Exception exception)
             {
                 return this.BadRequest(new { success = false, message = exception.Message });
             }

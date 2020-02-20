@@ -17,6 +17,7 @@ namespace ElectionBusinessLayer.InterfaceBL
     using ElectionCommonLayer.Model.Admin;
     using ElectionCommonLayer.Model.Admin.Request;
     using ElectionCommonLayer.Model.Admin.Respone;
+    using ElectionCommonLayer.Model.Party;
     using Microsoft.AspNetCore.Http;
     using System;
     using System.Collections.Generic;
@@ -57,5 +58,11 @@ namespace ElectionBusinessLayer.InterfaceBL
         /// <returns> returns admin details or null value</returns>
         Task<AccountResponse> ChangeProfilePicture(string emailID, IFormFile file);
 
+        /// <summary>
+        /// Adds the party.
+        /// </summary>
+        /// <param name="partyRequest">The party request.</param>
+        /// <returns> returns true or false depending upon operation result</returns>
+        Task<bool> AddParty(PartyRequest partyRequest);
     }
 }

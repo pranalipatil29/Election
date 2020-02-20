@@ -17,6 +17,8 @@ namespace ElectionRepositoryLayer.ServiceRL
     using ElectionCommonLayer.Model;
     using ElectionCommonLayer.Model.Admin.Request;
     using ElectionCommonLayer.Model.Admin.Respone;
+    using ElectionCommonLayer.Model.Party;
+    using ElectionRepositoryLayer.Context;
     using ElectionRepositoryLayer.ImageUpload;
     using ElectionRepositoryLayer.InterfaceRL;
     using Microsoft.AspNetCore.Http;
@@ -50,6 +52,11 @@ namespace ElectionRepositoryLayer.ServiceRL
         /// The application settings
         /// </summary>
         private readonly ApplicationSetting applicationSettings;
+        
+        /// <summary>
+        /// creating reference of authentication context class
+        /// </summary>
+        private AuthenticationContext authenticationContext;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AdminRL"/> class.
@@ -57,11 +64,12 @@ namespace ElectionRepositoryLayer.ServiceRL
         /// <param name="userManager">The user manager.</param>
         /// <param name="signInManager">The sign in manager.</param>
         /// <param name="appSettings">The application settings.</param>
-        public AdminRL(UserManager<ApplicationModel> userManager, SignInManager<ApplicationModel> signInManager, IOptions<ApplicationSetting> appSettings)
+        public AdminRL(UserManager<ApplicationModel> userManager, SignInManager<ApplicationModel> signInManager, IOptions<ApplicationSetting> appSettings, AuthenticationContext context)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.applicationSettings = appSettings.Value;
+            this.authenticationContext = context;
         }
 
         /// <summary>
@@ -236,6 +244,41 @@ namespace ElectionRepositoryLayer.ServiceRL
                 }
             }
             catch (Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
+
+        /// <summary>
+        /// Adds the party.
+        /// </summary>
+        /// <param name="partyRequest">The party request.</param>
+        /// <returns>
+        /// returns true or false depending upon operation result
+        /// </returns>
+        /// <exception cref="Exception"></exception>
+        public async Task<bool> AddParty(PartyRequest partyRequest)
+        {
+            try
+            {
+                // get the required data
+                var data = new PartyModel()
+                {
+                    PartyName = partyRequest.PartyName,
+                    RegisterBy = partyRequest.RegisterBy,
+                    CreatedDate = DateTime.Now,
+                    ModifiedDate = DateTime.Now
+                };
+
+                // add data in party table
+                this.authenticationContext.Parties.Add(data);
+
+                // save the change into database
+                await this.authenticationContext.SaveChangesAsync();
+
+                return true;
+            }
+            catch(Exception exception)
             {
                 throw new Exception(exception.Message);
             }

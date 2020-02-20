@@ -17,6 +17,7 @@ namespace ElectionBusinessLayer.ServiceBL
     using ElectionBusinessLayer.InterfaceBL;
     using ElectionCommonLayer.Model.Admin.Request;
     using ElectionCommonLayer.Model.Admin.Respone;
+    using ElectionCommonLayer.Model.Party;
     using ElectionRepositoryLayer.InterfaceRL;
     using Microsoft.AspNetCore.Http;
     using System;
@@ -60,7 +61,7 @@ namespace ElectionBusinessLayer.ServiceBL
             try
             {
                 // check wheather admin entered any null value or not
-                if(registrationModel != null)
+                if (registrationModel != null)
                 {
                     return await this.adminRL.Register(registrationModel);
                 }
@@ -69,7 +70,7 @@ namespace ElectionBusinessLayer.ServiceBL
                     throw new Exception("Data Required");
                 }
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 throw new Exception(exception.Message);
             }
@@ -164,6 +165,35 @@ namespace ElectionBusinessLayer.ServiceBL
                 }
             }
             catch (Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
+
+        /// <summary>
+        /// Adds the party.
+        /// </summary>
+        /// <param name="partyRequest">The party request.</param>
+        /// <returns>
+        /// returns true or false depending upon operation result
+        /// </returns>
+        /// <exception cref="Exception"></exception>
+        public async Task<bool> AddParty(PartyRequest partyRequest)
+        {
+            try
+            {
+                // check whether admin entered any null value or not
+                if(partyRequest != null)
+                {
+                    // return the operation result
+                    return await this.adminRL.AddParty(partyRequest);
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch(Exception exception)
             {
                 throw new Exception(exception.Message);
             }
