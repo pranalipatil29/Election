@@ -177,8 +177,8 @@ namespace ElectionBusinessLayer.ServiceBL
         /// <returns>
         /// returns true or false depending upon operation result
         /// </returns>
-        /// <exception cref="Exception"></exception>
-        public async Task<bool> AddParty(PartyRequest partyRequest)
+        /// <exception cref="Exception">return exception</exception>
+        public async Task<bool> AddParty(string emailID, PartyRequest partyRequest)
         {
             try
             {
@@ -186,7 +186,7 @@ namespace ElectionBusinessLayer.ServiceBL
                 if(partyRequest != null)
                 {
                     // return the operation result
-                    return await this.adminRL.AddParty(partyRequest);
+                    return await this.adminRL.AddParty(emailID, partyRequest);
                 }
                 else
                 {
@@ -202,15 +202,16 @@ namespace ElectionBusinessLayer.ServiceBL
         /// <summary>
         /// Displays the party records.
         /// </summary>
+        /// <param name="emailID">The email identifier.</param>
         /// <returns>
-        /// returns party records or null value
+        /// returns true or false depending upon operation result
         /// </returns>
-        /// <exception cref="Exception"></exception>
-        public IList<PartyResponse> DisplayPartyRecords()
+        /// <exception cref="Exception"> return exception</exception>
+        public IList<PartyResponse> DisplayPartyRecords(string emailID)
         {
             try
             {
-              return this.adminRL.DisplayPartyRecords();
+              return this.adminRL.DisplayPartyRecords(emailID);
             }
             catch(Exception exception)
             {

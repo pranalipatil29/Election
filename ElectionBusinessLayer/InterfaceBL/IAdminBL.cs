@@ -61,14 +61,16 @@ namespace ElectionBusinessLayer.InterfaceBL
         /// <summary>
         /// Adds the party.
         /// </summary>
+        /// <param name="emailID">The email identifier.</param>
         /// <param name="partyRequest">The party request.</param>
-        /// <returns> returns true or false depending upon operation result</returns>
-        Task<bool> AddParty(PartyRequest partyRequest);
+        /// <returns>returns true or false depending upon operation result</returns>
+        Task<bool> AddParty(string emailID, PartyRequest partyRequest);
 
         /// <summary>
         /// Displays the party records.
         /// </summary>
-        /// <returns>returns party records or null value</returns>
-        IList<PartyResponse> DisplayPartyRecords();
+        /// <param name="emailID">The email identifier.</param>
+        /// <returns>returns true or false depending upon operation result</returns>
+        IList<PartyResponse> DisplayPartyRecords(string emailID);
     }
 }

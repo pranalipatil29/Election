@@ -144,7 +144,7 @@ namespace ElectionApplication.Controllers
             {
                 var emailID = HttpContext.User.Claims.First(s => s.Type == "EmailID").Value;
 
-                var result = await this.adminBL.AddParty(partyRequest);
+                var result = await this.adminBL.AddParty(emailID, partyRequest);
 
                 if (result)
                 {
@@ -172,7 +172,7 @@ namespace ElectionApplication.Controllers
                 var adminID = HttpContext.User.Claims.First(s => s.Type == "EmailID").Value;
 
                 // get the operation result
-                var records = this.adminBL.DisplayPartyRecords();
+                var records = this.adminBL.DisplayPartyRecords(adminID);
 
                 // check wheather records variable contains any record or not
                 if (records.Count > 0)
