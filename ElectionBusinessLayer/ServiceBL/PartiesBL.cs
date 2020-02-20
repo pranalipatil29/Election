@@ -15,6 +15,7 @@ namespace ElectionBusinessLayer.ServiceBL
 {
     // Including the requried assemblies in to the program
     using ElectionBusinessLayer.InterfaceBL;
+    using ElectionCommonLayer.Model;
     using ElectionCommonLayer.Model.Party;
     using ElectionRepositoryLayer.InterfaceRL;
     using System;
@@ -145,6 +146,39 @@ namespace ElectionBusinessLayer.ServiceBL
                 else
                 {
                     throw new Exception("Party ID's are required");
+                }
+            }
+            catch(Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
+
+        /// <summary>
+        /// Updates the information.
+        /// </summary>
+        /// <param name="partyRequest">The party request.</param>
+        /// <param name="partyID">The party identifier.</param>
+        /// <param name="adminID">The admin identifier.</param>
+        /// <returns>
+        /// returns updated info or null value
+        /// </returns>
+        /// <exception cref="Exception">
+        /// Data Required
+        /// or
+        /// </exception>
+        public async Task<PartyModel> UpdateInfo(PartyRequest partyRequest, int partyID, string adminID)
+        {
+            try
+            {
+                // check wheather admin entered any null value or not
+                if (partyRequest != null)
+                {
+                    return await this.partiesRL.UpdateInfo(partyRequest,partyID, adminID);
+                }
+                else
+                {
+                    throw new Exception("Data Required");
                 }
             }
             catch(Exception exception)

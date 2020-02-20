@@ -145,7 +145,7 @@ namespace ElectionApplication.Controllers
         /// Deletes the parties.
         /// </summary>
         /// <param name="bulkRequest">The bulk request.</param>
-        /// <returns></returns>
+        /// <returns>returns the result indicating operation result</returns>
         [HttpDelete]
         [Route("BulkParties")]
         public async Task<IActionResult> DeleteParties(BulkRequest bulkRequest)
@@ -171,6 +171,40 @@ namespace ElectionApplication.Controllers
             catch(Exception exception)
             {
                 return this.BadRequest(new { success = false, message = exception.Message });
+            }
+        }
+
+        /// <summary>
+        /// Updates the specified party request.
+        /// </summary>
+        /// <param name="partyRequest">The party request.</param>
+        /// <param name="partyID">The party identifier.</param>
+        /// <returns>returns the result indicating operation result</returns>
+        /// <exception cref="Exception"> return exception</exception>
+        [HttpPut]
+        public async Task<IActionResult> Update(PartyRequest partyRequest, int partyID)
+        {
+            try
+            {
+                // get the admin ID
+                var adminID = HttpContext.User.Claims.First(s => s.Type == "EmailID").Value;
+
+                // get the operation result
+                var data = await this.partiesBL.UpdateInfo(partyRequest, partyID, adminID);
+
+                // check wheather result contains any null value or not
+                if (data != null)
+                {
+                    return this.Ok(new { success = true, message = "Successfully Updated Party Info", data });
+                }
+                else
+                {
+                    return this.BadRequest(new { success = false, message = "Failed to Update Info" });
+                }
+            }
+            catch(Exception exception)
+            {
+                return this.BadRequest(new {success = false, message = exception.Message });
             }
         }
     }

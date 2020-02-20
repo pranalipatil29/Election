@@ -251,5 +251,76 @@ namespace ElectionRepositoryLayer.ServiceRL
                 throw new Exception(exception.Message);
             }
         }
+
+        /// <summary>
+        /// Updates the information.
+        /// </summary>
+        /// <param name="partyRequest">The party request.</param>
+        /// <param name="partyID">The party identifier.</param>
+        /// <param name="adminID">The admin identifier.</param>
+        /// <returns>
+        /// returns party info or null value
+        /// </returns>
+        /// <exception cref="Exception">
+        /// Party Record Not Found
+        /// or
+        /// UnAuthorized Account
+        /// or
+        /// </exception>
+        public async Task<PartyModel> UpdateInfo(PartyRequest partyRequest, int partyID, string adminID)
+        {
+            try
+            {
+                // get the admin data
+                var adminData = this.userManager.Users.Where(s => s.Email == adminID && s.UserType == "Admin").FirstOrDefault();
+
+                // check wheather admin record is found or not
+                if (adminData != null)
+                {
+                    // get the parties data
+                    var partyInfo = this.authenticationContext.Parties.Where(s => s.PartyID == partyID).FirstOrDefault();
+
+                    // check wheather any record for party found or not
+                    if (partyInfo != null)
+                    {
+                        // modify the date value
+                        partyInfo.ModifiedDate = DateTime.Now;
+
+                        // check wheather party name  property is null or empty value
+                        if (partyRequest.PartyName != null && partyRequest.PartyName != string.Empty)
+                        {
+                            partyInfo.PartyName = partyRequest.PartyName;
+                        }
+
+                        // check wheather party Register By property contains any null or empty value
+                        if (partyRequest.RegisterBy != null && partyRequest.RegisterBy != string.Empty)
+                        {
+                            partyInfo.RegisterBy = partyRequest.RegisterBy;
+                        }
+
+                        // update the record in parties table
+                        this.authenticationContext.Parties.Update(partyInfo);
+
+                        // save the changes into database
+                        await this.authenticationContext.SaveChangesAsync();
+
+                        // return the party info
+                        return partyInfo;
+                    }
+                    else
+                    {
+                        throw new Exception("Party Record Not Found");
+                    }
+                }
+                else
+                {
+                    throw new Exception("UnAuthorized Account");
+                }
+            }
+            catch(Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
     }
 }

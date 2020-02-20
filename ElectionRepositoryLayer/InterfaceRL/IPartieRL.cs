@@ -13,6 +13,7 @@
 // ******************************************************************************
 namespace ElectionRepositoryLayer.InterfaceRL
 {
+    using ElectionCommonLayer.Model;
     // Including the requried assemblies in to the program
     using ElectionCommonLayer.Model.Party;
     using System.Collections.Generic;
@@ -53,5 +54,15 @@ namespace ElectionRepositoryLayer.InterfaceRL
         /// <param name="adminID">The admin identifier.</param>
         /// <returns> return true or false indicating operation result </returns>
         Task<bool> DeleteBulk(BulkRequest bulkRequest, string adminID);
+
+
+        /// <summary>
+        /// Updates the information.
+        /// </summary>
+        /// <param name="partyRequest">The party request.</param>
+        /// <param name="partyID">The party identifier.</param>
+        /// <param name="adminID">The admin identifier.</param>
+        /// <returns>returns party info or null value</returns>
+        Task<PartyModel> UpdateInfo(PartyRequest partyRequest, int partyID, string adminID);
     }
 }
