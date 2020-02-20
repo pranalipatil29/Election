@@ -13,8 +13,10 @@
 // ******************************************************************************
 namespace ElectionBusinessLayer.InterfaceBL
 {
+    using System.Collections.Generic;
     // Including the requried assemblies in to the program
     using System.Threading.Tasks;
+    using ElectionCommonLayer.Model;
     using ElectionCommonLayer.Model.Candidate;
 
     /// <summary>
@@ -23,11 +25,43 @@ namespace ElectionBusinessLayer.InterfaceBL
     public interface ICandidateBL
     {
         /// <summary>
-        /// Adds the party.
+        /// Adds the candidate.
         /// </summary>
         /// <param name="emailID">The email identifier.</param>
         /// <param name="partyRequest">The party request.</param>
         /// <returns>returns true or false depending upon operation result</returns>
         Task<bool> AddCandidate(string emailID, CandidateRequest cadidateRequest);
+
+        /// <summary>
+        /// Displays the candidate records.
+        /// </summary>
+        /// <param name="emailID">The email identifier.</param>
+        /// <returns>returns true or false depending upon operation result</returns>
+        IList<CandidateResponse> DisplayCandidateRecords(string emailID);
+        
+        /// <summary>
+        /// Deletes the candidate record.
+        /// </summary>
+        /// <param name="candidateID">The candidate identifier.</param>
+        /// <param name="emailID">The email identifier.</param>
+        /// <returns></returns>
+        Task<bool> DeleteCandidate(int candidateID, string emailID);
+
+        /// <summary>
+        /// Deletes the bulk.
+        /// </summary>
+        /// <param name="bulkRequest">The bulk request.</param>
+        /// <param name="adminID">The admin identifier.</param>
+        /// <returns> return true or false indicating operation result </returns>
+        Task<bool> DeleteBulk(BulkCandidateRequest bulkRequest, string adminID);
+
+        /// <summary>
+        /// Updates the information.
+        /// </summary>
+        /// <param name="candidateRequest">The candidate request.</param>
+        /// <param name="candidateID">The candidate identifier.</param>
+        /// <param name="adminID">The admin identifier.</param>
+        /// <returns>return true or false indicating operation result</returns>
+        Task<CandidateModel> UpdateInfo(CandidateRequest candidateRequest, int candidateID, string adminID);
     }
 }

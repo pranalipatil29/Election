@@ -15,6 +15,7 @@ namespace ElectionCommonLayer.Model
 {
     // Including the requried assemblies in to the program
     using Microsoft.AspNetCore.Identity;
+    using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
     /// <summary>
@@ -65,6 +66,7 @@ namespace ElectionCommonLayer.Model
         /// <value>
         /// The voter identifier.
         /// </value>
+        [Required]
         [Column(TypeName = "nvarchar(150)")]
         public string VoterID { get; set; }
     }

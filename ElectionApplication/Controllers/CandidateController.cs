@@ -75,5 +75,134 @@ namespace ElectionApplication.Controllers
                 return this.BadRequest(new { success = false, message = exception.Message });
             }
         }
+
+        /// <summary>
+        /// Gets the candidates information.
+        /// </summary>
+        /// <returns>returns the result indicating operation result</returns>
+        [HttpGet]
+        public async Task<IActionResult> GetCandidatesInfo()
+        {
+            try
+            {
+                // get the admin Email ID
+                var adminID = HttpContext.User.Claims.First(s => s.Type == "EmailID").Value;
+
+                // get the operation result
+                var records = this.candidateBL.DisplayCandidateRecords(adminID);
+
+                // check wheather records variable contains any record or not
+                if (records.Count > 0)
+                {
+                    return this.Ok(new { success = true, records });
+                }
+                else
+                {
+                    return this.BadRequest(new { success = false, message = "Records not found" });
+                }
+            }
+            catch (Exception exception)
+            {
+                return this.BadRequest(new { success = false, message = exception.Message });
+            }
+        }
+
+        /// <summary>
+        /// Deletes the candidate.
+        /// </summary>
+        /// <param name="candidateID">The candidate identifier.</param>
+        /// <returns> returns the result indicating operation result</returns>
+        [HttpDelete]
+        public async Task<IActionResult> DeleteCandidate(int candidateID)
+        {
+            try
+            {
+                // get the admin ID
+                var adminID = HttpContext.User.Claims.First(s => s.Type == "EmailID").Value;
+
+                // get the operation result
+                var result = await this.candidateBL.DeleteCandidate(candidateID, adminID);
+
+                // check wheather result indicates true value or not
+                if (result)
+                {
+                    return this.Ok(new { success = true, message = "Record Deleted" });
+                }
+                else
+                {
+                    return this.BadRequest(new { success = false, message = "Failed to delete record" });
+                }
+            }
+            catch (Exception exception)
+            {
+                return this.BadRequest(new { success = false, message = exception.Message });
+            }
+        }
+
+        /// <summary>
+        /// Deletes the parties.
+        /// </summary>
+        /// <param name="bulkRequest">The bulk request.</param>
+        /// <returns> returns the result indicating operation result</returns>
+        [HttpDelete]
+        [Route("BulkCandidates")]
+        public async Task<IActionResult> DeleteParties(BulkCandidateRequest bulkRequest)
+        {
+            try
+            {
+                // get the admin ID
+                var adminID = HttpContext.User.Claims.First(s => s.Type == "EmailID").Value;
+
+                // get the operation result
+                var result = await this.candidateBL.DeleteBulk(bulkRequest, adminID);
+
+                // check wheather result indicates true value or not
+                if (result)
+                {
+                    return this.Ok(new { success = true, message = "Candidates record Delete" });
+                }
+                else
+                {
+                    return this.BadRequest(new { success = false, message = "Candidate Record Not Found" });
+                }
+            }
+            catch (Exception exception)
+            {
+                return this.BadRequest(new { success = false, message = exception.Message });
+            }
+        }
+
+        /// <summary>
+        /// Updates the specified candidate request.
+        /// </summary>
+        /// <param name="candidateRequest">The candidate request.</param>
+        /// <param name="candidateID">The candidate identifier.</param>
+        /// <returns>returns the result indicating operation result</returns>
+        [HttpPut]
+        public async Task<IActionResult> Update(CandidateRequest candidateRequest, int candidateID)
+        {
+            try
+            {
+                // get the admin ID
+                var adminID = HttpContext.User.Claims.First(s => s.Type == "EmailID").Value;
+
+                // get the operation result
+                var data = await this.candidateBL.UpdateInfo(candidateRequest, candidateID, adminID);
+
+                // check wheather result contains any null value or not
+                if (data != null)
+                {
+                    return this.Ok(new { success = true, message = "Successfully Updated Candidate Info", data });
+                }
+                else
+                {
+                    return this.BadRequest(new { success = false, message = "Failed to Update Info" });
+                }
+            }
+            catch (Exception exception)
+            {
+                return this.BadRequest(new { success = false, message = exception.Message });
+            }
+        }
     }
 }

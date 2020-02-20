@@ -11,11 +11,10 @@
 //  </copyright>
 //  <creator name="Pranali Patil"/>
 // ******************************************************************************
-using System.ComponentModel.DataAnnotations;
-
 namespace ElectionCommonLayer.Model.Candidate
 {
     // Including the requried assemblies in to the program
+    using System.ComponentModel.DataAnnotations;
 
     /// <summary>
     /// defining properties required to get candidate information
@@ -52,7 +51,6 @@ namespace ElectionCommonLayer.Model.Candidate
         /// <value>
         /// The voter identifier.
         /// </value>
-        [Required]
         public string VoterID { get; set; }
     }
 }

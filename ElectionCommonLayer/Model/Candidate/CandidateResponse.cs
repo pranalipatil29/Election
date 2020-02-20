@@ -37,6 +37,14 @@ namespace ElectionCommonLayer.Model.Candidate
         public string CandidateName { get; set; }
 
         /// <summary>
+        /// Gets or sets the voter identifier.
+        /// </summary>
+        /// <value>
+        /// The voter identifier.
+        /// </value>
+        public string VoterID { get; set; }
+
+        /// <summary>
         /// Gets or sets the name of the constituency.
         /// </summary>
         /// <value>

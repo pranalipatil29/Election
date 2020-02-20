@@ -161,7 +161,7 @@ namespace ElectionApplication.Controllers
                 // check wheather result indicates true value or not
                 if (result)
                 {
-                    return this.Ok(new { success = true, message = "Parties Delete" });
+                    return this.Ok(new { success = true, message = "Parties record Delete" });
                 }
                 else
                 {

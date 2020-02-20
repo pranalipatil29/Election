@@ -85,6 +85,7 @@ namespace ElectionCommonLayer.Model
         /// <value>
         /// The voter identifier.
         /// </value>
+        [Required]
         [Column(TypeName = "nvarchar(150)")]
         public string VoterID { get; set; }
     }

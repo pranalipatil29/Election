@@ -70,22 +70,33 @@ namespace ElectionRepositoryLayer.ServiceRL
                 // check wheather admin record is found or not
                 if (adminData != null)
                 {
-                    // get the required data
-                    var data = new PartyModel()
+                    // find record for party name entered by admin
+                    var party = this.authenticationContext.Parties.Where(s => s.PartyName == partyRequest.PartyName).FirstOrDefault();
+
+                    // check wheather party record is alrady exist or not
+                    if (party == null)
                     {
-                        PartyName = partyRequest.PartyName,
-                        RegisterBy = partyRequest.RegisterBy,
-                        CreatedDate = DateTime.Now,
-                        ModifiedDate = DateTime.Now
-                    };
+                        // get the required data
+                        var data = new PartyModel()
+                        {
+                            PartyName = partyRequest.PartyName,
+                            RegisterBy = partyRequest.RegisterBy,
+                            CreatedDate = DateTime.Now,
+                            ModifiedDate = DateTime.Now
+                        };
 
-                    // add data in party table
-                    this.authenticationContext.Parties.Add(data);
+                        // add data in party table
+                        this.authenticationContext.Parties.Add(data);
 
-                    // save the change into database
-                    await this.authenticationContext.SaveChangesAsync();
+                        // save the change into database
+                        await this.authenticationContext.SaveChangesAsync();
 
-                    return true;
+                        return true;
+                    }
+                    else
+                    {
+                        throw new Exception("Party Name Already exist");
+                    }                  
                 }
                 else
                 {
