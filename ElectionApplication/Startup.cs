@@ -43,6 +43,9 @@ namespace ElectionApplication
             services.AddTransient<IPartiesBL, PartiesBL>();
             services.AddTransient<IPartieRL, PartiesRL>();
 
+            services.AddTransient<ICandidateBL, CandidateBL>();
+            services.AddTransient<ICandidateRL, CandidateRL>();
+
             services.Configure<ApplicationSetting>(this.Configuration.GetSection("ApplicationSetting"));
 
             services.AddDbContext<AuthenticationContext>(Options =>

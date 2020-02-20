@@ -78,5 +78,14 @@ namespace ElectionCommonLayer.Model
         /// </value>
         [Column(TypeName = "DateTime")]
         public DateTime ModifiedDate { get; set; }
+
+        /// <summary>
+        /// Gets or sets the voter identifier.
+        /// </summary>
+        /// <value>
+        /// The voter identifier.
+        /// </value>
+        [Column(TypeName = "nvarchar(150)")]
+        public string VoterID { get; set; }
     }
 }

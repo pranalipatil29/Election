@@ -25,7 +25,7 @@ namespace ElectionApplication.Controllers
     using Microsoft.AspNetCore.Mvc;
 
     /// <summary>
-    /// his class contains different methods to handle API calls for parties
+    /// this class contains different methods to handle API calls for parties
     /// </summary>
     /// <seealso cref="Microsoft.AspNetCore.Mvc.ControllerBase" />
     [Route("api/[controller]")]

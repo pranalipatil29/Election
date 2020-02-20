@@ -13,11 +13,11 @@
 // ******************************************************************************
 namespace ElectionBusinessLayer.InterfaceBL
 {
-    using ElectionCommonLayer.Model;
     // Including the requried assemblies in to the program
     using ElectionCommonLayer.Model.Party;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using ElectionCommonLayer.Model;
 
     /// <summary>
     ///  creating interface for business layer
