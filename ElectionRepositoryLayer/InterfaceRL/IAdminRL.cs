@@ -24,7 +24,7 @@ namespace ElectionRepositoryLayer.InterfaceRL
     using System.Threading.Tasks;
 
     /// <summary>
-    /// creating interface for repoitory layer
+    /// creating interface for repository layer
     /// </summary>
     public interface IAdminRL
     {

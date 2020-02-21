@@ -13,11 +13,13 @@
 // ******************************************************************************
 namespace ElectionApplication.Controllers
 {
+    // Including the requried assemblies in to the program
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using ElectionBusinessLayer.InterfaceBL;
+    using ElectionCommonLayer.Model;
     using ElectionCommonLayer.Model.Candidate;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
@@ -36,9 +38,9 @@ namespace ElectionApplication.Controllers
         private readonly ICandidateBL candidateBL;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PartyController"/> class.
+        /// Initializes a new instance of the <see cref="CandidateController"/> class.
         /// </summary>
-        /// <param name="partiesBL">The parties business layer.</param>
+        /// <param name="candidateBL">The candidate business layer.</param>
         public CandidateController(ICandidateBL candidateBL)
         {
             this.candidateBL = candidateBL;
@@ -50,7 +52,7 @@ namespace ElectionApplication.Controllers
         /// <param name="candidateRequest">The candidate request.</param>
         /// <returns>returns the result indicating operation result</returns>
         [HttpPost]
-        public async Task<IActionResult> AddCandidate(CandidateRequest candidateRequest)
+        public async Task<IActionResult> AddCandidate(CandidateModel candidateModel)
         {
             try
             {
@@ -58,7 +60,7 @@ namespace ElectionApplication.Controllers
                 var emailID = HttpContext.User.Claims.First(s => s.Type == "EmailID").Value;
 
                 // get the operation result
-                var result = await this.candidateBL.AddCandidate(emailID, candidateRequest);
+                var result = await this.candidateBL.AddCandidate(emailID, candidateModel);
 
                 // check wheather result indicates true value or not
                 if (result)
@@ -146,7 +148,7 @@ namespace ElectionApplication.Controllers
         /// <returns> returns the result indicating operation result</returns>
         [HttpDelete]
         [Route("BulkCandidates")]
-        public async Task<IActionResult> DeleteParties(BulkCandidateRequest bulkRequest)
+        public async Task<IActionResult> BulkParties(BulkCandidateRequest bulkRequest)
         {
             try
             {

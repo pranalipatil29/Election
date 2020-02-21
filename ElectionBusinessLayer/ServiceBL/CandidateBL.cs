@@ -13,6 +13,7 @@
 // ******************************************************************************
 namespace ElectionBusinessLayer.ServiceBL
 {
+    // Including the requried assemblies in to the program
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -33,9 +34,9 @@ namespace ElectionBusinessLayer.ServiceBL
         private readonly ICandidateRL candidateRL;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PartiesBL"/> class.
+        /// Initializes a new instance of the <see cref="CandidateBL"/> class.
         /// </summary>
-        /// <param name="partieRL">The partie rl.</param>
+        /// <param name="candidateRL">The candidate repository layer.</param>
         public CandidateBL(ICandidateRL candidateRL)
         {
             this.candidateRL = candidateRL;
@@ -45,20 +46,20 @@ namespace ElectionBusinessLayer.ServiceBL
         /// Adds the candidate.
         /// </summary>
         /// <param name="emailID">The email identifier.</param>
-        /// <param name="cadidateRequest"></param>
+        /// <param name="candidateModel"> the candidate Model.</param>
         /// <returns>
         /// returns true or false depending upon operation result
         /// </returns>
-        /// <exception cref="Exception"></exception>
-        public async Task<bool> AddCandidate(string emailID, CandidateRequest cadidateRequest)
+        /// <exception cref="Exception">return exception</exception>
+        public async Task<bool> AddCandidate(string emailID, CandidateModel candidateModel)
         {
             try
             {
                 // check whether admin entered any null value or not
-                if (cadidateRequest != null)
+                if (candidateModel != null)
                 {
                     // return the operation result
-                    return await this.candidateRL.AddCandidate(emailID, cadidateRequest);
+                    return await this.candidateRL.AddCandidate(emailID, candidateModel);
                 }
                 else
                 {
@@ -91,6 +92,18 @@ namespace ElectionBusinessLayer.ServiceBL
             }
         }
 
+        /// <summary>
+        /// Deletes the candidate record.
+        /// </summary>
+        /// <param name="candidateID">The candidate identifier.</param>
+        /// <param name="emailID">The email identifier.</param>
+        /// <returns>
+        /// returns true or false indicating operation result
+        /// </returns>
+        /// <exception cref="Exception">
+        /// Candidate ID is Required
+        /// or
+        /// </exception>
         public async Task<bool> DeleteCandidate(int candidateID, string emailID)
         {
             try
@@ -146,25 +159,27 @@ namespace ElectionBusinessLayer.ServiceBL
         /// Updates the information.
         /// </summary>
         /// <param name="candidateRequest">The candidate request.</param>
-        /// <param name="partyID">The party identifier.</param>
+        /// <param name="candidateID">The candidate identifier.</param>
         /// <param name="adminID">The admin identifier.</param>
-        /// <returns></returns>
+        /// <returns>
+        /// return true or false indicating operation result
+        /// </returns>
         /// <exception cref="Exception">
-        /// Data Required
+        /// Candidate ID Required
         /// or
         /// </exception>
-        public async Task<CandidateModel> UpdateInfo(CandidateRequest candidateRequest, int partyID, string adminID)
+        public async Task<CandidateModel> UpdateInfo(CandidateRequest candidateRequest, int candidateID, string adminID)
         {
             try
             {
-                // check wheather admin entered any null value or not
-                if (candidateRequest != null)
+                // check wheather admin entered correct Candidate ID
+                if (candidateID > 0)
                 {
-                    return await this.candidateRL.UpdateInfo(candidateRequest, partyID, adminID);
+                    return await this.candidateRL.UpdateInfo(candidateRequest, candidateID, adminID);
                 }
                 else
                 {
-                    throw new Exception("Data Required");
+                    throw new Exception("Candidate ID Required");
                 }
             }
             catch (Exception exception)

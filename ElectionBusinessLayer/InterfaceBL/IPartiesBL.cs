@@ -1,8 +1,8 @@
 ﻿// ******************************************************************************
-//  <copyright file="IPartieBL.cs" company="Bridgelabz">
+//  <copyright file="IPartiesBL.cs" company="Bridgelabz">
 //    Copyright © 2019 Company
 //
-//     Execution:  IPartieBL.cs
+//     Execution:  IPartiesBL.cs
 //  
 //     Purpose:  Creating interface for business layer
 //     @author  Pranali Patil
@@ -28,9 +28,9 @@ namespace ElectionBusinessLayer.InterfaceBL
         /// Adds the party.
         /// </summary>
         /// <param name="emailID">The email identifier.</param>
-        /// <param name="partyRequest">The party request.</param>
+        /// <param name="partyModel">The party Model.</param>
         /// <returns>returns true or false depending upon operation result</returns>
-        Task<bool> AddParty(string emailID, PartyRequest partyRequest);
+        Task<bool> AddParty(string emailID, PartyModel partyModel);
 
         /// <summary>
         /// Displays the party records.

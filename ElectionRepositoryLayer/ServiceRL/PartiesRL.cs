@@ -29,7 +29,7 @@ namespace ElectionRepositoryLayer.ServiceRL
     ///  this class contains different methods to interact with Party table
     /// </summary>
     /// <seealso cref="ElectionRepositoryLayer.InterfaceRL.IPartieRL" />
-    public class PartiesRL : IPartieRL
+    public class PartiesRL : IPartiesRL
     {
         /// <summary>
         /// creating reference of authentication context class
@@ -55,12 +55,12 @@ namespace ElectionRepositoryLayer.ServiceRL
         /// Adds the party.
         /// </summary>
         /// <param name="emailID">The email identifier.</param>
-        /// <param name="partyRequest">The party request.</param>
+        /// <param name="partyModel">The party Model.</param>
         /// <returns>
         /// returns true or false depending upon operation result
         /// </returns>
         /// <exception cref="Exception">return exception</exception>
-        public async Task<bool> AddParty(string emailID, PartyRequest partyRequest)
+        public async Task<bool> AddParty(string emailID, PartyModel partyModel)
         {
             try
             {
@@ -71,7 +71,7 @@ namespace ElectionRepositoryLayer.ServiceRL
                 if (adminData != null)
                 {
                     // find record for party name entered by admin
-                    var party = this.authenticationContext.Parties.Where(s => s.PartyName == partyRequest.PartyName).FirstOrDefault();
+                    var party = this.authenticationContext.Parties.Where(s => s.PartyName == partyModel.PartyName).FirstOrDefault();
 
                     // check wheather party record is alrady exist or not
                     if (party == null)
@@ -79,8 +79,8 @@ namespace ElectionRepositoryLayer.ServiceRL
                         // get the required data
                         var data = new PartyModel()
                         {
-                            PartyName = partyRequest.PartyName,
-                            RegisterBy = partyRequest.RegisterBy,
+                            PartyName = partyModel.PartyName,
+                            RegisterBy = partyModel.RegisterBy,
                             CreatedDate = DateTime.Now,
                             ModifiedDate = DateTime.Now
                         };
@@ -228,7 +228,7 @@ namespace ElectionRepositoryLayer.ServiceRL
         /// <returns>
         /// return true or false indicating operation result
         /// </returns>
-        /// <exception cref="Exception"></exception>
+        /// <exception cref="Exception">return exception</exception>
         public async Task<bool> DeleteBulk(BulkRequest bulkRequest, string adminID)
         {
             try
@@ -237,7 +237,7 @@ namespace ElectionRepositoryLayer.ServiceRL
                 bool flag = false;
 
                 // iterates the loop for each record
-                foreach(var record in bulkRequest.partyID)
+                foreach(var record in bulkRequest.PartyID)
                 {
                     // get the delete operation result
                     var result = await this.DeleteParty(record, adminID);
@@ -328,7 +328,7 @@ namespace ElectionRepositoryLayer.ServiceRL
                     throw new Exception("UnAuthorized Account");
                 }
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 throw new Exception(exception.Message);
             }

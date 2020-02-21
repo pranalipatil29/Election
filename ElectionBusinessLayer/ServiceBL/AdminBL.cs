@@ -39,7 +39,7 @@ namespace ElectionBusinessLayer.ServiceBL
         /// <summary>
         /// Initializes a new instance of the <see cref="AdminBL"/> class.
         /// </summary>
-        /// <param name="adminRL">The admin rl.</param>
+        /// <param name="adminRL">The admin repository layer.</param>
         public AdminBL(IAdminRL adminRL)
         {
             this.adminRL = adminRL;
@@ -144,7 +144,7 @@ namespace ElectionBusinessLayer.ServiceBL
         /// </summary>
         /// <param name="emailID">The email identifier.</param>
         /// <param name="formFile">The form file.</param>
-        /// <returns>returns admin detail or nill value</returns>
+        /// <returns>returns admin detail or null value</returns>
         /// <exception cref="Exception">
         /// Please select correct image
         /// or

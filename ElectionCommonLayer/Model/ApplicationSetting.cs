@@ -1,5 +1,5 @@
 ﻿// ******************************************************************************
-//  <copyright file=" ApplicationSetting.cs" company="Bridgelabz">
+//  <copyright file="ApplicationSetting.cs" company="Bridgelabz">
 //    Copyright © 2019 Company
 //
 //     Execution:   ApplicationSetting.cs
@@ -32,10 +32,10 @@ namespace ElectionCommonLayer.Model
         public string JWTSecret { get; set; }
 
         /// <summary>
-        /// Gets or sets the client u rl.
+        /// Gets or sets the client URL.
         /// </summary>
         /// <value>
-        /// The client u rl.
+        /// The client URL.
         /// </value>
         public string ClientURl { get; set; }
 

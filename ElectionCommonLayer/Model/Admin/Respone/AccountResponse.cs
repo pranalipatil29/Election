@@ -19,7 +19,7 @@ namespace ElectionCommonLayer.Model.Admin.Respone
     using System.Text;
 
     /// <summary>
-    /// defines properties for account respone
+    /// defines properties for account response
     /// </summary>
     public class AccountResponse
     {

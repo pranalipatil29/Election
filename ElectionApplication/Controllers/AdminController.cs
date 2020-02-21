@@ -41,7 +41,7 @@ namespace ElectionApplication.Controllers
         /// <summary>
         /// Initializes a new instance of the AdminController class
         /// </summary>
-        /// <param name="adminBL"> instance of busines layer Admin class</param>
+        /// <param name="adminBL"> instance of business layer Admin class</param>
         public AdminController(IAdminBL adminBL)
         {
             this.adminBL = adminBL;
@@ -80,7 +80,7 @@ namespace ElectionApplication.Controllers
         /// <summary>
         /// API for Log in functionality
         /// </summary>
-        /// <param name="loginModel"> login model indicates values for login fuinctionality</param>
+        /// <param name="loginModel"> login model indicates values for login functionality</param>
         /// <returns>returns message indicating operation is successful or not</returns>
         [HttpPost]
         [Route("Login")]

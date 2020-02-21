@@ -40,6 +40,7 @@ namespace ElectionCommonLayer.Model
         /// <value>
         /// The name of the constituency.
         /// </value>
+        [Required]
         [Column(TypeName = "nvarchar(150)")]
         public string ConstituencyName { get; set; }
 
@@ -49,6 +50,7 @@ namespace ElectionCommonLayer.Model
         /// <value>
         /// The city.
         /// </value>
+        [Required]
         [Column(TypeName = "nvarchar(150)")]
         public string City { get; set; }
 
@@ -58,6 +60,7 @@ namespace ElectionCommonLayer.Model
         /// <value>
         /// The state.
         /// </value>
+        [Required]
         [Column(TypeName = "nvarchar(150)")]
         public string State { get; set; }
 

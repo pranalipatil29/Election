@@ -41,10 +41,13 @@ namespace ElectionApplication
             services.AddTransient<IAdminRL, AdminRL>();
 
             services.AddTransient<IPartiesBL, PartiesBL>();
-            services.AddTransient<IPartieRL, PartiesRL>();
+            services.AddTransient<IPartiesRL, PartiesRL>();
 
             services.AddTransient<ICandidateBL, CandidateBL>();
             services.AddTransient<ICandidateRL, CandidateRL>();
+
+            services.AddTransient<IConstituencyBL, ConstituencyBL>();
+            services.AddTransient<IConstituencyRL, ConstituencyRL>();
 
             services.Configure<ApplicationSetting>(this.Configuration.GetSection("ApplicationSetting"));
 

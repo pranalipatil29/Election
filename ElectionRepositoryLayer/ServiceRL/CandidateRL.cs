@@ -13,6 +13,7 @@
 // ******************************************************************************
 namespace ElectionRepositoryLayer.ServiceRL
 {
+    // Including the requried assemblies in to the program
     using ElectionCommonLayer.Model;
     using ElectionCommonLayer.Model.Candidate;
     using ElectionRepositoryLayer.Context;
@@ -40,16 +41,31 @@ namespace ElectionRepositoryLayer.ServiceRL
         private readonly UserManager<ApplicationModel> userManager;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PartiesRL"/> class.
+        /// Initializes a new instance of the <see cref="CandidateRL"/> class.
         /// </summary>
         /// <param name="authenticationContext">The authentication context.</param>
+        /// <param name="userManager">The user manager.</param>
         public CandidateRL(AuthenticationContext authenticationContext, UserManager<ApplicationModel> userManager)
         {
             this.userManager = userManager;
             this.authenticationContext = authenticationContext;
         }
 
-        public async Task<bool> AddCandidate(string emailID, CandidateRequest candidateRequest)
+        /// <summary>
+        /// Adds the candidate.
+        /// </summary>
+        /// <param name="emailID">The email identifier.</param>
+        /// <param name="candidateModel">The candidate Model.</param>
+        /// <returns></returns>
+        /// <exception cref="Exception">
+        /// Candidate VoterID Required
+        /// or
+        /// Candidate Record Already Exist
+        /// or
+        /// Not Authorized Account
+        /// or
+        /// </exception>
+        public async Task<bool> AddCandidate(string emailID, CandidateModel candidateModel)
         {
             try
             {
@@ -60,34 +76,41 @@ namespace ElectionRepositoryLayer.ServiceRL
                 if (adminData != null)
                 {
                     // find record for admin entered voter ID
-                    var candidate = this.authenticationContext.Candidates.Where(s => s.VoterID == candidateRequest.VoterID).FirstOrDefault();
+                    var candidate = this.authenticationContext.Candidates.Where(s => s.VoterID == candidateModel.VoterID).FirstOrDefault();
 
                     // check wheather candidate record found from candidate table or not
                     if (candidate == null)
                     {
-                        // get the required data
-                        var data = new CandidateModel()
+                        if (candidateModel.VoterID != null && candidateModel.VoterID != string.Empty)
                         {
-                            CandidateName = candidateRequest.CandidateName,
-                            PartyName = candidateRequest.PartyName,
-                            VoterID = candidateRequest.VoterID,
-                            CreatedDate = DateTime.Now,
-                            ModifiedDate = DateTime.Now
-                        };
+                            // get the required data
+                            var data = new CandidateModel()
+                            {
+                                CandidateName = candidateModel.CandidateName,
+                                PartyName = candidateModel.PartyName,
+                                VoterID = candidateModel.VoterID,
+                                ConstituencyName = candidateModel.ConstituencyName,
+                                CreatedDate = DateTime.Now,
+                                ModifiedDate = DateTime.Now
+                            };
 
-                        // add data in candidate table
-                        this.authenticationContext.Candidates.Add(data);
+                            // add data in candidate table
+                            this.authenticationContext.Candidates.Add(data);
 
-                        // save the change into database
-                        await this.authenticationContext.SaveChangesAsync();
+                            // save the change into database
+                            await this.authenticationContext.SaveChangesAsync();
 
-                        return true;
+                            return true;
+                        }
+                        else
+                        {
+                            throw new Exception("Candidate VoterID Required");
+                        }                      
                     }
                     else
                     {
                         throw new Exception("Candidate Record Already Exist");
-                    }
-                  
+                    }                  
                 }
                 else
                 {
@@ -164,6 +187,20 @@ namespace ElectionRepositoryLayer.ServiceRL
             }
         }
 
+        /// <summary>
+        /// Deletes the candidate record.
+        /// </summary>
+        /// <param name="candidateID">The candidate identifier.</param>
+        /// <param name="emailID">The email identifier.</param>
+        /// <returns>
+        /// returns true or false indicating operation result
+        /// </returns>
+        /// <exception cref="Exception">
+        /// Record Not Found
+        /// or
+        /// UnAuthorized Account
+        /// or
+        /// </exception>
         public async Task<bool> DeleteCandidate(int candidateID, string emailID)
         {
             try
@@ -212,7 +249,7 @@ namespace ElectionRepositoryLayer.ServiceRL
         /// <returns>
         /// return true or false indicating operation result
         /// </returns>
-        /// <exception cref="Exception"></exception>
+        /// <exception cref="Exception">return exception</exception>
         public async Task<bool> DeleteBulk(BulkCandidateRequest bulkRequest, string adminID)
         {
             try
@@ -247,6 +284,25 @@ namespace ElectionRepositoryLayer.ServiceRL
             }
         }
 
+        /// <summary>
+        /// Updates the information.
+        /// </summary>
+        /// <param name="candidateRequest">The candidate request.</param>
+        /// <param name="candidateID">The candidate identifier.</param>
+        /// <param name="adminID">The admin identifier.</param>
+        /// <returns>
+        /// return true or false indicating operation result
+        /// </returns>
+        /// <exception cref="Exception">
+        /// Constituency Name Not Exist
+        /// or
+        /// Party Not Registred
+        /// or
+        /// Party Record Not Found
+        /// or
+        /// UnAuthorized Account
+        /// or
+        /// </exception>
         public async Task<CandidateModel> UpdateInfo(CandidateRequest candidateRequest, int candidateID, string adminID)
         {
             try
@@ -267,15 +323,24 @@ namespace ElectionRepositoryLayer.ServiceRL
                         candidateInfo.ModifiedDate = DateTime.Now;
 
                         // check wheather candidate name  property is null or empty value
-                        if (candidateRequest.PartyName != null && candidateRequest.PartyName != string.Empty)
+                        if (candidateRequest.CandidateName != null && candidateRequest.CandidateName != string.Empty)
                         {
-                            candidateInfo.PartyName = candidateRequest.CandidateName;
+                            candidateInfo.CandidateName = candidateRequest.CandidateName;
                         }
 
                         // check wheather Constituency Name  By property contains any null or empty value
                         if (candidateRequest.ConstituencyName != null && candidateRequest.ConstituencyName != string.Empty)
                         {
-                            candidateInfo.ConstituencyName = candidateRequest.ConstituencyName;
+                            var constituency = this.authenticationContext.Constituencies.Where(s => s.ConstituencyName == candidateRequest.ConstituencyName).FirstOrDefault();
+
+                            if (constituency != null)
+                            {
+                                candidateInfo.ConstituencyName = candidateRequest.ConstituencyName;
+                            }
+                            else
+                            {
+                                throw new Exception("Constituency Name Not Exist");
+                            }
                         }
 
                         // check wheather Party Name  By property contains any null or empty value

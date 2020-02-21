@@ -124,7 +124,7 @@ namespace ElectionRepositoryLayer.ServiceRL
         /// </summary>
         /// <param name="loginModel">The login model.</param>
         /// <returns> return the admin details or null value</returns>
-        /// <exception cref="Exception"></exception>
+        /// <exception cref="Exception">return exception</exception>
         public async Task<AccountResponse> Login(LogInModel loginModel)
         {
             try
@@ -205,7 +205,7 @@ namespace ElectionRepositoryLayer.ServiceRL
         /// <param name="emailID">The email identifier.</param>
         /// <param name="formFile">The form file.</param>
         /// <returns> returns the admin details or null value</returns>
-        /// <exception cref="Exception"></exception>
+        /// <exception cref="Exception">return exception</exception>
         public async Task<AccountResponse> ChangeProfilePicture(string emailID, IFormFile formFile)
         {
             try

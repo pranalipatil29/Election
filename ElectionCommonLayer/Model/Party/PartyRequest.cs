@@ -30,7 +30,6 @@ namespace ElectionCommonLayer.Model.Party
         /// <value>
         /// The name of the party.
         /// </value>
-        [Required]
        public string PartyName { get; set; }
 
         /// <summary>
@@ -39,7 +38,6 @@ namespace ElectionCommonLayer.Model.Party
         /// <value>
         /// The register by.
         /// </value>
-        [Required]
        public string RegisterBy { get; set; }
     }
 }

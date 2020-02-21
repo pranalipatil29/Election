@@ -1,8 +1,8 @@
 ﻿// ******************************************************************************
-//  <copyright file="ICadidateBL.cs" company="Bridgelabz">
+//  <copyright file="ICandidateBL.cs" company="Bridgelabz">
 //    Copyright © 2019 Company
 //
-//     Execution:  ICadidateBL.cs
+//     Execution:  ICandidateBL.cs
 //  
 //     Purpose:  Creating interface for business layer
 //     @author  Pranali Patil
@@ -13,8 +13,8 @@
 // ******************************************************************************
 namespace ElectionBusinessLayer.InterfaceBL
 {
-    using System.Collections.Generic;
     // Including the requried assemblies in to the program
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using ElectionCommonLayer.Model;
     using ElectionCommonLayer.Model.Candidate;
@@ -28,9 +28,9 @@ namespace ElectionBusinessLayer.InterfaceBL
         /// Adds the candidate.
         /// </summary>
         /// <param name="emailID">The email identifier.</param>
-        /// <param name="partyRequest">The party request.</param>
+        /// <param name="candidateModel">The candidate Model.</param>
         /// <returns>returns true or false depending upon operation result</returns>
-        Task<bool> AddCandidate(string emailID, CandidateRequest cadidateRequest);
+        Task<bool> AddCandidate(string emailID, CandidateModel candidateModel);
 
         /// <summary>
         /// Displays the candidate records.
@@ -44,7 +44,7 @@ namespace ElectionBusinessLayer.InterfaceBL
         /// </summary>
         /// <param name="candidateID">The candidate identifier.</param>
         /// <param name="emailID">The email identifier.</param>
-        /// <returns></returns>
+        /// <returns>returns true or false indicating operation result</returns>
         Task<bool> DeleteCandidate(int candidateID, string emailID);
 
         /// <summary>

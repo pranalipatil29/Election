@@ -1,8 +1,8 @@
 ﻿// ******************************************************************************
-//  <copyright file="PartyRequest.cs" company="Bridgelabz">
+//  <copyright file="PartyResponse.cs" company="Bridgelabz">
 //    Copyright © 2019 Company
 //
-//     Execution:  PartyRequest.cs
+//     Execution:  PartyResponse.cs
 //  
 //     Purpose:  defining properties required to give party information
 //     @author  Pranali Patil

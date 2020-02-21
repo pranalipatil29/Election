@@ -31,34 +31,34 @@ namespace ElectionBusinessLayer.ServiceBL
         /// <summary>
         /// creating reference of repository layer interface
         /// </summary>
-        private readonly IPartieRL partiesRL;
+        private readonly IPartiesRL partiesRL;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PartiesBL"/> class.
         /// </summary>
-        /// <param name="partieRL">The partie rl.</param>
-        public PartiesBL(IPartieRL partieRL)
+        /// <param name="partiesRL">The parties repository layer.</param>
+        public PartiesBL(IPartiesRL partiesRL)
         {
-            this.partiesRL = partieRL;
+            this.partiesRL = partiesRL;
         }
 
         /// <summary>
         /// Adds the party.
         /// </summary>
-        /// <param name="partyRequest">The party request.</param>
+        /// <param name="partyModel">The party Model.</param>
         /// <returns>
         /// returns true or false depending upon operation result
         /// </returns>
         /// <exception cref="Exception">return exception</exception>
-        public async Task<bool> AddParty(string emailID, PartyRequest partyRequest)
+        public async Task<bool> AddParty(string emailID, PartyModel partyModel)
         {
             try
             {
                 // check whether admin entered any null value or not
-                if (partyRequest != null)
+                if (partyModel != null)
                 {
                     // return the operation result
-                    return await this.partiesRL.AddParty(emailID, partyRequest);
+                    return await this.partiesRL.AddParty(emailID, partyModel);
                 }
                 else
                 {
@@ -171,14 +171,14 @@ namespace ElectionBusinessLayer.ServiceBL
         {
             try
             {
-                // check wheather admin entered any null value or not
-                if (partyRequest != null)
+                // check wheather admin entered any correct Party ID
+                if (partyID > 0)
                 {
                     return await this.partiesRL.UpdateInfo(partyRequest,partyID, adminID);
                 }
                 else
                 {
-                    throw new Exception("Data Required");
+                    throw new Exception("Party ID Required");
                 }
             }
             catch(Exception exception)

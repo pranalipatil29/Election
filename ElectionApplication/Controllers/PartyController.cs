@@ -19,6 +19,7 @@ namespace ElectionApplication.Controllers
     using System.Linq;
     using System.Threading.Tasks;
     using ElectionBusinessLayer.InterfaceBL;
+    using ElectionCommonLayer.Model;
     using ElectionCommonLayer.Model.Party;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
@@ -49,10 +50,10 @@ namespace ElectionApplication.Controllers
         /// <summary>
         /// Adds the party.
         /// </summary>
-        /// <param name="partyRequest">The party request.</param>
+        /// <param name="partyModel">The party Model.</param>
         /// <returns> returns the result indicating operation result</returns>
         [HttpPost]
-        public async Task<IActionResult> AddParty(PartyRequest partyRequest)
+        public async Task<IActionResult> AddParty(PartyModel partyModel)
         {
             try
             {
@@ -60,7 +61,7 @@ namespace ElectionApplication.Controllers
                 var emailID = HttpContext.User.Claims.First(s => s.Type == "EmailID").Value;
 
                 // get the operation result
-                var result = await this.partiesBL.AddParty(emailID, partyRequest);
+                var result = await this.partiesBL.AddParty(emailID, partyModel);
 
                 // check wheather result indicates true value or not
                 if (result)

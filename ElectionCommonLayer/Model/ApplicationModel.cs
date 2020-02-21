@@ -14,9 +14,9 @@
 namespace ElectionCommonLayer.Model
 {
     // Including the requried assemblies in to the program
-    using Microsoft.AspNetCore.Identity;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
+    using Microsoft.AspNetCore.Identity;
 
     /// <summary>
     /// this class is used to define Application model

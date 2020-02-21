@@ -40,6 +40,7 @@ namespace ElectionCommonLayer.Model
         /// <value>
         /// The name of the candidate.
         /// </value>
+        [Required]
         [Column(TypeName = "nvarchar(150)")]
         public string CandidateName { get; set; }
 
@@ -49,6 +50,7 @@ namespace ElectionCommonLayer.Model
         /// <value>
         /// The name of the constituency.
         /// </value>
+        [Required]
         [ForeignKey("ConstituencyModel")]
         public string ConstituencyName { get; set; }
 
@@ -58,6 +60,7 @@ namespace ElectionCommonLayer.Model
         /// <value>
         /// The name of the party.
         /// </value>
+        [Required]
         [ForeignKey("PartyName")]
         public string PartyName { get; set; }
 

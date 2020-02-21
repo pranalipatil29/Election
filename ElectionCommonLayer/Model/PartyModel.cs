@@ -40,6 +40,7 @@ namespace ElectionCommonLayer.Model
         /// <value>
         /// The name of the party.
         /// </value>
+        [Required]
         [Column(TypeName = "nvarchar(150)")]
         public string PartyName { get; set; }
 
@@ -49,6 +50,7 @@ namespace ElectionCommonLayer.Model
         /// <value>
         /// The register by.
         /// </value>
+        [Required]
         [Column(TypeName = "nvarchar(150)")]
         public string RegisterBy { get; set; }
 

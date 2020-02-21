@@ -6,6 +6,6 @@ namespace ElectionCommonLayer.Model.Party
 {
    public class BulkRequest
     {
-        public List<int> partyID { get; set; }
+        public List<int> PartyID { get; set; }
     }
 }
