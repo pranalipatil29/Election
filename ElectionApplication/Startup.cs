@@ -43,6 +43,9 @@ namespace ElectionApplication
             services.AddTransient<IPartiesBL, PartiesBL>();
             services.AddTransient<IPartiesRL, PartiesRL>();
 
+            services.AddTransient<IUserBL, UserBL>();
+            services.AddTransient<IUserRL, UserRL>();
+
             services.AddTransient<ICandidateBL, CandidateBL>();
             services.AddTransient<ICandidateRL, CandidateRL>();
 

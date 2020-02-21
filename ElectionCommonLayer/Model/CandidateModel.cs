@@ -45,6 +45,16 @@ namespace ElectionCommonLayer.Model
         public string CandidateName { get; set; }
 
         /// <summary>
+        /// Gets or sets the mobile number.
+        /// </summary>
+        /// <value>
+        /// The mobile number.
+        /// </value>
+        [Required]
+        [ForeignKey("ApplicationModel")]
+        public string MobileNumber { get; set; }
+
+        /// <summary>
         /// Gets or sets the name of the constituency.
         /// </summary>
         /// <value>
@@ -55,13 +65,33 @@ namespace ElectionCommonLayer.Model
         public string ConstituencyName { get; set; }
 
         /// <summary>
+        /// Gets or sets the constituency identifier.
+        /// </summary>
+        /// <value>
+        /// The constituency identifier.
+        /// </value>
+        [Required]
+        [ForeignKey("ConstituencyModel")]
+        public int ConstituencyID { get; set; }
+
+        /// <summary>
         /// Gets or sets the name of the party.
         /// </summary>
         /// <value>
         /// The name of the party.
         /// </value>
         [Required]
-        [ForeignKey("PartyName")]
+        [ForeignKey("PartyModel")]
+        public int PartyID { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name of the party.
+        /// </summary>
+        /// <value>
+        /// The name of the party.
+        /// </value>
+        [Required]
+        [ForeignKey("PartyModel")]
         public string PartyName { get; set; }
 
         /// <summary>
@@ -80,16 +110,6 @@ namespace ElectionCommonLayer.Model
         /// The modified date.
         /// </value>
         [Column(TypeName = "DateTime")]
-        public DateTime ModifiedDate { get; set; }
-
-        /// <summary>
-        /// Gets or sets the voter identifier.
-        /// </summary>
-        /// <value>
-        /// The voter identifier.
-        /// </value>
-        [Required]
-        [Column(TypeName = "nvarchar(150)")]
-        public string VoterID { get; set; }
+        public DateTime ModifiedDate { get; set; }       
     }
 }

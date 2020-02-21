@@ -22,12 +22,12 @@ namespace ElectionCommonLayer.Model.Candidate
     public class CandidateRequest
     {
         /// <summary>
-        /// Gets or sets the name of the candidate.
+        /// Gets or sets the mobile number.
         /// </summary>
         /// <value>
-        /// The name of the candidate.
+        /// The mobile number.
         /// </value>
-        public string CandidateName { get; set; }
+        public string MobileNumber { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the constituency.
@@ -35,7 +35,7 @@ namespace ElectionCommonLayer.Model.Candidate
         /// <value>
         /// The name of the constituency.
         /// </value>
-        public string ConstituencyName { get; set; }
+        public int ConstituencyID { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the party.
@@ -43,14 +43,7 @@ namespace ElectionCommonLayer.Model.Candidate
         /// <value>
         /// The name of the party.
         /// </value>
-        public string PartyName { get; set; }
-
-        /// <summary>
-        /// Gets or sets the voter identifier.
-        /// </summary>
-        /// <value>
-        /// The voter identifier.
-        /// </value>
-        public string VoterID { get; set; }
+        public int PartyID { get; set; }     
+                
     }
 }

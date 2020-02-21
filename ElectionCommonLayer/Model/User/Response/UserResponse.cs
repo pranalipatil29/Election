@@ -1,28 +1,22 @@
 ﻿// ******************************************************************************
-//  <copyright file="RegistrationModel.cs" company="Bridgelabz">
+//  <copyright file="UserResponse.cs" company="Bridgelabz">
 //    Copyright © 2019 Company
 //
-//     Execution:  RegistrationModel.cs
+//     Execution:  UserResponse.cs
 //  
-//     Purpose:  Defining properties for registration functionality
+//     Purpose:  Defining properties for handling account response
 //     @author  Pranali Patil
 //     @version 1.0
-//     @since   20-02-2020
+//     @since   21-02-2020
 //  </copyright>
 //  <creator name="Pranali Patil"/>
-// ******************************************************************************
-namespace ElectionCommonLayer.Model.Admin.Request
+// *****************************************************************************
+namespace ElectionCommonLayer.Model.User.Response
 {
-    // Including the requried assemblies in to the program
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using System.Text;
-
     /// <summary>
-    /// defines properties for registration functionality
+    /// defines properties for account response
     /// </summary>
-    public class RegistrationModel
+    public class UserResponse
     {
         /// <summary>
         /// Gets or sets the first name.
@@ -30,7 +24,6 @@ namespace ElectionCommonLayer.Model.Admin.Request
         /// <value>
         /// The first name.
         /// </value>
-        [Required]
         public string FirstName { get; set; }
 
         /// <summary>
@@ -39,7 +32,6 @@ namespace ElectionCommonLayer.Model.Admin.Request
         /// <value>
         /// The last name.
         /// </value>
-        [Required]
         public string LastName { get; set; }
 
         /// <summary>
@@ -48,7 +40,6 @@ namespace ElectionCommonLayer.Model.Admin.Request
         /// <value>
         /// The name of the user.
         /// </value>
-        [Required]
         public string UserName { get; set; }
 
         /// <summary>
@@ -57,26 +48,7 @@ namespace ElectionCommonLayer.Model.Admin.Request
         /// <value>
         /// The email identifier.
         /// </value>
-        [Required]
         public string EmailID { get; set; }
-
-        /// <summary>
-        /// Gets or sets the password.
-        /// </summary>
-        /// <value>
-        /// The password.
-        /// </value>
-        [Required]
-        public string Password { get; set; }
-
-        /// <summary>
-        /// Gets or sets the voter identifier.
-        /// </summary>
-        /// <value>
-        /// The voter identifier.
-        /// </value>
-        [Required]
-        public string MobileNumber { get; set; }
 
         /// <summary>
         /// Gets or sets the profile picture.

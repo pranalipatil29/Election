@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ElectionRepositoryLayer.Migrations
 {
-    public partial class election : Migration
+    public partial class changes : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -45,11 +45,64 @@ namespace ElectionRepositoryLayer.Migrations
                     FirstName = table.Column<string>(type: "nvarchar(150)", nullable: true),
                     LastName = table.Column<string>(type: "nvarchar(150)", nullable: true),
                     ProfilePicture = table.Column<string>(type: "nvarchar(150)", nullable: true),
-                    UserType = table.Column<string>(type: "nvarchar(150)", nullable: true)
+                    UserType = table.Column<string>(type: "nvarchar(150)", nullable: true),
+                    MobileNumber = table.Column<string>(type: "nvarchar(150)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Candidates",
+                columns: table => new
+                {
+                    CandidateID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    CandidateName = table.Column<string>(type: "nvarchar(150)", nullable: false),
+                    ConstituencyName = table.Column<string>(nullable: false),
+                    ConstituencyID = table.Column<string>(nullable: false),
+                    PartyID = table.Column<int>(nullable: false),
+                    PartyName = table.Column<int>(nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "DateTime", nullable: false),
+                    ModifiedDate = table.Column<DateTime>(type: "DateTime", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Candidates", x => x.CandidateID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Constituencies",
+                columns: table => new
+                {
+                    ConstituencyID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    ConstituencyName = table.Column<string>(type: "nvarchar(150)", nullable: false),
+                    City = table.Column<string>(type: "nvarchar(150)", nullable: false),
+                    State = table.Column<string>(type: "nvarchar(150)", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "DateTime", nullable: false),
+                    ModifiedDate = table.Column<DateTime>(type: "DateTime", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Constituencies", x => x.ConstituencyID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Parties",
+                columns: table => new
+                {
+                    PartyID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    PartyName = table.Column<string>(type: "nvarchar(150)", nullable: false),
+                    RegisterBy = table.Column<string>(type: "nvarchar(150)", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "DateTime", nullable: false),
+                    ModifiedDate = table.Column<DateTime>(type: "DateTime", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Parties", x => x.PartyID);
                 });
 
             migrationBuilder.CreateTable(
@@ -214,6 +267,15 @@ namespace ElectionRepositoryLayer.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "Candidates");
+
+            migrationBuilder.DropTable(
+                name: "Constituencies");
+
+            migrationBuilder.DropTable(
+                name: "Parties");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

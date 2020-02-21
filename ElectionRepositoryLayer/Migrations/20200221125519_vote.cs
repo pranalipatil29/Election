@@ -2,21 +2,20 @@
 
 namespace ElectionRepositoryLayer.Migrations
 {
-    public partial class electionDB1 : Migration
+    public partial class vote : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "VoterID",
+            migrationBuilder.AddColumn<bool>(
+                name: "Vote",
                 table: "AspNetUsers",
-                type: "nvarchar(150)",
                 nullable: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "VoterID",
+                name: "Vote",
                 table: "AspNetUsers");
         }
     }

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ElectionRepositoryLayer.Migrations
 {
     [DbContext(typeof(AuthenticationContext))]
-    [Migration("20200219095823_election")]
-    partial class election
+    [Migration("20200221101039_candidate")]
+    partial class candidate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,94 @@ namespace ElectionRepositoryLayer.Migrations
                 .HasAnnotation("ProductVersion", "2.1.11-servicing-32099")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("ElectionCommonLayer.Model.CandidateModel", b =>
+                {
+                    b.Property<int>("CandidateID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CandidateName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<int>("ConstituencyID");
+
+                    b.Property<string>("ConstituencyName")
+                        .IsRequired();
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("DateTime");
+
+                    b.Property<string>("MobileNumber")
+                        .IsRequired();
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("DateTime");
+
+                    b.Property<int>("PartyID");
+
+                    b.Property<string>("PartyName")
+                        .IsRequired();
+
+                    b.HasKey("CandidateID");
+
+                    b.ToTable("Candidates");
+                });
+
+            modelBuilder.Entity("ElectionCommonLayer.Model.ConstituencyModel", b =>
+                {
+                    b.Property<int>("ConstituencyID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("ConstituencyName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("DateTime");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("DateTime");
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(150)");
+
+                    b.HasKey("ConstituencyID");
+
+                    b.ToTable("Constituencies");
+                });
+
+            modelBuilder.Entity("ElectionCommonLayer.Model.PartyModel", b =>
+                {
+                    b.Property<int>("PartyID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("DateTime");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("DateTime");
+
+                    b.Property<string>("PartyName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("RegisterBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(150)");
+
+                    b.HasKey("PartyID");
+
+                    b.ToTable("Parties");
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -199,6 +287,10 @@ namespace ElectionRepositoryLayer.Migrations
                         .HasColumnType("nvarchar(150)");
 
                     b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("MobileNumber")
+                        .IsRequired()
                         .HasColumnType("nvarchar(150)");
 
                     b.Property<string>("ProfilePicture")

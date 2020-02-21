@@ -28,9 +28,9 @@ namespace ElectionRepositoryLayer.InterfaceRL
         /// Adds the party.
         /// </summary>
         /// <param name="emailID">The email identifier.</param>
-        /// <param name="candidateModel">The candidate Model.</param>
+        /// <param name="candidateRequest">The candidate Request.</param>
         /// <returns>returns true or false depending upon operation result</returns>
-        Task<bool> AddCandidate(string emailID, CandidateModel candidateModel);
+        Task<bool> AddCandidate(string emailID, CandidateRequest candidateRequest);
 
         /// <summary>
         /// Displays the candidate records.
@@ -62,6 +62,6 @@ namespace ElectionRepositoryLayer.InterfaceRL
         /// <param name="candidateID">The candidate identifier.</param>
         /// <param name="adminID">The admin identifier.</param>
         /// <returns>return true or false indicating operation result</returns>
-        Task<CandidateModel> UpdateInfo(CandidateRequest candidateRequest, int candidateID, string adminID);
+        Task<CandidateModel> UpdateInfo(UpdateRequest updateRequest, int candidateID, string adminID);
     }
 }

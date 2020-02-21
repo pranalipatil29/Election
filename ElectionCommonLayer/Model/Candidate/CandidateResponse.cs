@@ -42,7 +42,7 @@ namespace ElectionCommonLayer.Model.Candidate
         /// <value>
         /// The voter identifier.
         /// </value>
-        public string VoterID { get; set; }
+        public string MobileNumber { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the constituency.
@@ -51,6 +51,22 @@ namespace ElectionCommonLayer.Model.Candidate
         /// The name of the constituency.
         /// </value>
         public string ConstituencyName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the constituency identifier.
+        /// </summary>
+        /// <value>
+        /// The constituency identifier.
+        /// </value>
+        public int ConstituencyID { get; set; }
+
+        /// <summary>
+        /// Gets or sets the party identifier.
+        /// </summary>
+        /// <value>
+        /// The party identifier.
+        /// </value>
+        public int PartyID { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the party.

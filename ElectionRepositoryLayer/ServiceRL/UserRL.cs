@@ -1,43 +1,24 @@
-﻿// ******************************************************************************
-//  <copyright file="AdminRL.cs" company="Bridgelabz">
-//    Copyright © 2019 Company
-//
-//     Execution:  AdminRL.cs
-//  
-//     Purpose: Implementing Login, registration, Change Profile functionality for admin
-//     @author  Pranali Patil
-//     @version 1.0
-//     @since   20-02-2020
-//  </copyright>
-//  <creator name="Pranali Patil"/>
-// ******************************************************************************
+﻿using ElectionCommonLayer.Model;
+using ElectionCommonLayer.Model.User.Request;
+using ElectionCommonLayer.Model.User.Response;
+using ElectionRepositoryLayer.Context;
+using ElectionRepositoryLayer.ImageUpload;
+using ElectionRepositoryLayer.InterfaceRL;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Security.Claims;
+using System.Text;
+using System.Threading.Tasks;
+
 namespace ElectionRepositoryLayer.ServiceRL
 {
-    // Including the requried assemblies in to the program
-    using ElectionCommonLayer.Model;
-    using ElectionCommonLayer.Model.Admin.Request;
-    using ElectionCommonLayer.Model.Admin.Respone;
-    using ElectionCommonLayer.Model.Party;
-    using ElectionRepositoryLayer.Context;
-    using ElectionRepositoryLayer.ImageUpload;
-    using ElectionRepositoryLayer.InterfaceRL;
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Identity;
-    using Microsoft.Extensions.Options;
-    using Microsoft.IdentityModel.Tokens;
-    using System;
-    using System.Collections.Generic;
-    using System.IdentityModel.Tokens.Jwt;
-    using System.Linq;
-    using System.Security.Claims;
-    using System.Text;
-    using System.Threading.Tasks;
-
-    /// <summary>
-    /// this class contains different methods to interact with database
-    /// </summary>
-    /// <seealso cref="ElectionRepositoryLayer.InterfaceRL.IAdminRL" />
-    public class AdminRL : IAdminRL
+   public class UserRL : IUserRL
     {
         /// <summary>
         /// The user manager reference
@@ -65,7 +46,7 @@ namespace ElectionRepositoryLayer.ServiceRL
         /// <param name="userManager">The user manager.</param>
         /// <param name="signInManager">The sign in manager.</param>
         /// <param name="appSettings">The application settings.</param>
-        public AdminRL(UserManager<ApplicationModel> userManager, SignInManager<ApplicationModel> signInManager, IOptions<ApplicationSetting> appSettings, AuthenticationContext context)
+        public UserRL(UserManager<ApplicationModel> userManager, SignInManager<ApplicationModel> signInManager, IOptions<ApplicationSetting> appSettings, AuthenticationContext context)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
@@ -80,7 +61,7 @@ namespace ElectionRepositoryLayer.ServiceRL
         /// <returns>
         /// returns true or false indicating operation result
         /// </returns>
-        public async Task<bool> Register(RegistrationModel registrationModel)
+        public async Task<bool> Register(UserRegitration registrationModel)
         {
             // check wheather admin is already preent in database or not
             var user = await this.userManager.FindByEmailAsync(registrationModel.EmailID);
@@ -88,29 +69,39 @@ namespace ElectionRepositoryLayer.ServiceRL
             // check wheather admin record i found or not
             if (user == null)
             {
-                // get the admin data
-                var data = new ApplicationModel()
-                {
-                    FirstName = registrationModel.FirstName,
-                    LastName = registrationModel.LastName,
-                    Email = registrationModel.EmailID,
-                    UserName = registrationModel.UserName,
-                    MobileNumber = registrationModel.MobileNumber,
-                    ProfilePicture = registrationModel.ProfilePicture,
-                    UserType = "Admin"
-                };
+                var userData = this.authenticationContext.AccountTable.Where(s => s.MobileNumber == registrationModel.MobileNumber).FirstOrDefault();
 
-                // create record in admin table
-                var result = await this.userManager.CreateAsync(data, registrationModel.Password);
-
-                // check wheather operation isuccesfully completed or not
-                if (result.Succeeded)
+                if (userData == null)
                 {
-                    return true;
+                    // get the admin data
+                    var data = new ApplicationModel()
+                    {
+                        FirstName = registrationModel.FirstName,
+                        LastName = registrationModel.LastName,
+                        Email = registrationModel.EmailID,
+                        UserName = registrationModel.UserName,
+                        MobileNumber = registrationModel.MobileNumber,
+                        ProfilePicture = registrationModel.ProfilePicture,
+                        Vote = 0,
+                        UserType = "User"
+                    };
+
+                    // create record in admin table
+                    var result = await this.userManager.CreateAsync(data, registrationModel.Password);
+
+                    // check wheather operation isuccesfully completed or not
+                    if (result.Succeeded)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
                 else
                 {
-                    return false;
+                    throw new Exception("Record already exist");
                 }
             }
             else
@@ -125,7 +116,7 @@ namespace ElectionRepositoryLayer.ServiceRL
         /// <param name="loginModel">The login model.</param>
         /// <returns> return the admin details or null value</returns>
         /// <exception cref="Exception">return exception</exception>
-        public async Task<AccountResponse> Login(LogInModel loginModel)
+        public async Task<UserResponse> Login(UserLogin loginModel)
         {
             try
             {
@@ -136,15 +127,15 @@ namespace ElectionRepositoryLayer.ServiceRL
                 var userPassword = await this.userManager.CheckPasswordAsync(user, loginModel.Password);
 
                 // check whether admin data is null or not or admin password is correct 
-                if (user != null && userPassword && user.UserType == "Admin")
+                if (user != null && userPassword && user.UserType == "User")
                 {
                     // get the required admin data 
-                    var data = new AccountResponse()
+                    var data = new UserResponse()
                     {
                         FirstName = user.FirstName,
                         LastName = user.LastName,
                         EmailID = user.Email,
-                        UserName = user.UserName,
+                        UserName = user.UserName,                        
                         ProfilePicture = user.ProfilePicture,
                     };
 
@@ -169,7 +160,7 @@ namespace ElectionRepositoryLayer.ServiceRL
         /// <returns>
         /// returns token or null value
         /// </returns>
-        public async Task<string> GenerateToken(AccountResponse accountResponse)
+        public async Task<string> GenerateToken(UserResponse accountResponse)
         {
             var user = await this.userManager.FindByEmailAsync(accountResponse.EmailID);
 
@@ -206,7 +197,7 @@ namespace ElectionRepositoryLayer.ServiceRL
         /// <param name="formFile">The form file.</param>
         /// <returns> returns the admin details or null value</returns>
         /// <exception cref="Exception">return exception</exception>
-        public async Task<AccountResponse> ChangeProfilePicture(string emailID, IFormFile formFile)
+        public async Task<UserResponse> ChangeProfilePicture(string emailID, IFormFile formFile)
         {
             try
             {
@@ -227,7 +218,7 @@ namespace ElectionRepositoryLayer.ServiceRL
                     var result = await this.userManager.UpdateAsync(user);
 
                     // get the required user data 
-                    var data = new AccountResponse()
+                    var data = new UserResponse()
                     {
                         FirstName = user.FirstName,
                         LastName = user.LastName,
@@ -250,5 +241,71 @@ namespace ElectionRepositoryLayer.ServiceRL
             }
         }
 
+        /// <summary>
+        /// Gives the vote.
+        /// </summary>
+        /// <param name="emailID">The email identifier.</param>
+        /// <param name="voteRequest">The vote request.</param>
+        /// <returns>
+        /// returns true or false indicating operation result
+        /// </returns>
+        /// <exception cref="Exception">
+        /// Your vote is already submitted
+        /// or
+        /// Cadidate Not found
+        /// or
+        /// Please select Valid Constituency Details
+        /// or
+        /// User Not found
+        /// or
+        /// </exception>
+        public async Task<bool> GiveVote(string emailID, VoteRequest voteRequest)
+        {
+            try
+            {
+                var user = this.authenticationContext.AccountTable.Where(s => s.Email == emailID && s.UserType == "User").FirstOrDefault();
+
+                if (user != null)
+                {
+                    if (user.Vote == 1)
+                    {
+                        throw new Exception("Your vote is already submitted");
+                    }
+                    else
+                    {
+                        var constituency = this.authenticationContext.Constituencies.Where(s => s.ConstituencyID == voteRequest.ConstituencyID && s.State == voteRequest.State).FirstOrDefault();
+
+                        var candidate = this.authenticationContext.Candidates.Where(s => s.CandidateID == voteRequest.CandidateID && s.ConstituencyID == voteRequest.ConstituencyID).FirstOrDefault();
+
+                        if (constituency != null)
+                        {
+                            if (candidate != null)
+                            {
+                                user.Vote = 1;
+                                this.authenticationContext.AccountTable.Update(user);
+                                await this.authenticationContext.SaveChangesAsync();
+                                return true;
+                            }
+                            else
+                            {
+                                throw new Exception("Cadidate Not found");
+                            }
+                        }
+                        else
+                        {
+                            throw new Exception("Please select Valid Constituency Details");
+                        }
+                    }
+                }
+                else
+                {
+                    throw new Exception("User Not found");
+                }                                 
+            }
+            catch(Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
     }
 }

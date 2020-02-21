@@ -52,7 +52,7 @@ namespace ElectionApplication.Controllers
         /// <param name="candidateRequest">The candidate request.</param>
         /// <returns>returns the result indicating operation result</returns>
         [HttpPost]
-        public async Task<IActionResult> AddCandidate(CandidateModel candidateModel)
+        public async Task<IActionResult> AddCandidate(CandidateRequest candidateRequest)
         {
             try
             {
@@ -60,7 +60,7 @@ namespace ElectionApplication.Controllers
                 var emailID = HttpContext.User.Claims.First(s => s.Type == "EmailID").Value;
 
                 // get the operation result
-                var result = await this.candidateBL.AddCandidate(emailID, candidateModel);
+                var result = await this.candidateBL.AddCandidate(emailID, candidateRequest);
 
                 // check wheather result indicates true value or not
                 if (result)
@@ -181,7 +181,7 @@ namespace ElectionApplication.Controllers
         /// <param name="candidateID">The candidate identifier.</param>
         /// <returns>returns the result indicating operation result</returns>
         [HttpPut]
-        public async Task<IActionResult> Update(CandidateRequest candidateRequest, int candidateID)
+        public async Task<IActionResult> Update(UpdateRequest updateRequest, int candidateID)
         {
             try
             {
@@ -189,7 +189,7 @@ namespace ElectionApplication.Controllers
                 var adminID = HttpContext.User.Claims.First(s => s.Type == "EmailID").Value;
 
                 // get the operation result
-                var data = await this.candidateBL.UpdateInfo(candidateRequest, candidateID, adminID);
+                var data = await this.candidateBL.UpdateInfo(updateRequest, candidateID, adminID);
 
                 // check wheather result contains any null value or not
                 if (data != null)

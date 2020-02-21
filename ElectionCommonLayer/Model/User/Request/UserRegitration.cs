@@ -1,28 +1,26 @@
 ﻿// ******************************************************************************
-//  <copyright file="ApplicationModel.cs" company="Bridgelabz">
+//  <copyright file="UserRegitration.cs" company="Bridgelabz">
 //    Copyright © 2019 Company
 //
-//     Execution:  ApplicationModel.cs
+//     Execution:  UserRegitration.cs
 //  
-//     Purpose:  Creating columns for admin table
+//     Purpose:  Defining properties for registration functionality
 //     @author  Pranali Patil
 //     @version 1.0
-//     @since   20-02-2020
+//     @since   21-02-2020
 //  </copyright>
 //  <creator name="Pranali Patil"/>
 // ******************************************************************************
-namespace ElectionCommonLayer.Model
+using System.ComponentModel.DataAnnotations;
+
+namespace ElectionCommonLayer.Model.User.Request
 {
     // Including the requried assemblies in to the program
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
-    using Microsoft.AspNetCore.Identity;
 
     /// <summary>
-    /// this class is used to define Application model
+    /// defines properties for registration functionality
     /// </summary>
-    /// <seealso cref="Microsoft.AspNetCore.Identity.IdentityUser" />
-    public class ApplicationModel : IdentityUser
+   public class UserRegitration
     {
         /// <summary>
         /// Gets or sets the first name.
@@ -30,7 +28,7 @@ namespace ElectionCommonLayer.Model
         /// <value>
         /// The first name.
         /// </value>
-        [Column(TypeName = "nvarchar(150)")]
+        [Required]
         public string FirstName { get; set; }
 
         /// <summary>
@@ -39,8 +37,44 @@ namespace ElectionCommonLayer.Model
         /// <value>
         /// The last name.
         /// </value>
-        [Column(TypeName = "nvarchar(150)")]
+        [Required]
         public string LastName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name of the user.
+        /// </summary>
+        /// <value>
+        /// The name of the user.
+        /// </value>
+        [Required]
+        public string UserName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the email identifier.
+        /// </summary>
+        /// <value>
+        /// The email identifier.
+        /// </value>
+        [Required]
+        public string EmailID { get; set; }
+
+        /// <summary>
+        /// Gets or sets the password.
+        /// </summary>
+        /// <value>
+        /// The password.
+        /// </value>
+        [Required]
+        public string Password { get; set; }
+
+        /// <summary>
+        /// Gets or sets the voter identifier.
+        /// </summary>
+        /// <value>
+        /// The voter identifier.
+        /// </value>
+        [Required]
+        public string MobileNumber { get; set; }
 
         /// <summary>
         /// Gets or sets the profile picture.
@@ -48,34 +82,6 @@ namespace ElectionCommonLayer.Model
         /// <value>
         /// The profile picture.
         /// </value>
-        [Column(TypeName = "nvarchar(150)")]
         public string ProfilePicture { get; set; }
-
-        /// <summary>
-        /// Gets or sets the type of the user.
-        /// </summary>
-        /// <value>
-        /// The type of the user.
-        /// </value>
-        [Column(TypeName = "nvarchar(150)")]
-        public string UserType { get; set; }
-
-        /// <summary>
-        /// Gets or sets the mobile number.
-        /// </summary>
-        /// <value>
-        /// The voter identifier.
-        /// </value>
-        [Required]
-        [Column(TypeName = "nvarchar(150)")]
-        public string MobileNumber { get; set; }
-
-        /// <summary>
-        /// Gets or sets the vote.
-        /// </summary>
-        /// <value>
-        /// The vote.
-        /// </value>
-        public int Vote { get; set; }
     }
 }

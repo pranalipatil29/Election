@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ElectionRepositoryLayer.Migrations
 {
     [DbContext(typeof(AuthenticationContext))]
-    [Migration("20200220082336_tables")]
-    partial class tables
+    [Migration("20200221125519_vote")]
+    partial class vote
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -28,17 +28,27 @@ namespace ElectionRepositoryLayer.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("CandidateName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(150)");
 
-                    b.Property<string>("ConstituencyName");
+                    b.Property<int>("ConstituencyID");
+
+                    b.Property<string>("ConstituencyName")
+                        .IsRequired();
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("DateTime");
 
+                    b.Property<string>("MobileNumber")
+                        .IsRequired();
+
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("DateTime");
 
-                    b.Property<string>("PartyName");
+                    b.Property<int>("PartyID");
+
+                    b.Property<string>("PartyName")
+                        .IsRequired();
 
                     b.HasKey("CandidateID");
 
@@ -52,9 +62,11 @@ namespace ElectionRepositoryLayer.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("City")
+                        .IsRequired()
                         .HasColumnType("nvarchar(150)");
 
                     b.Property<string>("ConstituencyName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(150)");
 
                     b.Property<DateTime>("CreatedDate")
@@ -64,6 +76,7 @@ namespace ElectionRepositoryLayer.Migrations
                         .HasColumnType("DateTime");
 
                     b.Property<string>("State")
+                        .IsRequired()
                         .HasColumnType("nvarchar(150)");
 
                     b.HasKey("ConstituencyID");
@@ -84,9 +97,11 @@ namespace ElectionRepositoryLayer.Migrations
                         .HasColumnType("DateTime");
 
                     b.Property<string>("PartyName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(150)");
 
                     b.Property<string>("RegisterBy")
+                        .IsRequired()
                         .HasColumnType("nvarchar(150)");
 
                     b.HasKey("PartyID");
@@ -274,14 +289,17 @@ namespace ElectionRepositoryLayer.Migrations
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(150)");
 
+                    b.Property<string>("MobileNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(150)");
+
                     b.Property<string>("ProfilePicture")
                         .HasColumnType("nvarchar(150)");
 
                     b.Property<string>("UserType")
                         .HasColumnType("nvarchar(150)");
 
-                    b.Property<string>("VoterID")
-                        .HasColumnType("nvarchar(150)");
+                    b.Property<bool>("Vote");
 
                     b.ToTable("ApplicationModel");
 

@@ -51,7 +51,7 @@ namespace ElectionBusinessLayer.ServiceBL
         /// returns true or false depending upon operation result
         /// </returns>
         /// <exception cref="Exception">return exception</exception>
-        public async Task<bool> AddCandidate(string emailID, CandidateModel candidateModel)
+        public async Task<bool> AddCandidate(string emailID, CandidateRequest candidateModel)
         {
             try
             {
@@ -168,14 +168,14 @@ namespace ElectionBusinessLayer.ServiceBL
         /// Candidate ID Required
         /// or
         /// </exception>
-        public async Task<CandidateModel> UpdateInfo(CandidateRequest candidateRequest, int candidateID, string adminID)
+        public async Task<CandidateModel> UpdateInfo(UpdateRequest updateRequest, int candidateID, string adminID)
         {
             try
             {
                 // check wheather admin entered correct Candidate ID
                 if (candidateID > 0)
                 {
-                    return await this.candidateRL.UpdateInfo(candidateRequest, candidateID, adminID);
+                    return await this.candidateRL.UpdateInfo(updateRequest, candidateID, adminID);
                 }
                 else
                 {
