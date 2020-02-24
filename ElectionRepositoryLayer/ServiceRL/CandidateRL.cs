@@ -75,8 +75,8 @@ namespace ElectionRepositoryLayer.ServiceRL
                 // check wheather admin record is found or not
                 if (adminData != null)
                 {
-                    // find record for admin entered voter ID
-                    var candidate = this.authenticationContext.Candidates.Where(s => s.MobileNumber == candidateRequest.MobileNumber).FirstOrDefault();
+                    // find record for candidate
+                    var candidate = this.authenticationContext.Candidates.Where(s => s.MobileNumber == candidateRequest.MobileNumber || s.ConstituencyID == candidateRequest.ConstituencyID && s.PartyID == candidateRequest.PartyID).FirstOrDefault();
 
                     // check wheather candidate record found from candidate table or not
                     if (candidate == null)
@@ -111,6 +111,7 @@ namespace ElectionRepositoryLayer.ServiceRL
                                             PartyName = party.PartyName,
                                             MobileNumber = candidateRequest.MobileNumber,
                                             ConstituencyID = candidateRequest.ConstituencyID,
+                                            State = constituency.State,
                                             ConstituencyName = constituency.ConstituencyName,
                                             CreatedDate = DateTime.Now,
                                             ModifiedDate = DateTime.Now
@@ -199,6 +200,7 @@ namespace ElectionRepositoryLayer.ServiceRL
                                 CandidateName = record.CandidateName,
                                 ConstituencyID = record.ConstituencyID,
                                 ConstituencyName = record.ConstituencyName,
+                                State = record.State,
                                 PartyID = record.PartyID,
                                 PartyName = record.PartyName,
                                 MobileNumber = record.MobileNumber
@@ -406,32 +408,52 @@ namespace ElectionRepositoryLayer.ServiceRL
                         // check wheather Constituency ID  By property contains any null or empty value
                         if (updateRequest.ConstituencyID > 0)
                         {
-                            var constituency = this.authenticationContext.Constituencies.Where(s => s.ConstituencyID == updateRequest.ConstituencyID).FirstOrDefault();
+                            // get candidates details from cadidate table
+                            var candidates = this.authenticationContext.Candidates.Where(s => s.ConstituencyID == updateRequest.ConstituencyID && updateRequest.PartyID == s.PartyID).FirstOrDefault();
 
-                            if (constituency != null)
+                            if (candidates == null)
                             {
-                                candidateInfo.ConstituencyID = updateRequest.ConstituencyID;
-                                candidateInfo.ConstituencyName = constituency.ConstituencyName;
+                                var constituency = this.authenticationContext.Constituencies.Where(s => s.ConstituencyID == updateRequest.ConstituencyID).FirstOrDefault();
+
+                                if (constituency != null)
+                                {
+                                    candidateInfo.ConstituencyID = updateRequest.ConstituencyID;
+                                    candidateInfo.ConstituencyName = constituency.ConstituencyName;
+                                    candidateInfo.State = constituency.State;
+                                }
+                                else
+                                {
+                                    throw new Exception("Constituency Name Not Exist");
+                                }
                             }
                             else
                             {
-                                throw new Exception("Constituency Name Not Exist");
-                            }
+                                throw new Exception("Candidate Already regiter for this Constituency by user Party");
+                            }                          
                         }
 
                         // check wheather Party ID By property contains any null or empty value
                         if (updateRequest.PartyID > 0)
                         {
                             var party = this.authenticationContext.Parties.Where(s => s.PartyID == updateRequest.PartyID).FirstOrDefault();
+                            // get candidates details from cadidate table
+                            var candidates = this.authenticationContext.Candidates.Where(s => s.ConstituencyID == updateRequest.ConstituencyID && updateRequest.PartyID == s.PartyID).FirstOrDefault();
 
-                            if (party != null)
+                            if (candidates == null)
                             {
-                                candidateInfo.PartyID = updateRequest.PartyID;
-                                candidateInfo.PartyName = party.PartyName;
+                                if (party != null)
+                                {
+                                    candidateInfo.PartyID = updateRequest.PartyID;
+                                    candidateInfo.PartyName = party.PartyName;
+                                }
+                                else
+                                {
+                                    throw new Exception("Party Not Registred");
+                                }
                             }
                             else
                             {
-                                throw new Exception("Party Not Registred");
+                                throw new Exception("Candidate Already regiter for this Constituency by user Party");
                             }
                         }
 

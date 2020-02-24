@@ -196,6 +196,17 @@ namespace ElectionRepositoryLayer.ServiceRL
                     // check wheather any record for party found or not
                     if (record != null)
                     {
+                        // get the candidates which have same party 
+                        var candidates = this.authenticationContext.Candidates.Where(s => s.PartyID == partyID);
+
+                        if (candidates != null)
+                        {
+                            foreach (var candidate in candidates)
+                            {
+                                this.authenticationContext.Candidates.Remove(candidate);
+                            }
+                        }
+
                         // remove the record from Parties table
                         this.authenticationContext.Parties.Remove(record);
 

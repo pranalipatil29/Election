@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ElectionBusinessLayer.InterfaceBL;
 using ElectionCommonLayer.Model.User.Request;
+using ElectionCommonLayer.Model.Vote;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -115,6 +116,11 @@ namespace ElectionApplication.Controllers
             }
         }
 
+        /// <summary>
+        /// API for saving Votes
+        /// </summary>
+        /// <param name="voteRequest"></param>
+        /// <returns>returns message indicating operation is successful or not</returns>
         [HttpPut]
         [Route("Vote")]
         public async Task<IActionResult> GiveVote(VoteRequest voteRequest)

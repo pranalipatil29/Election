@@ -1,6 +1,7 @@
 ﻿using ElectionCommonLayer.Model;
 using ElectionCommonLayer.Model.User.Request;
 using ElectionCommonLayer.Model.User.Response;
+using ElectionCommonLayer.Model.Vote;
 using ElectionRepositoryLayer.Context;
 using ElectionRepositoryLayer.ImageUpload;
 using ElectionRepositoryLayer.InterfaceRL;
@@ -273,29 +274,39 @@ namespace ElectionRepositoryLayer.ServiceRL
                     }
                     else
                     {
-                        var constituency = this.authenticationContext.Constituencies.Where(s => s.ConstituencyID == voteRequest.ConstituencyID && s.State == voteRequest.State).FirstOrDefault();
+                        var candidate = this.authenticationContext.Candidates.Where(s => s.CandidateID == voteRequest.CandidateID && s.ConstituencyID == voteRequest.ConstatuencyID).FirstOrDefault();
 
-                        var candidate = this.authenticationContext.Candidates.Where(s => s.CandidateID == voteRequest.CandidateID && s.ConstituencyID == voteRequest.ConstituencyID).FirstOrDefault();
+                        if (candidate != null)
+                        { 
+                           user.Vote = 1;
+                           this.authenticationContext.AccountTable.Update(user);
 
-                        if (constituency != null)
-                        {
-                            if (candidate != null)
+                            var resultData = this.authenticationContext.Result.Where(s => s.CandidateID == voteRequest.CandidateID).FirstOrDefault();
+
+                            if (resultData != null)
                             {
-                                user.Vote = 1;
-                                this.authenticationContext.AccountTable.Update(user);
-                                await this.authenticationContext.SaveChangesAsync();
-                                return true;
+                                resultData.Votes = resultData.Votes + 100;
+                                this.authenticationContext.Result.Update(resultData);
                             }
                             else
                             {
-                                throw new Exception("Cadidate Not found");
-                            }
+                                var result = new ResultModel()
+                                {
+                                    CandidateID = voteRequest.CandidateID,
+                                    Votes = 100
+                                };
+
+                                this.authenticationContext.Result.Add(result);
+                            }                           
+
+                           await this.authenticationContext.SaveChangesAsync();
+                           return true;
                         }
                         else
                         {
-                            throw new Exception("Please select Valid Constituency Details");
+                           throw new Exception("Cadidate Not found");
                         }
-                    }
+                    }                       
                 }
                 else
                 {

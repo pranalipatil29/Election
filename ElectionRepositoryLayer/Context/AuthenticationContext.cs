@@ -20,5 +20,9 @@ namespace ElectionRepositoryLayer.Context
         public DbSet<ConstituencyModel> Constituencies { get; set; }
 
         public DbSet<CandidateModel> Candidates { get; set; }
+
+        public DbSet<ResultModel> Result { get; set; }
+
+        public DbSet<PartywiseResultModel> PartywiseResults { get; set; }
     }
 }

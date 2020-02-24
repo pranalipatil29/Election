@@ -48,6 +48,9 @@ namespace ElectionRepositoryLayer.Migrations
                     b.Property<string>("PartyName")
                         .IsRequired();
 
+                    b.Property<string>("State")
+                        .IsRequired();
+
                     b.HasKey("CandidateID");
 
                     b.ToTable("Candidates");
@@ -105,6 +108,38 @@ namespace ElectionRepositoryLayer.Migrations
                     b.HasKey("PartyID");
 
                     b.ToTable("Parties");
+                });
+
+            modelBuilder.Entity("ElectionCommonLayer.Model.PartywiseResultModel", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Loss");
+
+                    b.Property<int>("PartyID");
+
+                    b.Property<int>("Won");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("PartywiseResults");
+                });
+
+            modelBuilder.Entity("ElectionCommonLayer.Model.ResultModel", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CandidateID");
+
+                    b.Property<int>("Votes");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Result");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -297,7 +332,7 @@ namespace ElectionRepositoryLayer.Migrations
                     b.Property<string>("UserType")
                         .HasColumnType("nvarchar(150)");
 
-                    b.Property<bool>("Vote");
+                    b.Property<int?>("Vote");
 
                     b.ToTable("ApplicationModel");
 

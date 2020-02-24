@@ -205,6 +205,16 @@ namespace ElectionRepositoryLayer.ServiceRL
                     // check wheather any record for Contituency found or not
                     if (record != null)
                     {
+                        // get the candidates which have same constituency 
+                        var candidates = this.authenticationContext.Candidates.Where(s => s.ConstituencyID == constituencyID);
+
+                        if ( candidates != null)
+                        {
+                            foreach(var candidate in candidates)
+                            {
+                                this.authenticationContext.Candidates.Remove(candidate);
+                            }
+                        }
                         // remove the record from Constituency table
                         this.authenticationContext.Constituencies.Remove(record);
 

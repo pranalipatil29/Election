@@ -134,5 +134,66 @@ namespace ElectionApplication.Controllers
                 return this.BadRequest(new { success = false, message = exception.Message });
             }
         }
+
+        /// <summary>
+        /// Gets the result.
+        /// </summary>
+        /// <returns>returns operation result</returns>
+        [Authorize]
+        [HttpGet]
+        [Route("CalculateResult")]
+        public async Task<IActionResult> GetResult()
+        {
+            try
+            {
+                var adminID = HttpContext.User.Claims.First(s => s.Type == "EmailID").Value;
+
+                var result = this.adminBL.GetResult(adminID);
+
+                if (result.Count > 0)
+                {
+                    return this.BadRequest(new { success = true, result });
+                }
+                else
+                {
+                    return this.BadRequest(new { success = false, message = "Failed to Get Result" });
+                }
+            }
+            catch(Exception exception)
+            {
+                return this.BadRequest(new { success = false, message = exception.Message });
+            }
+        }
+
+        /// <summary>
+        /// Gets the constituencywise result.
+        /// </summary>
+        /// <param name="contituencyID">The contituency identifier.</param>
+        /// <param name="state">The state.</param>
+        /// <returns>returns operation result</returns>
+        [HttpGet]
+        [Route("ConstituencywieResult")]
+        public async Task<IActionResult> GetConstituencywiseResult(int contituencyID, string state)
+        {
+            try
+            {
+                var adminID = HttpContext.User.Claims.First(s => s.Type == "EmailID").Value;
+
+                var result = this.adminBL.CostituencywiseRessult(adminID, contituencyID, state);
+
+                if (result.Count > 0)
+                {
+                    return this.BadRequest(new { success = true, result });
+                }
+                else
+                {
+                    return this.BadRequest(new { success = false, message = "Failed to Get Result" });
+                }
+            }
+            catch (Exception exception)
+            {
+                return this.BadRequest(new { success = false, message = exception.Message });
+            }
+        }
     }
 }

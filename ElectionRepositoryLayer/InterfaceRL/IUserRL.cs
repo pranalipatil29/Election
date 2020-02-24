@@ -1,5 +1,6 @@
 ﻿using ElectionCommonLayer.Model.User.Request;
 using ElectionCommonLayer.Model.User.Response;
+using ElectionCommonLayer.Model.Vote;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;

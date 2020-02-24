@@ -17,6 +17,7 @@ namespace ElectionRepositoryLayer.ServiceRL
     using ElectionCommonLayer.Model;
     using ElectionCommonLayer.Model.Admin.Request;
     using ElectionCommonLayer.Model.Admin.Respone;
+    using ElectionCommonLayer.Model.Candidate;
     using ElectionCommonLayer.Model.Party;
     using ElectionRepositoryLayer.Context;
     using ElectionRepositoryLayer.ImageUpload;
@@ -96,6 +97,7 @@ namespace ElectionRepositoryLayer.ServiceRL
                     Email = registrationModel.EmailID,
                     UserName = registrationModel.UserName,
                     MobileNumber = registrationModel.MobileNumber,
+                    Vote = 0,
                     ProfilePicture = registrationModel.ProfilePicture,
                     UserType = "Admin"
                 };
@@ -171,6 +173,7 @@ namespace ElectionRepositoryLayer.ServiceRL
         /// </returns>
         public async Task<string> GenerateToken(AccountResponse accountResponse)
         {
+            // check whether admin data exist in the database or not
             var user = await this.userManager.FindByEmailAsync(accountResponse.EmailID);
 
             // check whether user email id and password is found or not 
@@ -210,10 +213,10 @@ namespace ElectionRepositoryLayer.ServiceRL
         {
             try
             {
-                // check whether user data exist in the database or not
+                // check whether admin data exist in the database or not
                 var user = await this.userManager.FindByEmailAsync(emailID);
 
-                // check wheather user data contains any null value or not
+                // check wheather admin data contains any null value or not
                 if (user != null)
                 {
                     // send the API key,API secret key and cloud name to Upload Image class constructor
@@ -250,5 +253,173 @@ namespace ElectionRepositoryLayer.ServiceRL
             }
         }
 
+        /// <summary>
+        /// Gets the result.
+        /// </summary>
+        /// <param name="adminID">The admin identifier.</param>
+        /// <returns>
+        /// returns result or null value
+        /// </returns>
+        /// <exception cref="Exception">
+        /// Authentication Problem
+        /// or
+        /// </exception>
+        public IList<ResultResponse> GetResult(string adminID)
+        {
+            try
+            {
+                // check whether admin data exist in the database or not
+                var admin = this.authenticationContext.AccountTable.Where(s => s.Email == adminID && s.UserType == "Admin").FirstOrDefault();
+
+                // check wheather admin data contains any null value or not
+                if (admin != null)
+                {
+                    // get the all data from result table
+                    var results = this.authenticationContext.Result.Select(s => s);
+
+                    // check wheather results contain any dataor not
+                    if (results != null)
+                    {
+                        // creating list type variable to store results
+                        var list = new List<ResultResponse>();
+
+                        // iterates the list for all results
+                        foreach (var result in results)
+                        {
+                            // get the candidate details from candidate table
+                            var candidateData = this.authenticationContext.Candidates.Where(s => s.CandidateID == result.CandidateID).FirstOrDefault();
+
+                            // get the all data to return result
+                            var data = new ResultResponse()
+                            {
+                                CandidateID = result.CandidateID,
+                                CandidateName = candidateData.CandidateName,
+                                PartyID = candidateData.PartyID,
+                                PartyName = candidateData.PartyName,
+                                State = candidateData.State,
+                                Votes = result.Votes
+                            };
+
+                            // add data into list
+                            list.Add(data);
+                        }
+
+                        // return the list
+                        return list;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+                else
+                {
+                    throw new Exception("Authentication Problem");
+                }
+            }
+            catch (Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
+
+        /// <summary>
+        /// Costituencywises the ressult.
+        /// </summary>
+        /// <param name="adminID">The admin identifier.</param>
+        /// <param name="constituencyID">The constituency identifier.</param>
+        /// <param name="state">The state.</param>
+        /// <returns>
+        /// returns Constituency wise result or null value
+        /// </returns>
+        /// <exception cref="Exception">
+        /// Authentication Problem
+        /// or
+        /// </exception>
+        public IList<ResultResponse> CostituencywiseRessult(string adminID, int constituencyID, string state)
+        {
+            try
+            {
+                // verify the admin
+                var admin = this.authenticationContext.AccountTable.Where(s => s.Email == adminID && s.UserType == "Admin").FirstOrDefault();
+
+                // check wheather admin data contains any null value or not
+                if (admin != null)
+                {
+                    // get the result 
+                    var results = GetResult(adminID);
+
+                    // check wheather the result contains any record or not
+                    if (results.Count > 0)
+                    {
+                        // creating variable to store list of response
+                        var list = new List<ResultResponse>();
+
+                        // iterates the loop for each result
+                        foreach (var result in results)
+                        {
+                            // get the cadidates info for required constituency and state
+                            var resultData = this.authenticationContext.Candidates.Where(s => s.CandidateID == result.CandidateID && s.State == state && s.ConstituencyID == constituencyID);
+
+                            // iterates the loop for each result data
+                            foreach (var candidate in resultData)
+                            {
+                                // get the data in responsse format
+                                var data = new ResultResponse()
+                                {
+                                    CandidateID = result.CandidateID,
+                                    CandidateName = candidate.CandidateName,
+                                    PartyID = candidate.PartyID,
+                                    PartyName = candidate.PartyName,
+                                    State = candidate.State,
+                                    Votes = result.Votes
+                                };
+
+                                // add the data into list
+                                list.Add(data);
+                            }
+                        }
+
+                        // return list
+                        return list;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+                else
+                {
+                    throw new Exception("Authentication Problem");
+                }
+            }
+            catch (Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
+
+        //public IList<ResultResponse> PartyWiseResult(string adminID, string state)
+        //{
+        //    try
+        //    {
+        //        // verify the admin
+        //        var admin = this.authenticationContext.AccountTable.Where(s => s.Email == adminID && s.UserType == "Admin").FirstOrDefault();
+
+        //        // check wheather admin data contains any null value or not
+        //        if (admin != null)
+        //        {
+                   
+        //        }
+        //        else
+        //        {
+        //            throw new Exception("Authentication Problem");
+        //        }
+        //    }
+        //    catch (Exception exception)
+        //    {
+        //        throw new Exception(exception.Message);
+        //    }
+        //}
     }
 }

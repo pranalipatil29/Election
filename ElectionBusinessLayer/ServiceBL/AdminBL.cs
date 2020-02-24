@@ -170,6 +170,58 @@ namespace ElectionBusinessLayer.ServiceBL
             }
         }
 
-     
+        /// <summary>
+        /// Gets the result.
+        /// </summary>
+        /// <param name="adminID">The admin identifier.</param>
+        /// <returns>
+        /// returns result or null value
+        /// </returns>
+        /// <exception cref="Exception"></exception>
+        public IList<ResultResponse> GetResult(string adminID)
+        {
+            try
+            {
+                return this.adminRL.GetResult(adminID);
+            }
+            catch (Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
+
+        /// <summary>
+        /// Costituencywises the ressult.
+        /// </summary>
+        /// <param name="adminID">The admin identifier.</param>
+        /// <param name="constituencyID">The constituency identifier.</param>
+        /// <param name="state">The state.</param>
+        /// <returns>
+        /// return Constituency wise result or null value
+        /// </returns>
+        /// <exception cref="Exception"></exception>
+        public IList<ResultResponse> CostituencywiseRessult(string adminID, int constituencyID, string state)
+        {
+            try
+            {
+                return this.adminRL.CostituencywiseRessult(adminID, constituencyID, state);
+            }
+            catch(Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
+
+        //public IList<ResultResponse> PartyWiseResult(string adminID, string state)
+        //{
+        //    try
+        //    {
+        //        return this.adminRL.PartywiseResult(adminID, state);
+        //    }
+        //    catch (Exception exception)
+        //    {
+        //        throw new Exception(exception.Message);
+        //    }
+        //}
     }
 }

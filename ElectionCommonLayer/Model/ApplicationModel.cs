@@ -76,6 +76,6 @@ namespace ElectionCommonLayer.Model
         /// <value>
         /// The vote.
         /// </value>
-        public int Vote { get; set; }
+        public int? Vote { get; set; }
     }
 }

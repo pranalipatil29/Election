@@ -56,5 +56,29 @@ namespace ElectionRepositoryLayer.InterfaceRL
         /// <param name="file">The file.</param>
         /// <returns> returns admin details or null value</returns>
         Task<AccountResponse> ChangeProfilePicture(string emailID, IFormFile file);
+
+        /// <summary>
+        /// Gets the result.
+        /// </summary>
+        /// <param name="adminID">The admin identifier.</param>
+        /// <returns> returns result or null value</returns>
+        IList<ResultResponse> GetResult(string adminID);
+
+        /// <summary>
+        /// Costituencywises the ressult.
+        /// </summary>
+        /// <param name="adminID">The admin identifier.</param>
+        /// <param name="constituencyID">The constituency identifier.</param>
+        /// <param name="state">The state.</param>
+        /// <returns>returns Constituency wise result or null value</returns>
+        IList<ResultResponse> CostituencywiseRessult(string adminID, int constituencyID, string state);
+
+        ///// <summary>
+        ///// Parties the wise result.
+        ///// </summary>
+        ///// <param name="adminID">The admin identifier.</param>
+        ///// <param name="state">The state.</param>
+        ///// <returns>returns Party wise Result or null value</returns>
+        //IList<ResultResponse> PartyWiseResult(string adminID, string state);
     }
 }

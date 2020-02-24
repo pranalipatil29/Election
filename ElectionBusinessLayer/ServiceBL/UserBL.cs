@@ -1,6 +1,7 @@
 ﻿using ElectionBusinessLayer.InterfaceBL;
 using ElectionCommonLayer.Model.User.Request;
 using ElectionCommonLayer.Model.User.Response;
+using ElectionCommonLayer.Model.Vote;
 using ElectionRepositoryLayer.InterfaceRL;
 using Microsoft.AspNetCore.Http;
 using System;
