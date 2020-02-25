@@ -187,5 +187,36 @@ namespace ElectionBusinessLayer.ServiceBL
                 throw new Exception(exception.Message);
             }
         }
+
+        /// <summary>
+        /// Gets the constituencywise candidates.
+        /// </summary>
+        /// <param name="constituencyID">The constituency identifier.</param>
+        /// <param name="state">The state.</param>
+        /// <returns>
+        /// returns the candidates list or null value
+        /// </returns>
+        /// <exception cref="Exception">
+        /// Please provide correct Contituency ID & State Name
+        /// or
+        /// </exception>
+        public IList<ConstituencywiseCandidates> GetConstituencywiseCandidates(int constituencyID, string state)
+        {
+            try
+            {
+                if (constituencyID > 0 || state != null || state != string.Empty)
+                {
+                    return this.candidateRL.GetConstituencywiseCandidates(constituencyID, state);
+                }
+                else
+                {
+                    throw new Exception("Please provide correct Contituency ID & State Name");
+                }
+            }
+            catch (Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
     }
 }

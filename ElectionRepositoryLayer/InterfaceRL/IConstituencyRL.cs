@@ -65,5 +65,13 @@ namespace ElectionRepositoryLayer.InterfaceRL
         /// <param name="adminID">The admin identifier.</param>
         /// <returns>returns constituency records or null value</returns>
         Task<ConstituencyModel> UpdateInfo(ConstituencyRequest constituencyRequest, int constituencyID, string adminID);
+
+        /// <summary>
+        /// Gets the states.
+        /// </summary>
+        /// <returns>return the states or null value</returns>
+        IList<string> GetStates();
+
+       IList<ConstituenciesListResponse> GetConstituenciesList(string state);
     }
 }

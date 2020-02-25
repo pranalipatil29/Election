@@ -46,6 +46,6 @@ namespace ElectionRepositoryLayer.InterfaceRL
         /// <param name="emailID">The email identifier.</param>
         /// <param name="voteRequest">The vote request.</param>
         /// <returns>returns true or false indicating operation result</returns>
-        Task<bool> GiveVote(string emailID, VoteRequest voteRequest);
+        Task<bool> GiveVote(string emailID, VoteRequest voteRequest);       
     }
 }

@@ -60,9 +60,8 @@ namespace ElectionCommonLayer.Model
         /// <value>
         /// The state.
         /// </value>
-        [Required]
-        [Column(TypeName = "nvarchar(150)")]
         public string State { get; set; }
+
 
         /// <summary>
         /// Gets or sets the created date.

@@ -241,7 +241,7 @@ namespace ElectionRepositoryLayer.ServiceRL
                 throw new Exception(exception.Message);
             }
         }
-
+      
         /// <summary>
         /// Gives the vote.
         /// </summary>
@@ -264,7 +264,7 @@ namespace ElectionRepositoryLayer.ServiceRL
         {
             try
             {
-                var user = this.authenticationContext.AccountTable.Where(s => s.Email == emailID && s.UserType == "User").FirstOrDefault();
+                var user = this.authenticationContext.AccountTable.Where(s => s.Email == emailID).FirstOrDefault();
 
                 if (user != null)
                 {

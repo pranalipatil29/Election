@@ -181,6 +181,6 @@ namespace ElectionBusinessLayer.ServiceBL
             {
                 throw new Exception(exception.Message);
             }
-        }
+        }      
     }
 }

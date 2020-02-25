@@ -63,5 +63,13 @@ namespace ElectionBusinessLayer.InterfaceBL
         /// <param name="adminID">The admin identifier.</param>
         /// <returns>return true or false indicating operation result</returns>
         Task<CandidateModel> UpdateInfo(UpdateRequest updateRequest, int candidateID, string adminID);
+
+        /// <summary>
+        /// Gets the constituencywise candidates.
+        /// </summary>
+        /// <param name="constituencyID">The constituency identifier.</param>
+        /// <param name="state">The state.</param>
+        /// <returns>returns the candidates list or null value</returns>
+        IList<ConstituencywiseCandidates> GetConstituencywiseCandidates(int constituencyID, string state);
     }
 }

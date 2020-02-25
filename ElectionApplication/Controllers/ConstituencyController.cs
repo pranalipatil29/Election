@@ -206,5 +206,59 @@ namespace ElectionApplication.Controllers
                 return this.BadRequest(new { success = false, message = exception.Message });
             }
         }
+
+        /// <summary>
+        /// Gets the states.
+        /// </summary>
+        /// <returns>returns the operation result</returns>
+        [HttpGet]
+        [Route("States")]
+        public async Task<IActionResult> GetStates()
+        {
+            try
+            {
+                var accountID = HttpContext.User.Claims.First(s => s.Type == "EmailID").Value;
+
+                var states = this.constituencyBL.GetStates();
+
+                if (states.Count > 0)
+                {
+                    return this.Ok(new { success = true, states });
+                }
+                else
+                {
+                    return this.BadRequest(new { success = false, message = "Failed to Load States" });
+                }
+            }
+            catch(Exception exception)
+            {
+                return this.BadRequest(new { success = false, message = exception.Message });
+            }
+        }
+
+        [HttpGet]
+        [Route("Constituencies")]
+        public async Task<IActionResult> GetConstituencies(string state)
+        {
+            try
+            {
+                var accountID = HttpContext.User.Claims.First(s => s.Type == "EmailID").Value;
+
+                var records = this.constituencyBL.GetConstituenciesList(state);
+
+                if (records.Count > 0)
+                {
+                    return this.Ok(new { success = true, records });
+                }
+                else
+                {
+                    return this.BadRequest(new { success = false, message = "Failed to Find Constituencies Records" });
+                }
+            }
+            catch (Exception exception)
+            {
+                return this.BadRequest(new { success = false, message = exception.Message });
+            }
+        }
     }
 }

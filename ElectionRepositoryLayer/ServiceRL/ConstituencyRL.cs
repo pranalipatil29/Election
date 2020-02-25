@@ -358,5 +358,92 @@ namespace ElectionRepositoryLayer.ServiceRL
                 throw new Exception(exception.Message);
             }
         }
+
+        /// <summary>
+        /// Gets the states.
+        /// </summary>
+        /// <returns>
+        /// return the states or null value
+        /// </returns>
+        /// <exception cref="Exception">
+        /// States not found
+        /// or
+        /// </exception>
+        public IList<string> GetStates()
+        {
+            try
+            {
+                var states = this.authenticationContext.Constituencies.Select(s => s.State);
+                var list = new List<string>();
+                bool flag = false;
+                var stateName = string.Empty;
+
+                if (states != null)
+                {
+                    foreach(var state in states)
+                    {
+                        stateName = state;
+
+                        foreach (var data in list)
+                        {
+                            if (data == state)
+                            {
+                                flag = true;
+                            }
+                        }
+
+                        if (!flag)
+                        {
+                            list.Add(stateName);
+                        }                      
+                    }
+
+                    return list;
+                }
+                else
+                {
+                    throw new Exception("States not found");
+                }
+            }
+            catch(Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
+
+        public IList<ConstituenciesListResponse> GetConstituenciesList(string state)
+        {
+            try
+            {
+                var constituencies = this.authenticationContext.Constituencies.Where(s => s.State == state);
+
+                var list = new List<ConstituenciesListResponse>();
+
+                if (constituencies != null)
+                {
+                   foreach(var constituency in constituencies)
+                    {
+                        var data = new ConstituenciesListResponse()
+                        {
+                            ConstituencyID = constituency.ConstituencyID,
+                            ConstituencyName = constituency.ConstituencyName
+                        };
+
+                        list.Add(data);
+                    }
+
+                    return list;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch(Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
+
     }
 }

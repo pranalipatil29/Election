@@ -19,6 +19,7 @@ namespace ElectionBusinessLayer.ServiceBL
     using ElectionCommonLayer.Model.Admin.Respone;
     using ElectionCommonLayer.Model.Party;
     using ElectionRepositoryLayer.InterfaceRL;
+    using ElectionCommonLayer.Model.Result;
     using Microsoft.AspNetCore.Http;
     using System;
     using System.Collections.Generic;
@@ -212,16 +213,25 @@ namespace ElectionBusinessLayer.ServiceBL
             }
         }
 
-        //public IList<ResultResponse> PartyWiseResult(string adminID, string state)
-        //{
-        //    try
-        //    {
-        //        return this.adminRL.PartywiseResult(adminID, state);
-        //    }
-        //    catch (Exception exception)
-        //    {
-        //        throw new Exception(exception.Message);
-        //    }
-        //}
+        /// <summary>
+        /// Parties the wise result.
+        /// </summary>
+        /// <param name="adminID">The admin identifier.</param>
+        /// <param name="state">The state.</param>
+        /// <returns>
+        /// return the result or null value
+        /// </returns>
+        /// <exception cref="Exception"></exception>
+        public IList<PartywiseResultResponse> PartyWiseResult(string adminID, string state)
+        {
+            try
+            {
+                return this.adminRL.PartywiseResult(adminID, state);
+            }
+            catch (Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
     }
 }

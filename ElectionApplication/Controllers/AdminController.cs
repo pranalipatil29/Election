@@ -94,7 +94,7 @@ namespace ElectionApplication.Controllers
             {
                 // generate the token
                 var token = await this.adminBL.GenerateToken(data);
-                return this.Ok(new { success = true, message = "Login Successfull", token, data });
+                return this.Ok(new { success = true, message = "Login Successfull", token , data });
             }
             else
             {
@@ -126,7 +126,7 @@ namespace ElectionApplication.Controllers
                 }
                 else
                 {
-                    return this.Ok(new { success = false, message = "Failed to upload Profile Picture" });
+                    return this.BadRequest(new { success = false, message = "Failed to upload Profile Picture" });
                 }
             }
             catch (Exception exception)
@@ -152,7 +152,7 @@ namespace ElectionApplication.Controllers
 
                 if (result.Count > 0)
                 {
-                    return this.BadRequest(new { success = true, result });
+                    return this.Ok(new { success = true, result });
                 }
                 else
                 {
@@ -183,7 +183,32 @@ namespace ElectionApplication.Controllers
 
                 if (result.Count > 0)
                 {
-                    return this.BadRequest(new { success = true, result });
+                    return this.Ok(new { success = true, result });
+                }
+                else
+                {
+                    return this.BadRequest(new { success = false, message = "Failed to Get Result" });
+                }
+            }
+            catch (Exception exception)
+            {
+                return this.BadRequest(new { success = false, message = exception.Message });
+            }
+        }
+
+        [HttpGet]
+        [Route("PartywieResult")]
+        public async Task<IActionResult> GetPartywiseResult(string state)
+        {
+            try
+            {
+                var adminID = HttpContext.User.Claims.First(s => s.Type == "EmailID").Value;
+
+                var result = this.adminBL.PartyWiseResult(adminID, state);
+
+                if (result.Count > 0)
+                {
+                    return this.Ok(new { success = true, result });
                 }
                 else
                 {

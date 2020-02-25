@@ -18,6 +18,7 @@ namespace ElectionBusinessLayer.InterfaceBL
     using ElectionCommonLayer.Model.Admin.Request;
     using ElectionCommonLayer.Model.Admin.Respone;
     using ElectionCommonLayer.Model.Party;
+    using ElectionCommonLayer.Model.Result;
     using Microsoft.AspNetCore.Http;
     using System;
     using System.Collections.Generic;
@@ -74,12 +75,12 @@ namespace ElectionBusinessLayer.InterfaceBL
         /// <returns>return Constituency wise result or null value</returns>
         IList<ResultResponse> CostituencywiseRessult(string adminID, int constituencyID, string state);
 
-        ///// <summary>
-        ///// Parties the wise result.
-        ///// </summary>
-        ///// <param name="adminID">The admin identifier.</param>
-        ///// <param name="state">The state.</param>
-        ///// <returns>return Party wise result</returns>
-        //IList<ResultResponse> PartyWiseResult(string adminID, string state);
+        /// <summary>
+        /// Parties the wise result.
+        /// </summary>
+        /// <param name="adminID">The admin identifier.</param>
+        /// <param name="state">The state.</param>
+        /// <returns> return the result or null value</returns>
+        IList<PartywiseResultResponse> PartyWiseResult(string adminID, string state);
     }
 }

@@ -144,6 +144,6 @@ namespace ElectionApplication.Controllers
             {
                 return this.BadRequest(new { succes = false, message = exception.Message });
             }
-        }
+        }       
     }
 }

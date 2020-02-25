@@ -163,5 +163,44 @@ namespace ElectionBusinessLayer.ServiceBL
                 throw new Exception(exception.Message);
             }
         }
+
+        /// <summary>
+        /// Gets the states.
+        /// </summary>
+        /// <returns>
+        /// return the states or null value
+        /// </returns>
+        /// <exception cref="Exception"></exception>
+        public IList<string> GetStates()
+        {
+            try
+            {
+                return this.constituencyRL.GetStates();
+            }
+            catch(Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
+
+        public IList<ConstituenciesListResponse> GetConstituenciesList(string state)
+        {
+            try
+            {
+                if (state != null || state != string.Empty)
+                {
+                    return this.constituencyRL.GetConstituenciesList(state);
+                }
+                else
+                {
+                    throw new Exception("State Name Required");
+                }
+            }
+            catch(Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
+
     }
 }

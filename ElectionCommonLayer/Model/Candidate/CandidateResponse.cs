@@ -53,12 +53,12 @@ namespace ElectionCommonLayer.Model.Candidate
         public string ConstituencyName { get; set; }
 
         /// <summary>
-        /// Gets or sets the satate.
+        /// Gets or sets the state.
         /// </summary>
         /// <value>
-        /// The satate.
+        /// The state.
         /// </value>
-        public string State { get; set; }
+        public string State { get; set;}
 
         /// <summary>
         /// Gets or sets the constituency identifier.

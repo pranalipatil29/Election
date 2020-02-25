@@ -481,5 +481,52 @@ namespace ElectionRepositoryLayer.ServiceRL
                 throw new Exception(exception.Message);
             }
         }
+
+        /// <summary>
+        /// Gets the constituencywise candidates.
+        /// </summary>
+        /// <param name="constituencyID">The constituency identifier.</param>
+        /// <param name="state">The state.</param>
+        /// <returns>
+        /// returns the candidates list or null value
+        /// </returns>
+        /// <exception cref="Exception"></exception>
+        public IList<ConstituencywiseCandidates> GetConstituencywiseCandidates(int constituencyID, string state)
+        {
+            try
+            {
+                var list = new List<ConstituencywiseCandidates>();
+
+                var candidates = this.authenticationContext.Candidates.Where(s => s.ConstituencyID == constituencyID && s.State == state);
+
+                if (candidates != null)
+                {
+                    foreach (var candidate in candidates)
+                    {
+                        var data = new ConstituencywiseCandidates()
+                        {
+                            CandidateID = candidate.CandidateID,
+                            CandidateName = candidate.CandidateName,
+                            PartyID = candidate.PartyID,
+                            PartyName = candidate.PartyName
+                        };
+
+                        list.Add(data);
+                    }
+
+                    return list;
+                }
+                else
+                {
+                    return null;
+                }
+
+            }
+            catch (Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
+
     }
 }

@@ -206,5 +206,36 @@ namespace ElectionApplication.Controllers
                 return this.BadRequest(new { success = false, message = exception.Message });
             }
         }
+
+        /// <summary>
+        /// Gets the candidates in constituency.
+        /// </summary>
+        /// <param name="constituencyID">The constituency identifier.</param>
+        /// <param name="state">The state.</param>
+        /// <returns>returns the result indicating operation result</returns>
+        [HttpGet]
+        [Route("CandidatesInConstituency")]
+        public async Task<IActionResult> GetCandidatesInConstituency(int constituencyID, string state)
+        {
+            try
+            {
+                var userID = HttpContext.User.Claims.First(s => s.Type == "EmailID").Value;
+
+                var data = this.candidateBL.GetConstituencywiseCandidates(constituencyID, state);
+
+                if (data.Count > 0)
+                {
+                    return this.Ok(new { success = true, data });
+                }
+                else
+                {
+                    return this.BadRequest(new { success = false, message = "Records not found" });
+                }
+            }
+            catch (Exception exception)
+            {
+                return this.BadRequest(new { success = false, message = exception.Message });
+            }
+        }
     }
 }
