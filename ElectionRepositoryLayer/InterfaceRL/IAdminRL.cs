@@ -70,16 +70,18 @@ namespace ElectionRepositoryLayer.InterfaceRL
         /// </summary>
         /// <param name="adminID">The admin identifier.</param>
         /// <param name="constituencyID">The constituency identifier.</param>
-        /// <param name="state">The state.</param>
+        /// <param name="stateID">The state identifier.</param>
         /// <returns>returns Constituency wise result or null value</returns>
-        IList<ResultResponse> CostituencywiseRessult(string adminID, int constituencyID, string state);
+        IList<ResultResponse> CostituencywiseRessult(string adminID, int constituencyID, int stateID);
 
         /// <summary>
         /// Partywises the result.
         /// </summary>
         /// <param name="adminID">The admin identifier.</param>
-        /// <param name="state">The state.</param>
+        /// <param name="stateID">The state identifier.</param>
         /// <returns> return the result or null value</returns>
-        IList<PartywiseResultResponse> PartywiseResult(string adminID, string state);
+        IList<PartywiseResultResponse> PartywiseResult(string adminID, int stateID);
+
+        Task<bool> DeleteVotingRecords(string adminID);
     }
 }

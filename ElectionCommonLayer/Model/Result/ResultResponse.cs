@@ -49,6 +49,14 @@ namespace ElectionCommonLayer.Model.Result
         public int Votes { get; set; }
 
         /// <summary>
+        /// Gets or sets the constituency identifier.
+        /// </summary>
+        /// <value>
+        /// The constituency identifier.
+        /// </value>
+        public int ConstituencyID { get; set; }
+
+        /// <summary>
         /// Gets or sets the name of the constituency.
         /// </summary>
         /// <value>
@@ -57,11 +65,19 @@ namespace ElectionCommonLayer.Model.Result
         public string ConstituencyName { get; set; }
 
         /// <summary>
-        /// Gets or sets the state.
+        /// Gets or sets the state identifier.
         /// </summary>
         /// <value>
-        /// The state.
+        /// The state identifier.
         /// </value>
-        public string State { get; set; }
+        public int StateID { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name of the state.
+        /// </summary>
+        /// <value>
+        /// The name of the state.
+        /// </value>
+        public string StateName { get; set; }
     }
 }

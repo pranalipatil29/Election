@@ -297,7 +297,9 @@ namespace ElectionRepositoryLayer.ServiceRL
                                 CandidateName = candidateData.CandidateName,
                                 PartyID = candidateData.PartyID,
                                 PartyName = candidateData.PartyName,
-                                State = candidateData.State,
+                                StateID = candidateData.StateID,
+                                StateName = candidateData.StateName,
+                                ConstituencyID = candidateData.ConstituencyID,
                                 ConstituencyName = candidateData.ConstituencyName,
                                 Votes = result.Votes
                             };
@@ -338,7 +340,7 @@ namespace ElectionRepositoryLayer.ServiceRL
         /// Authentication Problem
         /// or
         /// </exception>
-        public IList<ResultResponse> CostituencywiseRessult(string adminID, int constituencyID, string state)
+        public IList<ResultResponse> CostituencywiseRessult(string adminID, int constituencyID, int stateID)
         {
             try
             {
@@ -361,7 +363,7 @@ namespace ElectionRepositoryLayer.ServiceRL
                         foreach (var result in results)
                         {
                             // get the cadidates info for required constituency and state
-                            var resultData = this.authenticationContext.Candidates.Where(s => s.CandidateID == result.CandidateID && s.State == state && s.ConstituencyID == constituencyID);
+                            var resultData = this.authenticationContext.Candidates.Where(s => s.CandidateID == result.CandidateID && s.StateID == stateID && s.ConstituencyID == constituencyID);
 
                             // iterates the loop for each result data
                             foreach (var candidate in resultData)
@@ -373,7 +375,9 @@ namespace ElectionRepositoryLayer.ServiceRL
                                     CandidateName = candidate.CandidateName,
                                     PartyID = candidate.PartyID,
                                     PartyName = candidate.PartyName,
-                                    State = candidate.State,
+                                    StateID = candidate.StateID,
+                                    StateName = candidate.StateName,
+                                    ConstituencyID = candidate.ConstituencyID,
                                     ConstituencyName = candidate.ConstituencyName,
                                     Votes = result.Votes
                                 };
@@ -402,7 +406,7 @@ namespace ElectionRepositoryLayer.ServiceRL
             }
         }
 
-        public IList<PartywiseResultResponse> PartywiseResult(string adminID, string state)
+        public IList<PartywiseResultResponse> PartywiseResult(string adminID, int stateID)
         {
             try
             {
@@ -425,17 +429,17 @@ namespace ElectionRepositoryLayer.ServiceRL
                     var finalResult = new List<PartywiseResultResponse>();
 
                     // get the constituencies in required state
-                    var constituencies = this.authenticationContext.Constituencies.Where(s => s.State == state);
+                    var constituencies = this.authenticationContext.Constituencies.Where(s => s.StateID == stateID);
 
                     // get the the parties info
                     var parties = this.authenticationContext.Parties.Select(s => s);
 
                     // get the candidate details in paerticular state
-                    var statewiseCandidates = this.authenticationContext.Candidates.Where(s => s.State == state);
+                    var statewiseCandidates = this.authenticationContext.Candidates.Where(s => s.StateID == stateID);
 
                     // this variable i used to count the candidates in each party
                     int count = 0;
-                                      
+
                     if (statewiseCandidates.Count() > 0)
                     {
                         if (parties != null)
@@ -485,7 +489,7 @@ namespace ElectionRepositoryLayer.ServiceRL
                                 var list = new List<ResultResponse>();
 
                                 // get the candidates for particular Constituency
-                                var candidates = this.authenticationContext.Candidates.Where(s => s.ConstituencyID == constituency.ConstituencyID && s.State == state);
+                                var candidates = this.authenticationContext.Candidates.Where(s => s.ConstituencyID == constituency.ConstituencyID && s.StateID == stateID);
 
                                 // check wheather candidates for particular constituency are found or not
                                 if (candidates != null)
@@ -505,8 +509,10 @@ namespace ElectionRepositoryLayer.ServiceRL
                                                 PartyID = candidate.PartyID,
                                                 PartyName = candidate.PartyName,
                                                 Votes = candidateVotes.Votes,
+                                                ConstituencyID = candidate.ConstituencyID,
                                                 ConstituencyName = candidate.ConstituencyName,
-                                                State = candidate.State
+                                                StateID = candidate.StateID,
+                                                StateName = candidate.StateName
                                             };
 
                                             list.Add(data);
@@ -600,6 +606,44 @@ namespace ElectionRepositoryLayer.ServiceRL
                 else
                 {
                     throw new Exception("Authentication Problem");
+                }
+            }
+            catch (Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
+
+
+       public async Task<bool> DeleteVotingRecords(string adminID)
+        {
+            try
+            {
+                var admin = this.authenticationContext.AccountTable.Where(s => s.Email == adminID && s.UserType == "Admin").FirstOrDefault();
+
+                if (admin != null)
+                {
+                    var users = this.authenticationContext.AccountTable.Select(s => s);
+
+                    if (users.Count() > 0)
+                    {
+                        foreach(var record in users)
+                        {
+                            record.Vote = 0;
+                            this.authenticationContext.AccountTable.Update(record);                           
+                        }
+
+                        await this.authenticationContext.SaveChangesAsync();
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    throw new Exception("UnAuthorized Account");
                 }
             }
             catch (Exception exception)

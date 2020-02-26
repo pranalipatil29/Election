@@ -52,7 +52,7 @@ namespace ElectionRepositoryLayer.ServiceRL
         /// Adds the Constituency.
         /// </summary>
         /// <param name="emailID">The email identifier.</param>
-        /// <param name="constituencyModel">The constituency Model.</param>
+        /// <param name="registerConstituency">The register Constituency Model.</param>
         /// <returns>
         /// returns true or false depending upon operation result
         /// </returns>
@@ -62,7 +62,7 @@ namespace ElectionRepositoryLayer.ServiceRL
         /// Not Authorized Account
         /// or
         /// </exception>
-        public async Task<bool> AddConstituency(string emailID, ConstituencyModel constituencyModel)
+        public async Task<bool> AddConstituency(string emailID, RegisterConstituency registerConstituency)
         {
             try
             {
@@ -73,28 +73,39 @@ namespace ElectionRepositoryLayer.ServiceRL
                 if (adminData != null)
                 {
                     // find record for admin entered Constituency Name
-                    var contituency = this.authenticationContext.Constituencies.Where(s => s.ConstituencyName == constituencyModel.ConstituencyName).FirstOrDefault();
+                    var contituency = this.authenticationContext.Constituencies.Where(s => s.ConstituencyName == registerConstituency.ConstituencyName).FirstOrDefault();
 
                     // check wheather contituency record found from Constituency table or not
                     if (contituency == null)
                     {
-                        // get the required data
-                        var data = new ConstituencyModel()
+                        var state = this.authenticationContext.States.Where(s => s.StateID == registerConstituency.StateID).FirstOrDefault();
+
+                        if (state != null)
                         {
-                            City = constituencyModel.City,
-                            State = constituencyModel.State,
-                            ConstituencyName = constituencyModel.ConstituencyName,
-                            CreatedDate = DateTime.Now,
-                            ModifiedDate = DateTime.Now
-                        };
 
-                        // add data in Constituency table
-                        this.authenticationContext.Constituencies.Add(data);
+                            // get the required data
+                            var data = new ConstituencyModel()
+                            {
+                                City = registerConstituency.City,
+                                StateID = registerConstituency.StateID,
+                                StateName = state.StateName,
+                                ConstituencyName = registerConstituency.ConstituencyName,
+                                CreatedDate = DateTime.Now,
+                                ModifiedDate = DateTime.Now
+                            };
 
-                        // save the change into database
-                        await this.authenticationContext.SaveChangesAsync();
+                            // add data in Constituency table
+                            this.authenticationContext.Constituencies.Add(data);
 
-                        return true;
+                            // save the change into database
+                            await this.authenticationContext.SaveChangesAsync();
+
+                            return true;
+                        }
+                        else
+                        {
+                            throw new Exception("State Record not found");
+                        }
                     }
                     else
                     {
@@ -150,7 +161,8 @@ namespace ElectionRepositoryLayer.ServiceRL
                                 ConstituencyID = record.ConstituencyID,
                                 ConstituencyName = record.ConstituencyName,
                                 City = record.City,
-                                State = record.State
+                                StateID = record.StateID,
+                                StateName = record.StateName
                             };
 
                             // add the record in list
@@ -328,11 +340,25 @@ namespace ElectionRepositoryLayer.ServiceRL
                             constituencyInfo.City = constituencyRequest.City;
                         }
 
-                        // check wheather constituency State  property is null or empty value
-                        if (constituencyRequest.State != null && constituencyRequest.State != string.Empty)
+                        // check wheather constituency State ID is valid or not
+                        if (constituencyRequest.StateID > 0)
                         {
-                            constituencyInfo.State = constituencyRequest.State;
-                        }                      
+                            var state = this.authenticationContext.States.Where(s => s.StateID == constituencyRequest.StateID).FirstOrDefault();
+
+                            if (state != null)
+                            {
+                                constituencyInfo.StateID = constituencyRequest.StateID;
+                                constituencyInfo.StateName = state.StateName;
+                            }
+                            else
+                            {
+                                throw new Exception("state record not found");
+                            }                           
+                        }
+                        else
+                        {
+                            throw new Exception("Invalid State ID");
+                        }
 
                         // update the record in constituency table
                         this.authenticationContext.Constituencies.Update(constituencyInfo);
@@ -359,63 +385,11 @@ namespace ElectionRepositoryLayer.ServiceRL
             }
         }
 
-        /// <summary>
-        /// Gets the states.
-        /// </summary>
-        /// <returns>
-        /// return the states or null value
-        /// </returns>
-        /// <exception cref="Exception">
-        /// States not found
-        /// or
-        /// </exception>
-        public IList<string> GetStates()
+        public IList<ConstituenciesListResponse> GetConstituenciesList(int stateID)
         {
             try
             {
-                var states = this.authenticationContext.Constituencies.Select(s => s.State);
-                var list = new List<string>();
-                bool flag = false;
-                var stateName = string.Empty;
-
-                if (states != null)
-                {
-                    foreach(var state in states)
-                    {
-                        stateName = state;
-
-                        foreach (var data in list)
-                        {
-                            if (data == state)
-                            {
-                                flag = true;
-                            }
-                        }
-
-                        if (!flag)
-                        {
-                            list.Add(stateName);
-                        }                      
-                    }
-
-                    return list;
-                }
-                else
-                {
-                    throw new Exception("States not found");
-                }
-            }
-            catch(Exception exception)
-            {
-                throw new Exception(exception.Message);
-            }
-        }
-
-        public IList<ConstituenciesListResponse> GetConstituenciesList(string state)
-        {
-            try
-            {
-                var constituencies = this.authenticationContext.Constituencies.Where(s => s.State == state);
+                var constituencies = this.authenticationContext.Constituencies.Where(s => s.StateID == stateID);
 
                 var list = new List<ConstituenciesListResponse>();
 
@@ -444,6 +418,5 @@ namespace ElectionRepositoryLayer.ServiceRL
                 throw new Exception(exception.Message);
             }
         }
-
     }
 }

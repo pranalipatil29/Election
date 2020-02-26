@@ -38,12 +38,12 @@ namespace ElectionCommonLayer.Model.Candidate
         public int ConstituencyID { get; set; }
 
         /// <summary>
-        /// Gets or sets the name of the state.
+        /// Gets or sets the state identifier.
         /// </summary>
         /// <value>
-        /// The name of the state.
+        /// The state identifier.
         /// </value>
-        public string StateName { get; set; }
+        public int StateID { get; set; }
         
         /// <summary>
         /// Gets or sets the name of the party.

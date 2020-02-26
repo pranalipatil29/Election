@@ -65,13 +65,24 @@ namespace ElectionCommonLayer.Model
         public string ConstituencyName { get; set; }
 
         /// <summary>
+        /// Gets or sets the state identifier.
+        /// </summary>
+        /// <value>
+        /// The state identifier.
+        /// </value>
+        [Required]
+        [ForeignKey("StateModel")]
+        public int StateID { get; set; }
+
+        /// <summary>
         /// Gets or sets the state.
         /// </summary>
         /// <value>
         /// The state.
         /// </value>
         [Required]
-        public string State { get; set; }
+        [ForeignKey("StateModel")]
+        public string StateName { get; set; }
               
         /// <summary>
         /// Gets or sets the constituency identifier.

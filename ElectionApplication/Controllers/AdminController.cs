@@ -169,17 +169,17 @@ namespace ElectionApplication.Controllers
         /// Gets the constituencywise result.
         /// </summary>
         /// <param name="contituencyID">The contituency identifier.</param>
-        /// <param name="state">The state.</param>
+        /// <param name="stateID">The state identifier.</param>
         /// <returns>returns operation result</returns>
         [HttpGet]
         [Route("ConstituencywieResult")]
-        public async Task<IActionResult> GetConstituencywiseResult(int contituencyID, string state)
+        public async Task<IActionResult> GetConstituencywiseResult(int contituencyID, int stateID)
         {
             try
             {
                 var adminID = HttpContext.User.Claims.First(s => s.Type == "EmailID").Value;
 
-                var result = this.adminBL.CostituencywiseRessult(adminID, contituencyID, state);
+                var result = this.adminBL.CostituencywiseRessult(adminID, contituencyID, stateID);
 
                 if (result.Count > 0)
                 {
@@ -198,13 +198,13 @@ namespace ElectionApplication.Controllers
 
         [HttpGet]
         [Route("PartywieResult")]
-        public async Task<IActionResult> GetPartywiseResult(string state)
+        public async Task<IActionResult> GetPartywiseResult(int stateID)
         {
             try
             {
                 var adminID = HttpContext.User.Claims.First(s => s.Type == "EmailID").Value;
 
-                var result = this.adminBL.PartyWiseResult(adminID, state);
+                var result = this.adminBL.PartywiseResult(adminID, stateID);
 
                 if (result.Count > 0)
                 {
@@ -216,6 +216,31 @@ namespace ElectionApplication.Controllers
                 }
             }
             catch (Exception exception)
+            {
+                return this.BadRequest(new { success = false, message = exception.Message });
+            }
+        }
+
+        [HttpPut]
+        [Route("ClearVotes")]
+        public async Task<IActionResult> ClearVotes()
+        {
+            try
+            {
+                var adminID = HttpContext.User.Claims.First(s => s.Type == "EmailID").Value;
+
+                var result = await this.adminBL.DeleteVotingRecords(adminID);
+
+                if (result)
+                {
+                    return this.Ok(new { success = true, message = "Successfully Clear All Voting Records" });
+                }
+                else
+                {
+                    return this.BadRequest(new { success = false, message = "Failed to clear Voting records" });
+                }
+            }
+            catch(Exception exception)
             {
                 return this.BadRequest(new { success = false, message = exception.Message });
             }

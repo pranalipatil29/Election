@@ -55,12 +55,24 @@ namespace ElectionCommonLayer.Model
         public string City { get; set; }
 
         /// <summary>
+        /// Gets or sets the state identifier.
+        /// </summary>
+        /// <value>
+        /// The state identifier.
+        /// </value>
+        [Required]
+        [ForeignKey("StateModel")]
+        public int StateID { get; set; }
+
+        /// <summary>
         /// Gets or sets the state.
         /// </summary>
         /// <value>
         /// The state.
         /// </value>
-        public string State { get; set; }
+        [Required]
+        [ForeignKey("StateModel")]
+        public string StateName { get; set; }
 
 
         /// <summary>

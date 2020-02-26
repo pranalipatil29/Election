@@ -71,16 +71,18 @@ namespace ElectionBusinessLayer.InterfaceBL
         /// </summary>
         /// <param name="adminID">The admin identifier.</param>
         /// <param name="constituencyID">The constituency identifier.</param>
-        /// <param name="state">The state.</param>
-        /// <returns>return Constituency wise result or null value</returns>
-        IList<ResultResponse> CostituencywiseRessult(string adminID, int constituencyID, string state);
+        /// <param name="stateID">The state identifier.</param>
+        /// <returns>returns Constituency wise result or null value</returns>
+        IList<ResultResponse> CostituencywiseRessult(string adminID, int constituencyID, int stateID);
 
         /// <summary>
-        /// Parties the wise result.
+        /// Partywises the result.
         /// </summary>
         /// <param name="adminID">The admin identifier.</param>
-        /// <param name="state">The state.</param>
+        /// <param name="stateID">The state identifier.</param>
         /// <returns> return the result or null value</returns>
-        IList<PartywiseResultResponse> PartyWiseResult(string adminID, string state);
+        IList<PartywiseResultResponse> PartywiseResult(string adminID, int stateID);
+
+        Task<bool> DeleteVotingRecords(string adminID);
     }
 }

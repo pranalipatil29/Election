@@ -39,15 +39,15 @@ namespace ElectionBusinessLayer.ServiceBL
             this.constituencyRL = constituencyRL;
         }
 
-        public async Task<bool> AddConstituency(string emailID, ConstituencyModel constituencyModel)
+        public async Task<bool> AddConstituency(string emailID, RegisterConstituency registerConstituency)
         {
             try
             {
                 // check whether admin entered any null value or not
-                if (constituencyModel != null)
+                if (registerConstituency != null)
                 {
                     // return the operation result
-                    return await this.constituencyRL.AddConstituency(emailID, constituencyModel);
+                    return await this.constituencyRL.AddConstituency(emailID, registerConstituency);
                 }
                 else
                 {
@@ -164,36 +164,17 @@ namespace ElectionBusinessLayer.ServiceBL
             }
         }
 
-        /// <summary>
-        /// Gets the states.
-        /// </summary>
-        /// <returns>
-        /// return the states or null value
-        /// </returns>
-        /// <exception cref="Exception"></exception>
-        public IList<string> GetStates()
+        public IList<ConstituenciesListResponse> GetConstituenciesList(int stateID)
         {
             try
             {
-                return this.constituencyRL.GetStates();
-            }
-            catch(Exception exception)
-            {
-                throw new Exception(exception.Message);
-            }
-        }
-
-        public IList<ConstituenciesListResponse> GetConstituenciesList(string state)
-        {
-            try
-            {
-                if (state != null || state != string.Empty)
+                if (stateID > 0)
                 {
-                    return this.constituencyRL.GetConstituenciesList(state);
+                    return this.constituencyRL.GetConstituenciesList(stateID);
                 }
                 else
                 {
-                    throw new Exception("State Name Required");
+                    throw new Exception("StateID is invalid ");
                 }
             }
             catch(Exception exception)
@@ -201,6 +182,5 @@ namespace ElectionBusinessLayer.ServiceBL
                 throw new Exception(exception.Message);
             }
         }
-
     }
 }

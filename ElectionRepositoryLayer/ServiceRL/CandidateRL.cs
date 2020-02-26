@@ -95,45 +95,56 @@ namespace ElectionRepositoryLayer.ServiceRL
                                 // get party details from Party table
                                 var party = this.authenticationContext.Parties.Where(s => s.PartyID == candidateRequest.PartyID).FirstOrDefault();
 
+                                // get state details
+                                var state = this.authenticationContext.States.Where(s => s.StateID == candidateRequest.StateID).FirstOrDefault();
+
                                 var userName = user.FirstName + " " + user.LastName;
 
-                                // check wheather constituency is registered or not
-                                if (constituency != null)
+                                if (state != null)
                                 {
-                                    // check wheather Party is registered or not
-                                    if (party != null)
+                                    // check wheather constituency is registered or not
+                                    if (constituency != null)
                                     {
-                                        // get the required data
-                                        var data = new CandidateModel()
+                                        // check wheather Party is registered or not
+                                        if (party != null)
                                         {
-                                            CandidateName = userName,
-                                            PartyID = candidateRequest.PartyID,
-                                            PartyName = party.PartyName,
-                                            MobileNumber = candidateRequest.MobileNumber,
-                                            ConstituencyID = candidateRequest.ConstituencyID,
-                                            State = constituency.State,
-                                            ConstituencyName = constituency.ConstituencyName,
-                                            CreatedDate = DateTime.Now,
-                                            ModifiedDate = DateTime.Now
-                                        };
+                                            // get the required data
+                                            var data = new CandidateModel()
+                                            {
+                                                CandidateName = userName,
+                                                PartyID = candidateRequest.PartyID,
+                                                PartyName = party.PartyName,
+                                                MobileNumber = candidateRequest.MobileNumber,
+                                                ConstituencyID = candidateRequest.ConstituencyID,
+                                                StateID = state.StateID,
+                                                StateName = state.StateName,
+                                                ConstituencyName = constituency.ConstituencyName,
+                                                CreatedDate = DateTime.Now,
+                                                ModifiedDate = DateTime.Now
+                                            };
 
-                                        // add data in candidate table
-                                        this.authenticationContext.Candidates.Add(data);
+                                            // add data in candidate table
+                                            this.authenticationContext.Candidates.Add(data);
 
-                                        // save the change into database
-                                        await this.authenticationContext.SaveChangesAsync();
+                                            // save the change into database
+                                            await this.authenticationContext.SaveChangesAsync();
 
-                                        return true;
+                                            return true;
+                                        }
+                                        else
+                                        {
+                                            throw new Exception("Party Does Not Exist");
+                                        }
                                     }
                                     else
                                     {
-                                        throw new Exception("Party Does Not Exist");
+                                        throw new Exception("Constituency Name not Exist");
                                     }
                                 }
                                 else
                                 {
-                                    throw new Exception("Constituency Name not Exist");
-                                }
+                                    throw new Exception("State record not found");
+                                }                                
                             }
                             else
                             {
@@ -200,7 +211,8 @@ namespace ElectionRepositoryLayer.ServiceRL
                                 CandidateName = record.CandidateName,
                                 ConstituencyID = record.ConstituencyID,
                                 ConstituencyName = record.ConstituencyName,
-                                State = record.State,
+                                StateID = record.StateID,
+                                StateName = record.StateName,
                                 PartyID = record.PartyID,
                                 PartyName = record.PartyName,
                                 MobileNumber = record.MobileNumber
@@ -419,11 +431,12 @@ namespace ElectionRepositoryLayer.ServiceRL
                                 {
                                     candidateInfo.ConstituencyID = updateRequest.ConstituencyID;
                                     candidateInfo.ConstituencyName = constituency.ConstituencyName;
-                                    candidateInfo.State = constituency.State;
+                                    candidateInfo.StateID = constituency.StateID;
+                                    candidateInfo.StateName = constituency.StateName;
                                 }
                                 else
                                 {
-                                    throw new Exception("Constituency Name Not Exist");
+                                    throw new Exception("Constituency record Not Exist");
                                 }
                             }
                             else
@@ -486,18 +499,18 @@ namespace ElectionRepositoryLayer.ServiceRL
         /// Gets the constituencywise candidates.
         /// </summary>
         /// <param name="constituencyID">The constituency identifier.</param>
-        /// <param name="state">The state.</param>
+        /// <param name="stateID">The state identifier.</param>
         /// <returns>
         /// returns the candidates list or null value
         /// </returns>
         /// <exception cref="Exception"></exception>
-        public IList<ConstituencywiseCandidates> GetConstituencywiseCandidates(int constituencyID, string state)
+        public IList<ConstituencywiseCandidates> GetConstituencywiseCandidates(int constituencyID, int stateID)
         {
             try
             {
                 var list = new List<ConstituencywiseCandidates>();
 
-                var candidates = this.authenticationContext.Candidates.Where(s => s.ConstituencyID == constituencyID && s.State == state);
+                var candidates = this.authenticationContext.Candidates.Where(s => s.ConstituencyID == constituencyID && s.StateID == stateID);
 
                 if (candidates != null)
                 {
@@ -527,6 +540,5 @@ namespace ElectionRepositoryLayer.ServiceRL
                 throw new Exception(exception.Message);
             }
         }
-
     }
 }

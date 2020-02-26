@@ -211,17 +211,17 @@ namespace ElectionApplication.Controllers
         /// Gets the candidates in constituency.
         /// </summary>
         /// <param name="constituencyID">The constituency identifier.</param>
-        /// <param name="state">The state.</param>
+        /// <param name="stateID">The state identifier.</param>
         /// <returns>returns the result indicating operation result</returns>
         [HttpGet]
         [Route("CandidatesInConstituency")]
-        public async Task<IActionResult> GetCandidatesInConstituency(int constituencyID, string state)
+        public async Task<IActionResult> GetCandidatesInConstituency(int constituencyID, int stateID)
         {
             try
             {
                 var userID = HttpContext.User.Claims.First(s => s.Type == "EmailID").Value;
 
-                var data = this.candidateBL.GetConstituencywiseCandidates(constituencyID, state);
+                var data = this.candidateBL.GetConstituencywiseCandidates(constituencyID, stateID);
 
                 if (data.Count > 0)
                 {

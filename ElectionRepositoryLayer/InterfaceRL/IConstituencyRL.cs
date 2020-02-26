@@ -30,9 +30,9 @@ namespace ElectionRepositoryLayer.InterfaceRL
         /// Adds the Constituency.
         /// </summary>
         /// <param name="emailID">The email identifier.</param>
-        /// <param name="constituencyModel">The constituency Model.</param>
+        /// <param name="registerConstituency">The register Constituency Model.</param>
         /// <returns>returns true or false depending upon operation result</returns>
-        Task<bool> AddConstituency(string emailID, ConstituencyModel constituencyModel);
+        Task<bool> AddConstituency(string emailID, RegisterConstituency registerConstituency);
 
         /// <summary>
         /// Displays the constituency records.
@@ -65,13 +65,7 @@ namespace ElectionRepositoryLayer.InterfaceRL
         /// <param name="adminID">The admin identifier.</param>
         /// <returns>returns constituency records or null value</returns>
         Task<ConstituencyModel> UpdateInfo(ConstituencyRequest constituencyRequest, int constituencyID, string adminID);
-
-        /// <summary>
-        /// Gets the states.
-        /// </summary>
-        /// <returns>return the states or null value</returns>
-        IList<string> GetStates();
-
-       IList<ConstituenciesListResponse> GetConstituenciesList(string state);
+            
+       IList<ConstituenciesListResponse> GetConstituenciesList(int stateID);
     }
 }

@@ -38,11 +38,11 @@ namespace ElectionCommonLayer.Model.Constituency
         public string City { get; set; }
 
         /// <summary>
-        /// Gets or sets the state.
+        /// Gets or sets the state identifier.
         /// </summary>
         /// <value>
-        /// The state.
+        /// The state identifier.
         /// </value>
-        public string State { get; set; }
+        public int StateID { get; set; }
     }
 }

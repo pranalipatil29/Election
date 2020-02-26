@@ -196,16 +196,16 @@ namespace ElectionBusinessLayer.ServiceBL
         /// </summary>
         /// <param name="adminID">The admin identifier.</param>
         /// <param name="constituencyID">The constituency identifier.</param>
-        /// <param name="state">The state.</param>
+        /// <param name="stateID">The state identifier.</param>
         /// <returns>
         /// return Constituency wise result or null value
         /// </returns>
-        /// <exception cref="Exception"></exception>
-        public IList<ResultResponse> CostituencywiseRessult(string adminID, int constituencyID, string state)
+        /// <exception cref="Exception">return exception</exception>
+        public IList<ResultResponse> CostituencywiseRessult(string adminID, int constituencyID, int stateID)
         {
             try
             {
-                return this.adminRL.CostituencywiseRessult(adminID, constituencyID, state);
+                return this.adminRL.CostituencywiseRessult(adminID, constituencyID, stateID);
             }
             catch(Exception exception)
             {
@@ -217,18 +217,37 @@ namespace ElectionBusinessLayer.ServiceBL
         /// Parties the wise result.
         /// </summary>
         /// <param name="adminID">The admin identifier.</param>
-        /// <param name="state">The state.</param>
+        /// <param name="stateID">The state identifier.</param>
         /// <returns>
         /// return the result or null value
         /// </returns>
-        /// <exception cref="Exception"></exception>
-        public IList<PartywiseResultResponse> PartyWiseResult(string adminID, string state)
+        /// <exception cref="Exception">return exception</exception>
+        public IList<PartywiseResultResponse> PartywiseResult(string adminID, int stateID)
         {
             try
             {
-                return this.adminRL.PartywiseResult(adminID, state);
+                return this.adminRL.PartywiseResult(adminID, stateID);
             }
             catch (Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
+
+        public async Task<bool> DeleteVotingRecords(string adminID)
+        {
+            try
+            {
+                if (adminID != null)
+                {
+                    return await this.adminRL.DeleteVotingRecords(adminID);
+                }
+                else
+                {
+                    throw new Exception("UnAuthorized Account info");
+                }
+            }
+            catch(Exception exception)
             {
                 throw new Exception(exception.Message);
             }

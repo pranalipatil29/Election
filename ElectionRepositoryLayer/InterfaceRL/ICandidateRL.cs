@@ -68,8 +68,8 @@ namespace ElectionRepositoryLayer.InterfaceRL
         /// Gets the constituencywise candidates.
         /// </summary>
         /// <param name="constituencyID">The constituency identifier.</param>
-        /// <param name="state">The state.</param>
+        /// <param name="stateID">The state identifier.</param>
         /// <returns>returns the candidates list or null value</returns>
-        IList<ConstituencywiseCandidates> GetConstituencywiseCandidates(int constituencyID, string state);
+        IList<ConstituencywiseCandidates> GetConstituencywiseCandidates(int constituencyID, int stateID);
     }
 }

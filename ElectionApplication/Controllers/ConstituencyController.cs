@@ -49,10 +49,10 @@ namespace ElectionApplication.Controllers
         /// <summary>
         /// Adds the constitute.
         /// </summary>
-        /// <param name="constituencyRequest">The constituency request.</param>
+        /// <param name="registerConstituency">The register Constituency.</param>
         /// <returns>returns the operation result</returns>
         [HttpPost]
-        public async Task<IActionResult> AddConstitute(ConstituencyModel constituencyModel)
+        public async Task<IActionResult> AddConstitute(RegisterConstituency registerConstituency)
         {
             try
             {
@@ -60,7 +60,7 @@ namespace ElectionApplication.Controllers
                 var emailID = HttpContext.User.Claims.First(s => s.Type == "EmailID").Value;
 
                 // get the operation result
-                var result = await this.constituencyBL.AddConstituency(emailID, constituencyModel);
+                var result = await this.constituencyBL.AddConstituency(emailID, registerConstituency);
 
                 // check wheather result indicates true value or not
                 if (result)
@@ -207,44 +207,15 @@ namespace ElectionApplication.Controllers
             }
         }
 
-        /// <summary>
-        /// Gets the states.
-        /// </summary>
-        /// <returns>returns the operation result</returns>
-        [HttpGet]
-        [Route("States")]
-        public async Task<IActionResult> GetStates()
-        {
-            try
-            {
-                var accountID = HttpContext.User.Claims.First(s => s.Type == "EmailID").Value;
-
-                var states = this.constituencyBL.GetStates();
-
-                if (states.Count > 0)
-                {
-                    return this.Ok(new { success = true, states });
-                }
-                else
-                {
-                    return this.BadRequest(new { success = false, message = "Failed to Load States" });
-                }
-            }
-            catch(Exception exception)
-            {
-                return this.BadRequest(new { success = false, message = exception.Message });
-            }
-        }
-
         [HttpGet]
         [Route("Constituencies")]
-        public async Task<IActionResult> GetConstituencies(string state)
+        public async Task<IActionResult> GetConstituencies(int stateID)
         {
             try
             {
                 var accountID = HttpContext.User.Claims.First(s => s.Type == "EmailID").Value;
 
-                var records = this.constituencyBL.GetConstituenciesList(state);
+                var records = this.constituencyBL.GetConstituenciesList(stateID);
 
                 if (records.Count > 0)
                 {

@@ -200,17 +200,17 @@ namespace ElectionBusinessLayer.ServiceBL
         /// Please provide correct Contituency ID & State Name
         /// or
         /// </exception>
-        public IList<ConstituencywiseCandidates> GetConstituencywiseCandidates(int constituencyID, string state)
+        public IList<ConstituencywiseCandidates> GetConstituencywiseCandidates(int constituencyID, int stateID)
         {
             try
             {
-                if (constituencyID > 0 || state != null || state != string.Empty)
+                if (constituencyID > 0 && stateID > 0)
                 {
-                    return this.candidateRL.GetConstituencywiseCandidates(constituencyID, state);
+                    return this.candidateRL.GetConstituencywiseCandidates(constituencyID, stateID);
                 }
                 else
                 {
-                    throw new Exception("Please provide correct Contituency ID & State Name");
+                    throw new Exception("Please provide correct Contituency ID & State ID");
                 }
             }
             catch (Exception exception)
