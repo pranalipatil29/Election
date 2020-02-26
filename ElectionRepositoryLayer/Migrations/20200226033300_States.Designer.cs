@@ -4,14 +4,16 @@ using ElectionRepositoryLayer.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ElectionRepositoryLayer.Migrations
 {
     [DbContext(typeof(AuthenticationContext))]
-    partial class AuthenticationContextModelSnapshot : ModelSnapshot
+    [Migration("20200226033300_States")]
+    partial class States
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -146,15 +148,8 @@ namespace ElectionRepositoryLayer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("DateTime");
-
-                    b.Property<DateTime>("ModifiedDate")
-                        .HasColumnType("DateTime");
-
                     b.Property<string>("StateName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(150)");
+                        .IsRequired();
 
                     b.HasKey("StateID");
 

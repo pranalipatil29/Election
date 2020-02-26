@@ -33,14 +33,14 @@ namespace ElectionApplication.Controllers
     public class ConstituencyController : ControllerBase
     {
         /// <summary>
-        /// The constituency bl
+        /// The constituency business layer
         /// </summary>
         private readonly IConstituencyBL constituencyBL;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ConstituencyController"/> class.
         /// </summary>
-        /// <param name="constituencyBL">The constituency bl.</param>
+        /// <param name="constituencyBL">The constituency business layer.</param>
         public ConstituencyController(IConstituencyBL constituencyBL)
         {
             this.constituencyBL = constituencyBL;

@@ -15,6 +15,8 @@ namespace ElectionRepositoryLayer.Context
 
         public DbSet<ApplicationModel> AccountTable { get; set; }
 
+        public DbSet<StateModel> States { get; set; }
+
         public DbSet<PartyModel> Parties { get; set; }
 
         public DbSet<ConstituencyModel> Constituencies { get; set; }
