@@ -52,6 +52,7 @@ namespace ElectionApplication.Controllers
         /// </summary>
         /// <param name="partyModel">The party Model.</param>
         /// <returns> returns the result indicating operation result</returns>
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> AddParty(PartyModel partyModel)
         {
@@ -83,6 +84,7 @@ namespace ElectionApplication.Controllers
         /// Gets the parties information.
         /// </summary>
         /// <returns>returns the result indicating operation result</returns>
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetPartiesInfo()
         {
@@ -115,6 +117,7 @@ namespace ElectionApplication.Controllers
         /// </summary>
         /// <param name="partyID">The party identifier.</param>
         /// <returns>returns the result indicating operation result</returns>
+        [Authorize]
         [HttpDelete]
         public async Task<IActionResult> DeleteParty(int partyID)
         {
@@ -147,6 +150,7 @@ namespace ElectionApplication.Controllers
         /// </summary>
         /// <param name="bulkRequest">The bulk request.</param>
         /// <returns>returns the result indicating operation result</returns>
+        [Authorize]
         [HttpDelete]
         [Route("BulkParties")]
         public async Task<IActionResult> DeleteParties(BulkRequest bulkRequest)
@@ -182,6 +186,7 @@ namespace ElectionApplication.Controllers
         /// <param name="partyID">The party identifier.</param>
         /// <returns>returns the result indicating operation result</returns>
         /// <exception cref="Exception"> return exception</exception>
+        [Authorize]
         [HttpPut]
         public async Task<IActionResult> Update(PartyRequest partyRequest, int partyID)
         {

@@ -76,7 +76,7 @@ namespace ElectionRepositoryLayer.ServiceRL
                 if (adminData != null)
                 {
                     // find record for candidate
-                    var candidate = this.authenticationContext.Candidates.Where(s => s.MobileNumber == candidateRequest.MobileNumber || s.ConstituencyID == candidateRequest.ConstituencyID && s.PartyID == candidateRequest.PartyID).FirstOrDefault();
+                    var candidate = this.authenticationContext.Candidates.Where(s => s.MobileNumber == candidateRequest.MobileNumber && s.ConstituencyID == candidateRequest.ConstituencyID && s.PartyID == candidateRequest.PartyID).FirstOrDefault();
 
                     // check wheather candidate record found from candidate table or not
                     if (candidate == null)
@@ -90,7 +90,7 @@ namespace ElectionRepositoryLayer.ServiceRL
                             if (user != null)
                             {
                                 // get constituency details from constituency table
-                                var constituency = this.authenticationContext.Constituencies.Where(s => s.ConstituencyID == candidateRequest.ConstituencyID).FirstOrDefault();
+                                var constituency = this.authenticationContext.Constituencies.Where(s => s.ConstituencyID == candidateRequest.ConstituencyID && s.StateID == candidateRequest.StateID).FirstOrDefault();
 
                                 // get party details from Party table
                                 var party = this.authenticationContext.Parties.Where(s => s.PartyID == candidateRequest.PartyID).FirstOrDefault();

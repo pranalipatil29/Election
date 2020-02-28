@@ -21,6 +21,7 @@ namespace ElectionApplication.Controllers
     using ElectionBusinessLayer.InterfaceBL;
     using ElectionCommonLayer.Model;
     using ElectionCommonLayer.Model.Candidate;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
 
@@ -51,6 +52,7 @@ namespace ElectionApplication.Controllers
         /// </summary>
         /// <param name="candidateRequest">The candidate request.</param>
         /// <returns>returns the result indicating operation result</returns>
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> AddCandidate(CandidateRequest candidateRequest)
         {
@@ -82,6 +84,7 @@ namespace ElectionApplication.Controllers
         /// Gets the candidates information.
         /// </summary>
         /// <returns>returns the result indicating operation result</returns>
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetCandidatesInfo()
         {
@@ -114,6 +117,7 @@ namespace ElectionApplication.Controllers
         /// </summary>
         /// <param name="candidateID">The candidate identifier.</param>
         /// <returns> returns the result indicating operation result</returns>
+        [Authorize]
         [HttpDelete]
         public async Task<IActionResult> DeleteCandidate(int candidateID)
         {
@@ -146,6 +150,7 @@ namespace ElectionApplication.Controllers
         /// </summary>
         /// <param name="bulkRequest">The bulk request.</param>
         /// <returns> returns the result indicating operation result</returns>
+        [Authorize]
         [HttpDelete]
         [Route("BulkCandidates")]
         public async Task<IActionResult> BulkParties(BulkCandidateRequest bulkRequest)
@@ -180,6 +185,7 @@ namespace ElectionApplication.Controllers
         /// <param name="candidateRequest">The candidate request.</param>
         /// <param name="candidateID">The candidate identifier.</param>
         /// <returns>returns the result indicating operation result</returns>
+        [Authorize]
         [HttpPut]
         public async Task<IActionResult> Update(UpdateRequest updateRequest, int candidateID)
         {
@@ -213,14 +219,13 @@ namespace ElectionApplication.Controllers
         /// <param name="constituencyID">The constituency identifier.</param>
         /// <param name="stateID">The state identifier.</param>
         /// <returns>returns the result indicating operation result</returns>
+        [AllowAnonymous]
         [HttpGet]
         [Route("CandidatesInConstituency")]
         public async Task<IActionResult> GetCandidatesInConstituency(int constituencyID, int stateID)
         {
             try
             {
-                var userID = HttpContext.User.Claims.First(s => s.Type == "EmailID").Value;
-
                 var data = this.candidateBL.GetConstituencywiseCandidates(constituencyID, stateID);
 
                 if (data.Count > 0)

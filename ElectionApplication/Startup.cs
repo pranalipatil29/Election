@@ -54,7 +54,7 @@ namespace ElectionApplication
 
             services.AddTransient<IStateBL, StateBL>();
             services.AddTransient<IStateRL, StateRL>();
-
+            
             services.Configure<ApplicationSetting>(this.Configuration.GetSection("ApplicationSetting"));
 
             services.AddDbContext<AuthenticationContext>(Options =>

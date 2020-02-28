@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ElectionBusinessLayer.InterfaceBL;
 using ElectionCommonLayer.Model.State;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,6 +28,7 @@ namespace ElectionApplication.Controllers
             this.stateBL = stateBL;
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Registration(StateRegistration stateRegistration)
         {
@@ -58,16 +60,14 @@ namespace ElectionApplication.Controllers
         /// Gets the states information.
         /// </summary>
         /// <returns>returns the operation result</returns>
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetStates()
         {
             try
             {
-                // get the admin Email ID
-                var adminID = HttpContext.User.Claims.First(s => s.Type == "EmailID").Value;
-
                 // get the operation result
-                var records = this.stateBL.DisplayStates(adminID);
+                var records = this.stateBL.DisplayStates();
 
                 // check wheather records variable contains any record or not
                 if (records.Count > 0)
@@ -85,7 +85,7 @@ namespace ElectionApplication.Controllers
             }
         }
 
-       
+        [Authorize]
         [HttpDelete]
         public async Task<IActionResult> DeleteState(int stateID)
         {
@@ -112,7 +112,8 @@ namespace ElectionApplication.Controllers
                 return this.BadRequest(new { success = false, message = exception.Message });
             }
         }
-                    
+
+        [Authorize]
         [HttpPut]
         public async Task<IActionResult> Update(StateRequest stateRequest)
         {

@@ -172,68 +172,14 @@ namespace ElectionBusinessLayer.ServiceBL
         }
 
         /// <summary>
-        /// Gets the result.
+        /// Deletes the voting records.
         /// </summary>
         /// <param name="adminID">The admin identifier.</param>
-        /// <returns>
-        /// returns result or null value
-        /// </returns>
-        /// <exception cref="Exception"></exception>
-        public IList<ResultResponse> GetResult(string adminID)
-        {
-            try
-            {
-                return this.adminRL.GetResult(adminID);
-            }
-            catch (Exception exception)
-            {
-                throw new Exception(exception.Message);
-            }
-        }
-
-        /// <summary>
-        /// Costituencywises the ressult.
-        /// </summary>
-        /// <param name="adminID">The admin identifier.</param>
-        /// <param name="constituencyID">The constituency identifier.</param>
-        /// <param name="stateID">The state identifier.</param>
-        /// <returns>
-        /// return Constituency wise result or null value
-        /// </returns>
-        /// <exception cref="Exception">return exception</exception>
-        public IList<ResultResponse> CostituencywiseRessult(string adminID, int constituencyID, int stateID)
-        {
-            try
-            {
-                return this.adminRL.CostituencywiseRessult(adminID, constituencyID, stateID);
-            }
-            catch(Exception exception)
-            {
-                throw new Exception(exception.Message);
-            }
-        }
-
-        /// <summary>
-        /// Parties the wise result.
-        /// </summary>
-        /// <param name="adminID">The admin identifier.</param>
-        /// <param name="stateID">The state identifier.</param>
-        /// <returns>
-        /// return the result or null value
-        /// </returns>
-        /// <exception cref="Exception">return exception</exception>
-        public IList<PartywiseResultResponse> PartywiseResult(string adminID, int stateID)
-        {
-            try
-            {
-                return this.adminRL.PartywiseResult(adminID, stateID);
-            }
-            catch (Exception exception)
-            {
-                throw new Exception(exception.Message);
-            }
-        }
-
+        /// <returns></returns>
+        /// <exception cref="Exception">
+        /// UnAuthorized Account info
+        /// or
+        /// </exception>
         public async Task<bool> DeleteVotingRecords(string adminID)
         {
             try
@@ -248,6 +194,66 @@ namespace ElectionBusinessLayer.ServiceBL
                 }
             }
             catch(Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
+
+        /// <summary>
+        /// Gets the result.
+        /// </summary>
+        /// <returns>
+        /// returns result or null value
+        /// </returns>
+        /// <exception cref="Exception"></exception>
+        public IList<ResultResponse> GetResult()
+        {
+            try
+            {
+                return this.adminRL.GetResult();
+            }
+            catch (Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
+
+        /// <summary>
+        /// Costituencywises the ressult.
+        /// </summary>
+        /// <param name="constituencyID">The constituency identifier.</param>
+        /// <param name="stateID">The state identifier.</param>
+        /// <returns>
+        /// return Constituency wise result or null value
+        /// </returns>
+        /// <exception cref="Exception">return exception</exception>
+        public IList<ResultResponse> CostituencywiseRessult(int constituencyID, int stateID)
+        {
+            try
+            {
+                return this.adminRL.CostituencywiseRessult(constituencyID, stateID);
+            }
+            catch (Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
+
+        /// <summary>
+        /// Parties the wise result.
+        /// </summary>
+        /// <param name="stateID">The state identifier.</param>
+        /// <returns>
+        /// return the result or null value
+        /// </returns>
+        /// <exception cref="Exception">return exception</exception>
+        public IList<PartywiseResultResponse> PartywiseResult(int stateID)
+        {
+            try
+            {
+                return this.adminRL.PartywiseResult(stateID);
+            }
+            catch (Exception exception)
             {
                 throw new Exception(exception.Message);
             }

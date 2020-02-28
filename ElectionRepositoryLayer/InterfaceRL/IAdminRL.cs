@@ -58,30 +58,27 @@ namespace ElectionRepositoryLayer.InterfaceRL
         /// <returns> returns admin details or null value</returns>
         Task<AccountResponse> ChangeProfilePicture(string emailID, IFormFile file);
 
+        Task<bool> DeleteVotingRecords(string adminID);
+
         /// <summary>
         /// Gets the result.
         /// </summary>
-        /// <param name="adminID">The admin identifier.</param>
         /// <returns> returns result or null value</returns>
-        IList<ResultResponse> GetResult(string adminID);
+        IList<ResultResponse> GetResult();
 
         /// <summary>
         /// Costituencywises the ressult.
         /// </summary>
-        /// <param name="adminID">The admin identifier.</param>
         /// <param name="constituencyID">The constituency identifier.</param>
         /// <param name="stateID">The state identifier.</param>
         /// <returns>returns Constituency wise result or null value</returns>
-        IList<ResultResponse> CostituencywiseRessult(string adminID, int constituencyID, int stateID);
+        IList<ResultResponse> CostituencywiseRessult(int constituencyID, int stateID);
 
         /// <summary>
         /// Partywises the result.
         /// </summary>
-        /// <param name="adminID">The admin identifier.</param>
         /// <param name="stateID">The state identifier.</param>
         /// <returns> return the result or null value</returns>
-        IList<PartywiseResultResponse> PartywiseResult(string adminID, int stateID);
-
-        Task<bool> DeleteVotingRecords(string adminID);
+        IList<PartywiseResultResponse> PartywiseResult(int stateID);
     }
 }

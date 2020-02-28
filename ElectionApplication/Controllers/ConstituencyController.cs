@@ -21,6 +21,7 @@ namespace ElectionApplication.Controllers
     using ElectionBusinessLayer.InterfaceBL;
     using ElectionCommonLayer.Model;
     using ElectionCommonLayer.Model.Constituency;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
 
@@ -51,6 +52,7 @@ namespace ElectionApplication.Controllers
         /// </summary>
         /// <param name="registerConstituency">The register Constituency.</param>
         /// <returns>returns the operation result</returns>
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> AddConstitute(RegisterConstituency registerConstituency)
         {
@@ -82,6 +84,7 @@ namespace ElectionApplication.Controllers
         /// Gets the constituency information.
         /// </summary>
         /// <returns>returns the operation result</returns>
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetConstituencyInfo()
         {
@@ -114,6 +117,7 @@ namespace ElectionApplication.Controllers
         /// </summary>
         /// <param name="constituencyID">The constituency identifier.</param>
         /// <returns>returns the operation result</returns>
+        [Authorize]
         [HttpDelete]
         public async Task<IActionResult> DeleteConstituency(int constituencyID)
         {
@@ -146,6 +150,7 @@ namespace ElectionApplication.Controllers
         /// </summary>
         /// <param name="bulkRequest">The bulk request.</param>
         /// <returns>returns the operation result</returns>
+        [Authorize]
         [HttpDelete]
         [Route("BulkConstituencies")]
         public async Task<IActionResult> BulkConstituency(BulkConstituencyRequest bulkRequest)
@@ -180,6 +185,7 @@ namespace ElectionApplication.Controllers
         /// <param name="constituencyRequest">The constituency request.</param>
         /// <param name="constituencyID">The constituency identifier.</param>
         /// <returns>returns the operation result</returns>
+        [Authorize]
         [HttpPut]
         public async Task<IActionResult> Update(ConstituencyRequest constituencyRequest, int constituencyID)
         {
@@ -207,14 +213,13 @@ namespace ElectionApplication.Controllers
             }
         }
 
+        [AllowAnonymous]
         [HttpGet]
-        [Route("Constituencies")]
+        [Route("Constituencies/{stateID}")]
         public async Task<IActionResult> GetConstituencies(int stateID)
         {
             try
             {
-                var accountID = HttpContext.User.Claims.First(s => s.Type == "EmailID").Value;
-
                 var records = this.constituencyBL.GetConstituenciesList(stateID);
 
                 if (records.Count > 0)

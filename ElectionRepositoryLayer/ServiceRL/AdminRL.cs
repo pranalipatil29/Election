@@ -252,368 +252,7 @@ namespace ElectionRepositoryLayer.ServiceRL
             {
                 throw new Exception(exception.Message);
             }
-        }
-
-        /// <summary>
-        /// Gets the result.
-        /// </summary>
-        /// <param name="adminID">The admin identifier.</param>
-        /// <returns>
-        /// returns result or null value
-        /// </returns>
-        /// <exception cref="Exception">
-        /// Authentication Problem
-        /// or
-        /// </exception>
-        public IList<ResultResponse> GetResult(string adminID)
-        {
-            try
-            {
-                // check whether admin data exist in the database or not
-                var admin = this.authenticationContext.AccountTable.Where(s => s.Email == adminID && s.UserType == "Admin").FirstOrDefault();
-
-                // check wheather admin data contains any null value or not
-                if (admin != null)
-                {
-                    // get the all data from result table
-                    var results = this.authenticationContext.Result.Select(s => s);
-
-                    // check wheather results contain any dataor not
-                    if (results != null)
-                    {
-                        // creating list type variable to store results
-                        var list = new List<ResultResponse>();
-
-                        // iterates the list for all results
-                        foreach (var result in results)
-                        {
-                            // get the candidate details from candidate table
-                            var candidateData = this.authenticationContext.Candidates.Where(s => s.CandidateID == result.CandidateID).FirstOrDefault();
-
-                            // get the all data to return result
-                            var data = new ResultResponse()
-                            {
-                                CandidateID = result.CandidateID,
-                                CandidateName = candidateData.CandidateName,
-                                PartyID = candidateData.PartyID,
-                                PartyName = candidateData.PartyName,
-                                StateID = candidateData.StateID,
-                                StateName = candidateData.StateName,
-                                ConstituencyID = candidateData.ConstituencyID,
-                                ConstituencyName = candidateData.ConstituencyName,
-                                Votes = result.Votes
-                            };
-
-                            // add data into list
-                            list.Add(data);
-                        }
-
-                        // return the list
-                        return list;
-                    }
-                    else
-                    {
-                        return null;
-                    }
-                }
-                else
-                {
-                    throw new Exception("Authentication Problem");
-                }
-            }
-            catch (Exception exception)
-            {
-                throw new Exception(exception.Message);
-            }
-        }
-
-        /// <summary>
-        /// Costituencywises the ressult.
-        /// </summary>
-        /// <param name="adminID">The admin identifier.</param>
-        /// <param name="constituencyID">The constituency identifier.</param>
-        /// <param name="state">The state.</param>
-        /// <returns>
-        /// returns Constituency wise result or null value
-        /// </returns>
-        /// <exception cref="Exception">
-        /// Authentication Problem
-        /// or
-        /// </exception>
-        public IList<ResultResponse> CostituencywiseRessult(string adminID, int constituencyID, int stateID)
-        {
-            try
-            {
-                // verify the admin
-                var admin = this.authenticationContext.AccountTable.Where(s => s.Email == adminID && s.UserType == "Admin").FirstOrDefault();
-
-                // check wheather admin data contains any null value or not
-                if (admin != null)
-                {
-                    // get the result 
-                    var results = GetResult(adminID);
-
-                    // check wheather the result contains any record or not
-                    if (results.Count > 0)
-                    {
-                        // creating variable to store list of response
-                        var list = new List<ResultResponse>();
-
-                        // iterates the loop for each result
-                        foreach (var result in results)
-                        {
-                            // get the cadidates info for required constituency and state
-                            var resultData = this.authenticationContext.Candidates.Where(s => s.CandidateID == result.CandidateID && s.StateID == stateID && s.ConstituencyID == constituencyID);
-
-                            // iterates the loop for each result data
-                            foreach (var candidate in resultData)
-                            {
-                                // get the data in responsse format
-                                var data = new ResultResponse()
-                                {
-                                    CandidateID = result.CandidateID,
-                                    CandidateName = candidate.CandidateName,
-                                    PartyID = candidate.PartyID,
-                                    PartyName = candidate.PartyName,
-                                    StateID = candidate.StateID,
-                                    StateName = candidate.StateName,
-                                    ConstituencyID = candidate.ConstituencyID,
-                                    ConstituencyName = candidate.ConstituencyName,
-                                    Votes = result.Votes
-                                };
-
-                                // add the data into list
-                                list.Add(data);
-                            }
-                        }
-
-                        // return list
-                        return list;
-                    }
-                    else
-                    {
-                        return null;
-                    }
-                }
-                else
-                {
-                    throw new Exception("Authentication Problem");
-                }
-            }
-            catch (Exception exception)
-            {
-                throw new Exception(exception.Message);
-            }
-        }
-
-        public IList<PartywiseResultResponse> PartywiseResult(string adminID, int stateID)
-        {
-            try
-            {
-                // verify the admin
-                var admin = this.authenticationContext.AccountTable.Where(s => s.Email == adminID && s.UserType == "Admin").FirstOrDefault();
-
-                // check wheather admin data contains any null value or not
-                if (admin != null)
-                {
-                    // creating list object to hold the count of candidates for parties
-                    var candidateCountforParty = new List<CandidatesCountForParty>();
-
-                    // creating object to hold parties response
-                    var partiesList = new List<PartyResponse>();
-
-                    // creating object to hold winner details of each constituency
-                    var candidateResultByConstituency = new List<CandidateResultByConstituency>();
-
-                    // creating object to hold final Election Result
-                    var finalResult = new List<PartywiseResultResponse>();
-
-                    // get the constituencies in required state
-                    var constituencies = this.authenticationContext.Constituencies.Where(s => s.StateID == stateID);
-
-                    // get the the parties info
-                    var parties = this.authenticationContext.Parties.Select(s => s);
-
-                    // get the candidate details in paerticular state
-                    var statewiseCandidates = this.authenticationContext.Candidates.Where(s => s.StateID == stateID);
-
-                    // this variable i used to count the candidates in each party
-                    int count = 0;
-
-                    if (statewiseCandidates.Count() > 0)
-                    {
-                        if (parties != null)
-                        {
-                            // get the Candidates ID for particular Party
-                            var ids = new List<int>();
-
-                            // iterate the loop for each party
-                            foreach (var party in parties)
-                            {
-                                // iterates the loop for each candidate in state
-                                foreach (var candidate in statewiseCandidates)
-                                {
-                                    // check the candidate party
-                                    if (party.PartyID == candidate.PartyID)
-                                    {
-                                        count = count + 1;
-                                        ids.Add(candidate.CandidateID);
-                                    }
-                                }
-
-                                // get the party details and candidate count for that party
-                                var data = new CandidatesCountForParty()
-                                {
-                                    PartyID = party.PartyID,
-                                    Count = count,
-                                    PartyName = party.PartyName
-                                };
-
-                                // add the details of party into list
-                                candidateCountforParty.Add(data);
-                                count = 0;
-                            }
-                        }
-                        else
-                        {
-                            throw new Exception("Party Record not found");
-                        }
-
-                        // check wheather sconstituencies varaiable contains any null value or not
-                        if (constituencies != null)
-                        {
-                            // iterates the loop for each Contituency record
-                            foreach (var constituency in constituencies)
-                            {
-                                // this list is used to holds the result of each constituency
-                                var list = new List<ResultResponse>();
-
-                                // get the candidates for particular Constituency
-                                var candidates = this.authenticationContext.Candidates.Where(s => s.ConstituencyID == constituency.ConstituencyID && s.StateID == stateID);
-
-                                // check wheather candidates for particular constituency are found or not
-                                if (candidates != null)
-                                {
-                                    // iterate the loop for each candidate
-                                    foreach (var candidate in candidates)
-                                    {
-                                        // get the vote count for particular candidate
-                                        var candidateVotes = this.authenticationContext.Result.Where(s => s.CandidateID == candidate.CandidateID).FirstOrDefault();
-
-                                        if (candidateVotes != null)
-                                        {
-                                            var data = new ResultResponse()
-                                            {
-                                                CandidateID = candidate.CandidateID,
-                                                CandidateName = candidate.CandidateName,
-                                                PartyID = candidate.PartyID,
-                                                PartyName = candidate.PartyName,
-                                                Votes = candidateVotes.Votes,
-                                                ConstituencyID = candidate.ConstituencyID,
-                                                ConstituencyName = candidate.ConstituencyName,
-                                                StateID = candidate.StateID,
-                                                StateName = candidate.StateName
-                                            };
-
-                                            list.Add(data);
-                                        }
-                                        else
-                                        {
-                                            throw new Exception("Elections are not Done...!");
-                                        }
-                                    }
-
-                                    // sort the candidates accourding to votes
-                                    for (int i = 0; i < list.Count - 1; i++)
-                                    {
-                                        for (int j = i + 1; j < list.Count; j++)
-                                        {
-                                            if (list[i].Votes < list[j].Votes)
-                                            {
-                                                var temp = list[i];
-                                                list[i] = list[j];
-                                                list[j] = temp;
-                                            }
-                                        }
-                                    }
-                                }
-
-                                // get the winner details of paerticular constituency
-                                var resultByConstituency = new CandidateResultByConstituency()
-                                {
-                                    ConstituencyID = constituency.ConstituencyID,
-                                    CandidtesResultByContituency = list[0]
-                                };
-
-                                // add the winner details in list
-                                candidateResultByConstituency.Add(resultByConstituency);
-                            }
-
-                            // iterates the loop for each party
-                            foreach (var party in parties)
-                            {
-                                // won variable is used to indicate how many candidates of perticular party won
-                                int won = 0;
-
-                                // loss variable is used to indicate how many candidates of perticular party loss
-                                int loss = 0;
-
-                                // iterates the loop for each record of candidateResultByConstituency to calculate winner
-                                foreach (var result in candidateResultByConstituency)
-                                {
-                                    // check the party details
-                                    if (party.PartyID == result.CandidtesResultByContituency.PartyID)
-                                    {
-                                        won = won + 1;
-                                    }
-                                }
-
-                                // iterates the loop for each record of candidateResultByConstituency to calculate loss
-                                foreach (var candidatesCount in candidateCountforParty)
-                                {
-                                    if (candidatesCount.PartyID == party.PartyID)
-                                    {
-                                        loss = candidatesCount.Count - won;
-                                    }
-                                }
-
-                                var partywiseReult = new PartywiseResultResponse()
-                                {
-                                    PartyID = party.PartyID,
-                                    PartyName = party.PartyName,
-                                    Won = won,
-                                    Loss = loss
-                                };
-
-                                if (partywiseReult.Loss != 0 || partywiseReult.Won != 0)
-                                {
-                                    finalResult.Add(partywiseReult);
-                                }
-                            }
-
-                            return finalResult;
-                        }
-                        else
-                        {
-                            throw new Exception("Constitutes for selected State not found");
-                        }
-                    }
-                    else
-                    {
-                        throw new Exception("Candidate Records not found");
-                    }
-                }
-                else
-                {
-                    throw new Exception("Authentication Problem");
-                }
-            }
-            catch (Exception exception)
-            {
-                throw new Exception(exception.Message);
-            }
-        }
-
+        }           
 
        public async Task<bool> DeleteVotingRecords(string adminID)
         {
@@ -644,6 +283,330 @@ namespace ElectionRepositoryLayer.ServiceRL
                 else
                 {
                     throw new Exception("UnAuthorized Account");
+                }
+            }
+            catch (Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
+
+        /// <summary>
+        /// Gets the result.
+        /// </summary>
+        /// <returns>
+        /// returns result or null value
+        /// </returns>
+        /// <exception cref="Exception">
+        /// Authentication Problem
+        /// or
+        /// </exception>
+        public IList<ResultResponse> GetResult()
+        {
+            try
+            {   // get the all data from result table
+                var results = this.authenticationContext.Result.Select(s => s);
+
+                // check wheather results contain any dataor not
+                if (results != null)
+                {
+                    // creating list type variable to store results
+                    var list = new List<ResultResponse>();
+
+                    // iterates the list for all results
+                    foreach (var result in results)
+                    {
+                        // get the candidate details from candidate table
+                        var candidateData = this.authenticationContext.Candidates.Where(s => s.CandidateID == result.CandidateID).FirstOrDefault();
+
+                        // get the all data to return result
+                        var data = new ResultResponse()
+                        {
+                            CandidateID = result.CandidateID,
+                            CandidateName = candidateData.CandidateName,
+                            PartyID = candidateData.PartyID,
+                            PartyName = candidateData.PartyName,
+                            StateID = candidateData.StateID,
+                            StateName = candidateData.StateName,
+                            ConstituencyID = candidateData.ConstituencyID,
+                            ConstituencyName = candidateData.ConstituencyName,
+                            Votes = result.Votes
+                        };
+
+                        // add data into list
+                        list.Add(data);
+                    }
+
+                    // return the list
+                    return list;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
+
+        /// <summary>
+        /// Costituencywises the ressult.
+        /// </summary>
+        /// <param name="constituencyID">The constituency identifier.</param>
+        /// <param name="state">The state.</param>
+        /// <returns>
+        /// returns Constituency wise result or null value
+        /// </returns>
+        /// <exception cref="Exception">
+        /// Authentication Problem
+        /// or
+        /// </exception>
+        public IList<ResultResponse> CostituencywiseRessult(int constituencyID, int stateID)
+        {
+            try
+            {
+                // get the result 
+                var results = GetResult();
+
+                // check wheather the result contains any record or not
+                if (results.Count > 0)
+                {
+                    // creating variable to store list of response
+                    var list = new List<ResultResponse>();
+
+                    // iterates the loop for each result
+                    foreach (var result in results)
+                    {
+                        // get the cadidates info for required constituency and state
+                        var resultData = this.authenticationContext.Candidates.Where(s => s.CandidateID == result.CandidateID && s.StateID == stateID && s.ConstituencyID == constituencyID);
+
+                        // iterates the loop for each result data
+                        foreach (var candidate in resultData)
+                        {
+                            // get the data in responsse format
+                            var data = new ResultResponse()
+                            {
+                                CandidateID = result.CandidateID,
+                                CandidateName = candidate.CandidateName,
+                                PartyID = candidate.PartyID,
+                                PartyName = candidate.PartyName,
+                                StateID = candidate.StateID,
+                                StateName = candidate.StateName,
+                                ConstituencyID = candidate.ConstituencyID,
+                                ConstituencyName = candidate.ConstituencyName,
+                                Votes = result.Votes
+                            };
+
+                            // add the data into list
+                            list.Add(data);
+                        }
+                    }
+
+                    // return list
+                    return list;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
+
+        public IList<PartywiseResultResponse> PartywiseResult(int stateID)
+        {
+            try
+            {
+                // creating list object to hold the count of candidates for parties
+                var candidateCountforParty = new List<CandidatesCountForParty>();
+
+                // creating object to hold parties response
+                var partiesList = new List<PartyResponse>();
+
+                // creating object to hold winner details of each constituency
+                var candidateResultByConstituency = new List<CandidateResultByConstituency>();
+
+                // creating object to hold final Election Result
+                var finalResult = new List<PartywiseResultResponse>();
+
+                // get the constituencies in required state
+                var constituencies = this.authenticationContext.Constituencies.Where(s => s.StateID == stateID);
+
+                // get the the parties info
+                var parties = this.authenticationContext.Parties.Select(s => s);
+
+                // get the candidate details in paerticular state
+                var statewiseCandidates = this.authenticationContext.Candidates.Where(s => s.StateID == stateID);
+
+                // this variable i used to count the candidates in each party
+                int count = 0;
+
+                if (statewiseCandidates.Count() > 0)
+                {
+                    if (parties != null)
+                    {
+                        // get the Candidates ID for particular Party
+                        var ids = new List<int>();
+
+                        // iterate the loop for each party
+                        foreach (var party in parties)
+                        {
+                            // iterates the loop for each candidate in state
+                            foreach (var candidate in statewiseCandidates)
+                            {
+                                // check the candidate party
+                                if (party.PartyID == candidate.PartyID)
+                                {
+                                    count = count + 1;
+                                    ids.Add(candidate.CandidateID);
+                                }
+                            }
+
+                            // get the party details and candidate count for that party
+                            var data = new CandidatesCountForParty()
+                            {
+                                PartyID = party.PartyID,
+                                Count = count,
+                                PartyName = party.PartyName
+                            };
+
+                            // add the details of party into list
+                            candidateCountforParty.Add(data);
+                            count = 0;
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("Party Record not found");
+                    }
+
+                    // check wheather sconstituencies varaiable contains any null value or not
+                    if (constituencies != null)
+                    {
+                        // iterates the loop for each Contituency record
+                        foreach (var constituency in constituencies)
+                        {
+                            // this list is used to holds the result of each constituency
+                            var list = new List<ResultResponse>();
+
+                            // get the candidates for particular Constituency
+                            var candidates = this.authenticationContext.Candidates.Where(s => s.ConstituencyID == constituency.ConstituencyID && s.StateID == stateID);
+
+                            // check wheather candidates for particular constituency are found or not
+                            if (candidates != null)
+                            {
+                                // iterate the loop for each candidate
+                                foreach (var candidate in candidates)
+                                {
+                                    // get the vote count for particular candidate
+                                    var candidateVotes = this.authenticationContext.Result.Where(s => s.CandidateID == candidate.CandidateID).FirstOrDefault();
+
+                                    if (candidateVotes != null)
+                                    {
+                                        var data = new ResultResponse()
+                                        {
+                                            CandidateID = candidate.CandidateID,
+                                            CandidateName = candidate.CandidateName,
+                                            PartyID = candidate.PartyID,
+                                            PartyName = candidate.PartyName,
+                                            Votes = candidateVotes.Votes,
+                                            ConstituencyID = candidate.ConstituencyID,
+                                            ConstituencyName = candidate.ConstituencyName,
+                                            StateID = candidate.StateID,
+                                            StateName = candidate.StateName
+                                        };
+
+                                        list.Add(data);
+                                    }
+                                    else
+                                    {
+                                        throw new Exception("Elections are not Done...!");
+                                    }
+                                }
+
+                                // sort the candidates accourding to votes
+                                for (int i = 0; i < list.Count - 1; i++)
+                                {
+                                    for (int j = i + 1; j < list.Count; j++)
+                                    {
+                                        if (list[i].Votes < list[j].Votes)
+                                        {
+                                            var temp = list[i];
+                                            list[i] = list[j];
+                                            list[j] = temp;
+                                        }
+                                    }
+                                }
+                            }
+
+                            // get the winner details of paerticular constituency
+                            var resultByConstituency = new CandidateResultByConstituency()
+                            {
+                                ConstituencyID = constituency.ConstituencyID,
+                                CandidtesResultByContituency = list[0]
+                            };
+
+                            // add the winner details in list
+                            candidateResultByConstituency.Add(resultByConstituency);
+                        }
+
+                        // iterates the loop for each party
+                        foreach (var party in parties)
+                        {
+                            // won variable is used to indicate how many candidates of perticular party won
+                            int won = 0;
+
+                            // loss variable is used to indicate how many candidates of perticular party loss
+                            int loss = 0;
+
+                            // iterates the loop for each record of candidateResultByConstituency to calculate winner
+                            foreach (var result in candidateResultByConstituency)
+                            {
+                                // check the party details
+                                if (party.PartyID == result.CandidtesResultByContituency.PartyID)
+                                {
+                                    won = won + 1;
+                                }
+                            }
+
+                            // iterates the loop for each record of candidateResultByConstituency to calculate loss
+                            foreach (var candidatesCount in candidateCountforParty)
+                            {
+                                if (candidatesCount.PartyID == party.PartyID)
+                                {
+                                    loss = candidatesCount.Count - won;
+                                }
+                            }
+
+                            var partywiseReult = new PartywiseResultResponse()
+                            {
+                                PartyID = party.PartyID,
+                                PartyName = party.PartyName,
+                                Won = won,
+                                Loss = loss
+                            };
+
+                            if (partywiseReult.Loss != 0 || partywiseReult.Won != 0)
+                            {
+                                finalResult.Add(partywiseReult);
+                            }
+                        }
+
+                        return finalResult;
+                    }
+                    else
+                    {
+                        throw new Exception("Constitutes for selected State not found");
+                    }
+                }
+                else
+                {
+                    throw new Exception("Candidate Records not found");
                 }
             }
             catch (Exception exception)

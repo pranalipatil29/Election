@@ -113,23 +113,6 @@ namespace ElectionRepositoryLayer.Migrations
                     b.ToTable("Parties");
                 });
 
-            modelBuilder.Entity("ElectionCommonLayer.Model.PartywiseResultModel", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("Loss");
-
-                    b.Property<int>("PartyID");
-
-                    b.Property<int>("Won");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("PartywiseResults");
-                });
-
             modelBuilder.Entity("ElectionCommonLayer.Model.ResultModel", b =>
                 {
                     b.Property<int>("ID")

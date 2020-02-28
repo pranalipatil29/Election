@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace ElectionRepositoryLayer.ServiceRL
 {
-   public class StateRL :IStateRL
+    public class StateRL : IStateRL
     {
         /// <summary>
         /// creating reference of authentication context class
@@ -83,49 +83,39 @@ namespace ElectionRepositoryLayer.ServiceRL
             }
         }
 
-        public IList<StateResponse> DisplayStates(string emailID)
+        public IList<StateResponse> DisplayStates()
         {
             try
             {
-                // get the admin data
-                var adminData = this.userManager.Users.Where(s => s.Email == emailID && s.UserType == "Admin").FirstOrDefault();
+                // get the record from States table
+                var data = this.authenticationContext.States.Select(s => s);
 
-                // check wheather admin record is found or not
-                if (adminData != null)
+                // create variable to store list of States info
+                var list = new List<StateResponse>();
+
+                // check wheather the data contains any null value or not
+                if (data != null)
                 {
-                    // get the record from States table
-                    var data = this.authenticationContext.States.Select(s => s);
-
-                    // create variable to store list of States info
-                    var list = new List<StateResponse>();
-
-                    // check wheather the data contains any null value or not
-                    if (data != null)
+                    // iterates the loop for each record
+                    foreach (var record in data)
                     {
-                        // iterates the loop for each record
-                        foreach (var record in data)
+                        var state = new StateResponse()
                         {
-                            var state = new StateResponse()
-                            {
-                                StateID = record.StateID,
-                                StateName = record.StateName
-                            };
+                            StateID = record.StateID,
+                            StateName = record.StateName
+                        };
 
-                            // add the record in list
-                            list.Add(state);
-                        }
+                        // add the record in list
+                        list.Add(state);
+                    }
 
-                        return list;
-                    }
-                    else
-                    {
-                        return null;
-                    }
+                    return list;
                 }
                 else
                 {
-                    throw new Exception("Not Authorized Account");
+                    return null;
                 }
+
             }
             catch (Exception exception)
             {
@@ -148,7 +138,7 @@ namespace ElectionRepositoryLayer.ServiceRL
 
                     // check wheather any record for State found or not
                     if (record != null)
-                    {                        
+                    {
                         // remove the record from States table
                         this.authenticationContext.States.Remove(record);
 

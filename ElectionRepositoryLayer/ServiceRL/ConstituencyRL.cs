@@ -82,7 +82,6 @@ namespace ElectionRepositoryLayer.ServiceRL
 
                         if (state != null)
                         {
-
                             // get the required data
                             var data = new ConstituencyModel()
                             {

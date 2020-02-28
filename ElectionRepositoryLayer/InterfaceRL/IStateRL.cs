@@ -19,9 +19,8 @@ namespace ElectionRepositoryLayer.InterfaceRL
         /// <summary>
         /// Displays the state.
         /// </summary>
-        /// <param name="adminID">The admin identifier.</param>
         /// <returns>return states info or null value</returns>
-        IList<StateResponse> DisplayStates(string adminID);
+        IList<StateResponse> DisplayStates();
 
         /// <summary>
         /// Deletes the state.

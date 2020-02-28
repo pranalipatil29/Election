@@ -55,14 +55,13 @@ namespace ElectionBusinessLayer.ServiceBL
         /// <summary>
         /// Displays the states.
         /// </summary>
-        /// <param name="adminID">The admin identifier.</param>
         /// <returns>return states info or null value</returns>
         /// <exception cref="Exception"></exception>
-        public IList<StateResponse> DisplayStates(string adminID)
+        public IList<StateResponse> DisplayStates()
         {
             try
             {
-                return this.stateRL.DisplayStates(adminID);
+                return this.stateRL.DisplayStates();
             }
             catch (Exception exception)
             {

@@ -146,9 +146,7 @@ namespace ElectionApplication.Controllers
         {
             try
             {
-                var adminID = HttpContext.User.Claims.First(s => s.Type == "EmailID").Value;
-
-                var result = this.adminBL.GetResult(adminID);
+                var result = this.adminBL.GetResult();
 
                 if (result.Count > 0)
                 {
@@ -171,15 +169,14 @@ namespace ElectionApplication.Controllers
         /// <param name="contituencyID">The contituency identifier.</param>
         /// <param name="stateID">The state identifier.</param>
         /// <returns>returns operation result</returns>
+        [AllowAnonymous]
         [HttpGet]
-        [Route("ConstituencywieResult")]
+        [Route("ConstituencywieResult/{stateID}/{contituencyID}")]
         public async Task<IActionResult> GetConstituencywiseResult(int contituencyID, int stateID)
         {
             try
             {
-                var adminID = HttpContext.User.Claims.First(s => s.Type == "EmailID").Value;
-
-                var result = this.adminBL.CostituencywiseRessult(adminID, contituencyID, stateID);
+                var result = this.adminBL.CostituencywiseRessult(contituencyID, stateID);
 
                 if (result.Count > 0)
                 {
@@ -187,7 +184,7 @@ namespace ElectionApplication.Controllers
                 }
                 else
                 {
-                    return this.BadRequest(new { success = false, message = "Failed to Get Result" });
+                    return this.BadRequest(new { success = false, message = "Election are not Done..!" });
                 }
             }
             catch (Exception exception)
@@ -196,15 +193,15 @@ namespace ElectionApplication.Controllers
             }
         }
 
+        [AllowAnonymous]
         [HttpGet]
-        [Route("PartywieResult")]
+        [Route("PartywieResult/{stateID}")]
         public async Task<IActionResult> GetPartywiseResult(int stateID)
         {
             try
             {
-                var adminID = HttpContext.User.Claims.First(s => s.Type == "EmailID").Value;
 
-                var result = this.adminBL.PartywiseResult(adminID, stateID);
+                var result = this.adminBL.PartywiseResult(stateID);
 
                 if (result.Count > 0)
                 {
@@ -221,6 +218,7 @@ namespace ElectionApplication.Controllers
             }
         }
 
+        [Authorize]
         [HttpPut]
         [Route("ClearVotes")]
         public async Task<IActionResult> ClearVotes()
