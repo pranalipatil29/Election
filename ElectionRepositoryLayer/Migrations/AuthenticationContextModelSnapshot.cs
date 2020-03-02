@@ -149,6 +149,28 @@ namespace ElectionRepositoryLayer.Migrations
                     b.ToTable("States");
                 });
 
+            modelBuilder.Entity("ElectionCommonLayer.Model.UserModel", b =>
+                {
+                    b.Property<int>("UserID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("MobileNumber")
+                        .IsRequired();
+
+                    b.Property<int?>("Vote");
+
+                    b.HasKey("UserID");
+
+                    b.ToTable("User");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -330,8 +352,7 @@ namespace ElectionRepositoryLayer.Migrations
                         .HasColumnType("nvarchar(150)");
 
                     b.Property<string>("MobileNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(150)");
+                        .IsRequired();
 
                     b.Property<string>("ProfilePicture")
                         .HasColumnType("nvarchar(150)");

@@ -193,7 +193,7 @@ namespace ElectionBusinessLayer.ServiceBL
                     throw new Exception("UnAuthorized Account info");
                 }
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 throw new Exception(exception.Message);
             }
@@ -221,17 +221,17 @@ namespace ElectionBusinessLayer.ServiceBL
         /// <summary>
         /// Costituencywises the ressult.
         /// </summary>
-        /// <param name="constituencyID">The constituency identifier.</param>
         /// <param name="stateID">The state identifier.</param>
+        /// <param name="constituencyID">The constituency identifier.</param>
         /// <returns>
         /// return Constituency wise result or null value
         /// </returns>
         /// <exception cref="Exception">return exception</exception>
-        public IList<ResultResponse> CostituencywiseRessult(int constituencyID, int stateID)
+        public IList<ResultResponse> CostituencywiseRessult(int stateID, int constituencyID)
         {
             try
             {
-                return this.adminRL.CostituencywiseRessult(constituencyID, stateID);
+                return this.adminRL.CostituencywiseRessult(stateID, constituencyID);
             }
             catch (Exception exception)
             {

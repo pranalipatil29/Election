@@ -166,17 +166,17 @@ namespace ElectionApplication.Controllers
         /// <summary>
         /// Gets the constituencywise result.
         /// </summary>
-        /// <param name="contituencyID">The contituency identifier.</param>
         /// <param name="stateID">The state identifier.</param>
+        /// <param name="contituencyID">The contituency identifier.</param>
         /// <returns>returns operation result</returns>
         [AllowAnonymous]
         [HttpGet]
-        [Route("ConstituencywieResult/{stateID}/{contituencyID}")]
-        public async Task<IActionResult> GetConstituencywiseResult(int contituencyID, int stateID)
+        [Route("ConstituencywieResult/{stateID}/{constituencyID}")]
+        public async Task<IActionResult> GetConstituencywiseResult(int stateID, int constituencyID)
         {
             try
             {
-                var result = this.adminBL.CostituencywiseRessult(contituencyID, stateID);
+                var result = this.adminBL.CostituencywiseRessult(stateID, constituencyID);
 
                 if (result.Count > 0)
                 {

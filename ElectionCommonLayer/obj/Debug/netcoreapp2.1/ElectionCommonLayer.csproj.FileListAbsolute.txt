@@ -3,9 +3,9 @@ C:\Users\User\source\repos\ElectionApplication\ElectionCommonLayer\bin\Debug\net
 C:\Users\User\source\repos\ElectionApplication\ElectionCommonLayer\bin\Debug\netcoreapp2.1\ElectionCommonLayer.runtimeconfig.dev.json
 C:\Users\User\source\repos\ElectionApplication\ElectionCommonLayer\bin\Debug\netcoreapp2.1\ElectionCommonLayer.dll
 C:\Users\User\source\repos\ElectionApplication\ElectionCommonLayer\bin\Debug\netcoreapp2.1\ElectionCommonLayer.pdb
+C:\Users\User\source\repos\ElectionApplication\ElectionCommonLayer\obj\Debug\netcoreapp2.1\ElectionCommonLayer.csprojAssemblyReference.cache
 C:\Users\User\source\repos\ElectionApplication\ElectionCommonLayer\obj\Debug\netcoreapp2.1\ElectionCommonLayer.csproj.CoreCompileInputs.cache
 C:\Users\User\source\repos\ElectionApplication\ElectionCommonLayer\obj\Debug\netcoreapp2.1\ElectionCommonLayer.AssemblyInfoInputs.cache
 C:\Users\User\source\repos\ElectionApplication\ElectionCommonLayer\obj\Debug\netcoreapp2.1\ElectionCommonLayer.AssemblyInfo.cs
 C:\Users\User\source\repos\ElectionApplication\ElectionCommonLayer\obj\Debug\netcoreapp2.1\ElectionCommonLayer.dll
 C:\Users\User\source\repos\ElectionApplication\ElectionCommonLayer\obj\Debug\netcoreapp2.1\ElectionCommonLayer.pdb
-C:\Users\User\source\repos\ElectionApplication\ElectionCommonLayer\obj\Debug\netcoreapp2.1\ElectionCommonLayer.csprojAssemblyReference.cache

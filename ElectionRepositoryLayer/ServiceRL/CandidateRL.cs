@@ -83,87 +83,156 @@ namespace ElectionRepositoryLayer.ServiceRL
                     {
                         if (candidateRequest.MobileNumber != null && candidateRequest.MobileNumber != string.Empty)
                         {
-                            // get candidate details from Account table
-                            var user = this.authenticationContext.AccountTable.Where(s => s.MobileNumber == candidateRequest.MobileNumber).FirstOrDefault();
+                            // get candidate details from User table
+                            var user = this.authenticationContext.User.Where(s => s.MobileNumber == candidateRequest.MobileNumber).FirstOrDefault();
+
+                            if (user == null)
+                            {
+                                // get data of new candidate to store that record in User table
+                                var userData = new UserModel()
+                                {
+                                    MobileNumber = candidateRequest.MobileNumber,
+                                    Vote = 0,
+                                    FirstName = candidateRequest.FirstName,
+                                    LastName = candidateRequest.LastName
+                                };
+
+                                // adding candidate record into user table
+                                this.authenticationContext.User.Add(userData);
+                                await this.authenticationContext.SaveChangesAsync();
+
+                                var result = await AddCandidate(userData.UserID, candidateRequest);
+
+                                if (result)
+                                {
+                                    return true;
+                                }
+                                else
+                                {
+                                    return false;
+                                }
+                            }
 
                             // check wheather user is exit or not
                             if (user != null)
                             {
-                                // get constituency details from constituency table
-                                var constituency = this.authenticationContext.Constituencies.Where(s => s.ConstituencyID == candidateRequest.ConstituencyID && s.StateID == candidateRequest.StateID).FirstOrDefault();
+                                var result = await AddCandidate(user.UserID, candidateRequest);
 
-                                // get party details from Party table
-                                var party = this.authenticationContext.Parties.Where(s => s.PartyID == candidateRequest.PartyID).FirstOrDefault();
-
-                                // get state details
-                                var state = this.authenticationContext.States.Where(s => s.StateID == candidateRequest.StateID).FirstOrDefault();
-
-                                var userName = user.FirstName + " " + user.LastName;
-
-                                if (state != null)
+                                if (result)
                                 {
-                                    // check wheather constituency is registered or not
-                                    if (constituency != null)
-                                    {
-                                        // check wheather Party is registered or not
-                                        if (party != null)
-                                        {
-                                            // get the required data
-                                            var data = new CandidateModel()
-                                            {
-                                                CandidateName = userName,
-                                                PartyID = candidateRequest.PartyID,
-                                                PartyName = party.PartyName,
-                                                MobileNumber = candidateRequest.MobileNumber,
-                                                ConstituencyID = candidateRequest.ConstituencyID,
-                                                StateID = state.StateID,
-                                                StateName = state.StateName,
-                                                ConstituencyName = constituency.ConstituencyName,
-                                                CreatedDate = DateTime.Now,
-                                                ModifiedDate = DateTime.Now
-                                            };
-
-                                            // add data in candidate table
-                                            this.authenticationContext.Candidates.Add(data);
-
-                                            // save the change into database
-                                            await this.authenticationContext.SaveChangesAsync();
-
-                                            return true;
-                                        }
-                                        else
-                                        {
-                                            throw new Exception("Party Does Not Exist");
-                                        }
-                                    }
-                                    else
-                                    {
-                                        throw new Exception("Constituency Name not Exist");
-                                    }
+                                    return true;
                                 }
                                 else
                                 {
-                                    throw new Exception("State record not found");
-                                }                                
+                                    return false;
+                                }
                             }
-                            else
-                            {
-                                throw new Exception("Candidate not found");
-                            }
+
+                            return true;
                         }
                         else
                         {
-                            throw new Exception("Candidate Mobile Number Required");
+                            throw new Exception("Mobile Number is Required");
                         }
                     }
                     else
                     {
-                        throw new Exception("Candidate Record Already Exist");
+                        throw new Exception("Candidate Record already exist");
                     }
                 }
                 else
                 {
                     throw new Exception("Not Authorized Account");
+                }
+            }
+            catch (Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
+
+        private async Task<bool> AddCandidate(int userID, CandidateRequest candidateRequest)
+        {
+            try
+            {
+                // get candidate details from User table
+                var user = this.authenticationContext.User.Where(s => s.UserID == userID).FirstOrDefault();
+
+                // get the candidate details from candidate table
+                var candidate = this.authenticationContext.Candidates.Where(s => s.MobileNumber == candidateRequest.MobileNumber).FirstOrDefault();
+
+                // get candidate record same constituency & party
+                var checkCandidate = this.authenticationContext.Candidates.Where(s => s.ConstituencyID == candidateRequest.ConstituencyID && s.PartyID == candidateRequest.PartyID).FirstOrDefault();
+
+                // get constituency details from constituency table
+                var constituency = this.authenticationContext.Constituencies.Where(s => s.ConstituencyID == candidateRequest.ConstituencyID && s.StateID == candidateRequest.StateID).FirstOrDefault();
+
+                // get party details from Party table
+                var party = this.authenticationContext.Parties.Where(s => s.PartyID == candidateRequest.PartyID).FirstOrDefault();
+
+                // get state details
+                var state = this.authenticationContext.States.Where(s => s.StateID == candidateRequest.StateID).FirstOrDefault();
+
+                var userName = user.FirstName + " " + user.LastName;
+
+                if (state != null)
+                {
+                    // check wheather constituency is registered or not
+                    if (constituency != null)
+                    {
+                        // check wheather Party is registered or not
+                        if (party != null)
+                        {
+                            if (checkCandidate == null)
+                            {
+                                if (candidate == null)
+                                {
+                                    // get the required data
+                                    var data = new CandidateModel()
+                                    {
+                                        CandidateName = userName,
+                                        PartyID = candidateRequest.PartyID,
+                                        PartyName = party.PartyName,
+                                        MobileNumber = candidateRequest.MobileNumber,
+                                        ConstituencyID = candidateRequest.ConstituencyID,
+                                        StateID = state.StateID,
+                                        StateName = state.StateName,
+                                        ConstituencyName = constituency.ConstituencyName,
+                                        CreatedDate = DateTime.Now,
+                                        ModifiedDate = DateTime.Now
+                                    };
+
+                                    // add data in candidate table
+                                    this.authenticationContext.Candidates.Add(data);
+
+                                    // save the change into database
+                                    await this.authenticationContext.SaveChangesAsync();
+
+                                    return true;
+                                }
+                                else
+                                {
+                                    throw new Exception("Candidate Record already Exist");
+                                }
+                            }
+                            else
+                            {
+                                throw new Exception("Candidate record present for selected party & Constituency");
+                            }
+                        }
+                        else
+                        {
+                            throw new Exception("Party Does Not Exist");
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("Constituency Name not Exist");
+                    }
+                }
+                else
+                {
+                    throw new Exception("State record not found");
                 }
             }
             catch (Exception exception)
@@ -368,7 +437,7 @@ namespace ElectionRepositoryLayer.ServiceRL
                 {
                     // get the candidate data
                     var candidateInfo = this.authenticationContext.Candidates.Where(s => s.CandidateID == candidateID).FirstOrDefault();
-                    
+
                     // check wheather any record for candidate found or not
                     if (candidateInfo != null)
                     {
@@ -387,9 +456,9 @@ namespace ElectionRepositoryLayer.ServiceRL
                                 account.FirstName = updateRequest.FirstName;
                                 name = updateRequest.FirstName + " " + account.LastName;
                                 candidateInfo.CandidateName = name;
-                                
+
                                 this.authenticationContext.AccountTable.Update(account);
-                                await this.authenticationContext.SaveChangesAsync();                              
+                                await this.authenticationContext.SaveChangesAsync();
                             }
 
                             // check request for only changing last name
@@ -415,7 +484,7 @@ namespace ElectionRepositoryLayer.ServiceRL
                                 this.authenticationContext.AccountTable.Update(account);
                                 await this.authenticationContext.SaveChangesAsync();
                             }
-                        }                       
+                        }
 
                         // check wheather Constituency ID  By property contains any null or empty value
                         if (updateRequest.ConstituencyID > 0)
@@ -442,7 +511,7 @@ namespace ElectionRepositoryLayer.ServiceRL
                             else
                             {
                                 throw new Exception("Candidate Already regiter for this Constituency by user Party");
-                            }                          
+                            }
                         }
 
                         // check wheather Party ID By property contains any null or empty value

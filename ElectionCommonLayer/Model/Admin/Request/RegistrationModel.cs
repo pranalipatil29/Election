@@ -76,6 +76,7 @@ namespace ElectionCommonLayer.Model.Admin.Request
         /// The voter identifier.
         /// </value>
         [Required]
+        [DataType(DataType.PhoneNumber)]
         public string MobileNumber { get; set; }
 
         /// <summary>

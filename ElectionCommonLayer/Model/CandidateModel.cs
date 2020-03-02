@@ -52,6 +52,7 @@ namespace ElectionCommonLayer.Model
         /// </value>
         [Required]
         [ForeignKey("ApplicationModel")]
+        [DataType(DataType.PhoneNumber)]
         public string MobileNumber { get; set; }
 
         /// <summary>

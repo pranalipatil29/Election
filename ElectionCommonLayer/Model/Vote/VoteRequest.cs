@@ -8,6 +8,14 @@ namespace ElectionCommonLayer.Model.Vote
    public class VoteRequest
     {
         /// <summary>
+        /// Gets or sets the mobile number.
+        /// </summary>
+        /// <value>
+        /// The mobile number.
+        /// </value>
+        public string MobileNumber { get; set; }
+        
+        /// <summary>
         /// Gets or sets the candidate identifier.
         /// </summary>
         /// <value>

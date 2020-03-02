@@ -252,9 +252,9 @@ namespace ElectionRepositoryLayer.ServiceRL
             {
                 throw new Exception(exception.Message);
             }
-        }           
+        }
 
-       public async Task<bool> DeleteVotingRecords(string adminID)
+        public async Task<bool> DeleteVotingRecords(string adminID)
         {
             try
             {
@@ -266,10 +266,10 @@ namespace ElectionRepositoryLayer.ServiceRL
 
                     if (users.Count() > 0)
                     {
-                        foreach(var record in users)
+                        foreach (var record in users)
                         {
                             record.Vote = 0;
-                            this.authenticationContext.AccountTable.Update(record);                           
+                            this.authenticationContext.AccountTable.Update(record);
                         }
 
                         await this.authenticationContext.SaveChangesAsync();
@@ -354,8 +354,8 @@ namespace ElectionRepositoryLayer.ServiceRL
         /// <summary>
         /// Costituencywises the ressult.
         /// </summary>
-        /// <param name="constituencyID">The constituency identifier.</param>
         /// <param name="state">The state.</param>
+        /// <param name="constituencyID">The constituency identifier.</param>
         /// <returns>
         /// returns Constituency wise result or null value
         /// </returns>
@@ -363,54 +363,90 @@ namespace ElectionRepositoryLayer.ServiceRL
         /// Authentication Problem
         /// or
         /// </exception>
-        public IList<ResultResponse> CostituencywiseRessult(int constituencyID, int stateID)
+        public IList<ResultResponse> CostituencywiseRessult(int stateID, int constituencyID)
         {
             try
             {
-                // get the result 
-                var results = GetResult();
+                // get the selected state info
+                var state = this.authenticationContext.States.Where(s => s.StateID == stateID).FirstOrDefault();
 
-                // check wheather the result contains any record or not
-                if (results.Count > 0)
+                // get the selected Constituency info
+                var constituency = this.authenticationContext.Constituencies.Where(s => s.ConstituencyID == constituencyID && s.StateID == stateID).FirstOrDefault();
+
+                // creating variable to store list of response
+                var list = new List<ResultResponse>();
+
+                // flag is used to indicate wheather elections are done or not in perticular state
+                bool flag = true;
+
+                // check wheather user entered state record if found in state table
+                if (state == null)
                 {
-                    // creating variable to store list of response
-                    var list = new List<ResultResponse>();
+                    throw new Exception("State record not present");
+                }
 
-                    // iterates the loop for each result
-                    foreach (var result in results)
+                // check wheather user entered Constituency record if found in Constituencies table
+                if (constituency == null)
+                {
+                    throw new Exception("Constituency record not present for selected state");
+                }
+
+                // varify user entered constituency & state record are found 
+                if (constituency != null && state != null)
+                {
+                    // get the candidates for user entered constituency
+                    var candidates = this.authenticationContext.Candidates.Where(s => s.ConstituencyID == constituencyID && s.StateID == stateID);
+
+                    // check wheather candidates records are found for seleceted constituency
+                    if (candidates != null)
                     {
-                        // get the cadidates info for required constituency and state
-                        var resultData = this.authenticationContext.Candidates.Where(s => s.CandidateID == result.CandidateID && s.StateID == stateID && s.ConstituencyID == constituencyID);
-
-                        // iterates the loop for each result data
-                        foreach (var candidate in resultData)
+                        // iterate the loop for each candidate record
+                        foreach (var candidate in candidates)
                         {
-                            // get the data in responsse format
-                            var data = new ResultResponse()
-                            {
-                                CandidateID = result.CandidateID,
-                                CandidateName = candidate.CandidateName,
-                                PartyID = candidate.PartyID,
-                                PartyName = candidate.PartyName,
-                                StateID = candidate.StateID,
-                                StateName = candidate.StateName,
-                                ConstituencyID = candidate.ConstituencyID,
-                                ConstituencyName = candidate.ConstituencyName,
-                                Votes = result.Votes
-                            };
+                            // get the votes for perticular candidate from result table
+                            var candidateResult = this.authenticationContext.Result.Where(s => s.CandidateID == candidate.CandidateID).FirstOrDefault();
 
-                            // add the data into list
-                            list.Add(data);
+                            // check wheather result table contains record for perticular candidate
+                            if (candidateResult == null)
+                            {
+                                // if candidateResult holds null value set flag as false to indicate elections record for perticular candidate is not found
+                                flag = false;
+                            }
+                            else
+                            {
+                                flag = true;
+                                // get the data in responsse format
+                                var data = new ResultResponse()
+                                {
+                                    CandidateID = candidateResult.CandidateID,
+                                    CandidateName = candidate.CandidateName,
+                                    PartyID = candidate.PartyID,
+                                    PartyName = candidate.PartyName,
+                                    StateID = candidate.StateID,
+                                    StateName = candidate.StateName,
+                                    ConstituencyID = candidate.ConstituencyID,
+                                    ConstituencyName = candidate.ConstituencyName,
+                                    Votes = candidateResult.Votes
+                                };
+
+                                // add the data into list
+                                list.Add(data);
+                            }
+                        }
+
+                        // check wheather flag indicates true or false
+                        if (!flag)
+                        {
+                            throw new Exception("Elections are not done in this state..!");
                         }
                     }
+                    else
+                    {
+                        throw new Exception("Candidates record not present for selected state");
+                    }
+                }
 
-                    // return list
-                    return list;
-                }
-                else
-                {
-                    return null;
-                }
+                return list;
             }
             catch (Exception exception)
             {
@@ -418,6 +454,23 @@ namespace ElectionRepositoryLayer.ServiceRL
             }
         }
 
+        /// <summary>
+        /// Partywises the result.
+        /// </summary>
+        /// <param name="stateID">The state identifier.</param>
+        /// <returns>
+        /// return the result or null value
+        /// </returns>
+        /// <exception cref="Exception">
+        /// Party Record not found
+        /// or
+        /// Elections are not Done...!
+        /// or
+        /// Constitutes for selected State not found
+        /// or
+        /// Candidate Records not found
+        /// or
+        /// </exception>
         public IList<PartywiseResultResponse> PartywiseResult(int stateID)
         {
             try

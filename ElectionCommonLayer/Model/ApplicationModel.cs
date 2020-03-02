@@ -67,7 +67,7 @@ namespace ElectionCommonLayer.Model
         /// The voter identifier.
         /// </value>
         [Required]
-        [Column(TypeName = "nvarchar(150)")]
+        [DataType(DataType.PhoneNumber)]
         public string MobileNumber { get; set; }
 
         /// <summary>

@@ -67,11 +67,11 @@ namespace ElectionBusinessLayer.InterfaceBL
 
         /// <summary>
         /// Costituencywises the ressult.
-        /// </summary>
-        /// <param name="constituencyID">The constituency identifier.</param>
+        /// </summary>       
         /// <param name="stateID">The state identifier.</param>
+        /// <param name="constituencyID">The constituency identifier.</param>
         /// <returns>returns Constituency wise result or null value</returns>
-        IList<ResultResponse> CostituencywiseRessult(int constituencyID, int stateID);
+        IList<ResultResponse> CostituencywiseRessult(int stateID, int constituencyID);
 
         /// <summary>
         /// Partywises the result.
