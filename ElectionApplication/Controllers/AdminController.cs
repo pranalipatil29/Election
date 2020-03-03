@@ -200,9 +200,10 @@ namespace ElectionApplication.Controllers
         {
             try
             {
-
+                // get the election result by Party wise
                 var result = this.adminBL.PartywiseResult(stateID);
 
+                // check wheather result contains any record or not
                 if (result.Count > 0)
                 {
                     return this.Ok(new { success = true, result });
@@ -218,6 +219,10 @@ namespace ElectionApplication.Controllers
             }
         }
 
+        /// <summary>
+        /// Clears the votes.
+        /// </summary>
+        /// <returns>returns the operation result</returns>
         [Authorize]
         [HttpPut]
         [Route("ClearVotes")]
@@ -225,10 +230,13 @@ namespace ElectionApplication.Controllers
         {
             try
             {
+                // get the admin Email ID
                 var adminID = HttpContext.User.Claims.First(s => s.Type == "EmailID").Value;
 
+                // get the operation result
                 var result = await this.adminBL.DeleteVotingRecords(adminID);
 
+                // check wheather result indicate true or false
                 if (result)
                 {
                     return this.Ok(new { success = true, message = "Successfully Clear All Voting Records" });

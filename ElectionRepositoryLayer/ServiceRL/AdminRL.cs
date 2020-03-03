@@ -644,12 +644,15 @@ namespace ElectionRepositoryLayer.ServiceRL
                                 Loss = loss
                             };
 
+                            // check party have won or loss at least 1 seat or not
                             if (partywiseReult.Loss != 0 || partywiseReult.Won != 0)
                             {
+                                // add the party record in list
                                 finalResult.Add(partywiseReult);
                             }
                         }
 
+                        // return the list containing each parties election result
                         return finalResult;
                     }
                     else

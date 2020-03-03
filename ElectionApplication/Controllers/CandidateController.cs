@@ -221,7 +221,7 @@ namespace ElectionApplication.Controllers
         /// <returns>returns the result indicating operation result</returns>
         [AllowAnonymous]
         [HttpGet]
-        [Route("CandidatesInConstituency")]
+        [Route("CandidatesInConstituency/{constituencyID}/{stateID}")]
         public async Task<IActionResult> GetCandidatesInConstituency(int constituencyID, int stateID)
         {
             try

@@ -13,7 +13,17 @@ namespace ElectionCommonLayer.Model.Vote
         /// <value>
         /// The mobile number.
         /// </value>
+        [Required]
         public string MobileNumber { get; set; }
+
+        /// <summary>
+        /// Gets or sets the state identifier.
+        /// </summary>
+        /// <value>
+        /// The state identifier.
+        /// </value>
+        [Required]
+        public int StateID { get; set; }
         
         /// <summary>
         /// Gets or sets the candidate identifier.
@@ -31,6 +41,6 @@ namespace ElectionCommonLayer.Model.Vote
         /// The constatuency identifier.
         /// </value>
         [Required]
-        public int ConstatuencyID { get; set; }
+        public int ConstituencyID { get; set; }
     }
 }

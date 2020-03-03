@@ -42,7 +42,7 @@ namespace ElectionCommonLayer.Model
         /// The mobile number.
         /// </value>
         [Required]
-        [DataType(DataType.PhoneNumber)]
+        [Phone]
         public string MobileNumber { get; set; }
 
         /// <summary>

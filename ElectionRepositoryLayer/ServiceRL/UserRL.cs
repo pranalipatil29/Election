@@ -128,9 +128,9 @@ namespace ElectionRepositoryLayer.ServiceRL
 
                 if (user != null)
                 {
-                    if (voteRequest.CandidateID > 0 && voteRequest.ConstatuencyID > 0)
+                    if (voteRequest.CandidateID > 0 && voteRequest.ConstituencyID > 0 && voteRequest.StateID > 0)
                     {
-                        var candidate =  this.authenticationContext.Candidates.Where(s => s.CandidateID == voteRequest.CandidateID && s.ConstituencyID == voteRequest.ConstatuencyID).FirstOrDefault();
+                        var candidate =  this.authenticationContext.Candidates.Where(s => s.CandidateID == voteRequest.CandidateID && s.ConstituencyID == voteRequest.ConstituencyID && s.StateID == voteRequest.StateID).FirstOrDefault();
 
                         if (candidate != null)
                         {
@@ -167,7 +167,7 @@ namespace ElectionRepositoryLayer.ServiceRL
                     }
                     else
                     {
-                        throw new Exception("Counstituency & Candidate ID required");
+                        throw new Exception("Please enter correct state, constituency & candidate Id's");
                     }
                 }
                 else
