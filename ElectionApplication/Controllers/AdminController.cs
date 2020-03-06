@@ -21,6 +21,7 @@ namespace ElectionApplication.Controllers
     using ElectionBusinessLayer.InterfaceBL;
     using ElectionCommonLayer.Model.Admin.Request;
     using ElectionCommonLayer.Model.Party;
+    using ElectionCommonLayer.Model.Vote;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
@@ -86,19 +87,26 @@ namespace ElectionApplication.Controllers
         [Route("Login")]
         public async Task<IActionResult> Login(LogInModel loginModel)
         {
-            // checking login information
-            var data = await this.adminBL.Login(loginModel);
+            try
+            {
+                // checking login information
+                var data = await this.adminBL.Login(loginModel);
 
-            // check whether user get login or not
-            if (data != null)
-            {
-                // generate the token
-                var token = await this.adminBL.GenerateToken(data);
-                return this.Ok(new { success = true, message = "Login Successfull", token , data });
+                // check whether user get login or not
+                if (data != null)
+                {
+                    // generate the token
+                    var token = await this.adminBL.GenerateToken(data);
+                    return this.Ok(new { success = true, message = "Login Successfull", token, data });
+                }
+                else
+                {
+                    return this.BadRequest(new { success = false, message = "Incorrect Pasword or EmailID" });
+                }
             }
-            else
+            catch(Exception exception)
             {
-                return this.BadRequest(new { success = false, message = "Login Failed" });
+                return this.BadRequest(new { success = false, mesage = exception.Message });
             }
         }
 
@@ -244,6 +252,32 @@ namespace ElectionApplication.Controllers
                 else
                 {
                     return this.BadRequest(new { success = false, message = "Failed to clear Voting records" });
+                }
+            }
+            catch(Exception exception)
+            {
+                return this.BadRequest(new { success = false, message = exception.Message });
+            }
+        }
+
+        [Authorize]
+        [HttpPut]
+        [Route("SubmitVote")]
+        public async Task<IActionResult> SubmitVote(VoteRequest voteRequest)
+        {
+            try
+            {
+                var adminID = HttpContext.User.Claims.First(s => s.Type == "EmailID").Value;
+
+                var result = await this.adminBL.AdminVote(adminID, voteRequest);
+
+                if (result)
+                {
+                    return this.Ok(new { success = true, message = "Successfully Submitted Your vote..!" });
+                }
+                else
+                {
+                    return this.BadRequest(new { success = false, message = "Failed to submit your Vote" });
                 }
             }
             catch(Exception exception)

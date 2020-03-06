@@ -151,7 +151,7 @@ namespace ElectionApplication.Controllers
         /// <param name="bulkRequest">The bulk request.</param>
         /// <returns>returns the result indicating operation result</returns>
         [Authorize]
-        [HttpDelete]
+        [HttpPost]
         [Route("BulkParties")]
         public async Task<IActionResult> DeleteParties(BulkRequest bulkRequest)
         {

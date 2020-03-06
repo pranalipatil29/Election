@@ -20,6 +20,7 @@ namespace ElectionRepositoryLayer.ServiceRL
     using ElectionCommonLayer.Model.Candidate;
     using ElectionCommonLayer.Model.Party;
     using ElectionCommonLayer.Model.Result;
+    using ElectionCommonLayer.Model.Vote;
     using ElectionRepositoryLayer.Context;
     using ElectionRepositoryLayer.ImageUpload;
     using ElectionRepositoryLayer.InterfaceRL;
@@ -663,6 +664,121 @@ namespace ElectionRepositoryLayer.ServiceRL
                 else
                 {
                     throw new Exception("Candidate Records not found");
+                }
+            }
+            catch (Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
+
+        /// <summary>
+        /// Admins the vote.
+        /// </summary>
+        /// <param name="emailID">The email identifier.</param>
+        /// <param name="voteRequest">The vote request.</param>
+        /// <returns> returns true or fale indicating operation result</returns>
+        /// <exception cref="Exception">
+        /// Cadidate Not found
+        /// or
+        /// State record not found
+        /// or
+        /// Please enter correct state, constituency & candidate Id's
+        /// or
+        /// Your vote is allready Submited
+        /// or
+        /// </exception>
+        public async Task<bool> AdminVote(string emailID, VoteRequest voteRequest)
+        {
+            try
+            {
+                var admin = this.authenticationContext.AccountTable.Where(s => s.Email == emailID).FirstOrDefault();
+
+                if (admin != null)
+                {
+                    if (admin.MobileNumber == voteRequest.MobileNumber)
+                    {
+                        if (admin.Vote == 0)
+                        {
+                            // check wheather user entered valid info 
+                            if (voteRequest.CandidateID > 0 && voteRequest.ConstituencyID > 0 && voteRequest.StateID > 0)
+                            {
+                                // find the user entered state from states table
+                                var state = this.authenticationContext.States.Where(s => s.StateID == voteRequest.StateID).FirstOrDefault();
+
+                                if (state != null)
+                                {
+                                    // find the candidate from candidate table
+                                    var candidate = this.authenticationContext.Candidates.Where(s => s.CandidateID == voteRequest.CandidateID && s.ConstituencyID == voteRequest.ConstituencyID && s.StateID == voteRequest.StateID).FirstOrDefault();
+
+                                    // check wheather candidate record found or not
+                                    if (candidate != null)
+                                    {
+                                        // mark user voted as true
+                                        admin.Vote = 1;
+
+                                        // save the changes into account table
+                                        this.authenticationContext.AccountTable.Update(admin);
+                                        await this.authenticationContext.SaveChangesAsync();
+
+                                        // get the result for selected candidate from result table
+                                        var resultData = this.authenticationContext.Result.Where(s => s.CandidateID == voteRequest.CandidateID).FirstOrDefault();
+
+                                        // check wheather any record found from result table or not
+                                        if (resultData != null)
+                                        {
+                                            // if record found then add the votes value for selected candidate
+                                            resultData.Votes = resultData.Votes + 100;
+
+                                            // save the changes in result table
+                                            this.authenticationContext.Result.Update(resultData);
+                                            await this.authenticationContext.SaveChangesAsync();
+                                        }
+                                        else
+                                        {
+                                            // if candidate record not found in result table then create the record for candidate 
+                                            var result = new ResultModel()
+                                            {
+                                                CandidateID = voteRequest.CandidateID,
+                                                Votes = 100
+                                            };
+
+                                            // adding the candidate record into result table
+                                            this.authenticationContext.Result.Add(result);
+                                            await this.authenticationContext.SaveChangesAsync();
+                                        }
+
+                                        // return true value indicating operation is successful
+                                        return true;
+                                    }
+                                    else
+                                    {
+                                        throw new Exception("Cadidate Not found");
+                                    }
+                                }
+                                else
+                                {
+                                    throw new Exception("State record not found");
+                                }
+                            }
+                            else
+                            {
+                                throw new Exception("Please enter correct state, constituency & candidate Id's");
+                            }
+                        }
+                        else
+                        {
+                            throw new Exception("Your vote is already submitted");
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("Mobile Number is different");
+                    }                   
+                }
+                else
+                {
+                    throw new Exception("Admin Record not found");
                 }
             }
             catch (Exception exception)

@@ -16,6 +16,6 @@ namespace ElectionRepositoryLayer.InterfaceRL
         /// </summary>
         /// <param name="voteRequest">The vote request.</param>
         /// <returns>returns true or false indicating operation result</returns>
-        Task<bool> GiveVote(VoteRequest voteRequest);       
+        Task<bool> GiveVote(VoteRequest voteRequest);
     }
 }

@@ -18,6 +18,7 @@ namespace ElectionRepositoryLayer.InterfaceRL
     using ElectionCommonLayer.Model.Admin.Respone;
     using ElectionCommonLayer.Model.Party;
     using ElectionCommonLayer.Model.Result;
+    using ElectionCommonLayer.Model.Vote;
     using Microsoft.AspNetCore.Http;
     using System;
     using System.Collections.Generic;
@@ -80,5 +81,13 @@ namespace ElectionRepositoryLayer.InterfaceRL
         /// <param name="stateID">The state identifier.</param>
         /// <returns> return the result or null value</returns>
         IList<PartywiseResultResponse> PartywiseResult(int stateID);
+
+        /// <summary>
+        /// Admins the vote.
+        /// </summary>
+        /// <param name="emailID">The email identifier.</param>
+        /// <param name="voteRequest">The vote request.</param>
+        /// <returns>return true or false indicating operation result</returns>
+        Task<bool> AdminVote(string emailID, VoteRequest voteRequest);
     }
 }

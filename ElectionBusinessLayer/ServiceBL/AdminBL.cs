@@ -25,6 +25,7 @@ namespace ElectionBusinessLayer.ServiceBL
     using System.Collections.Generic;
     using System.Text;
     using System.Threading.Tasks;
+    using ElectionCommonLayer.Model.Vote;
 
     /// <summary>
     /// this class is used to check the business logic of application
@@ -254,6 +255,31 @@ namespace ElectionBusinessLayer.ServiceBL
                 return this.adminRL.PartywiseResult(stateID);
             }
             catch (Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
+
+        /// <summary>
+        /// Admins the vote.
+        /// </summary>
+        /// <param name="emailID">The email identifier.</param>
+        /// <param name="voteRequest">The vote request.</param>
+        /// <returns>return true or false indicating operation result</returns>
+       public async Task<bool> AdminVote(string emailID, VoteRequest voteRequest)
+        {
+            try
+            {
+                if (voteRequest != null)
+                {
+                    return await this.adminRL.AdminVote(emailID, voteRequest);
+                }
+                else
+                {
+                    throw new Exception("State, Constituency & Candidate ID's are is required");
+                }
+            }
+            catch(Exception exception)
             {
                 throw new Exception(exception.Message);
             }
